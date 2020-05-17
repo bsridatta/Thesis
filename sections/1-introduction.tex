@@ -1,80 +1,59 @@
 \chapter{Introduction}
+\label{chap:introduction}
+With rapid advancements in deep learning facilitated by the developments in computational hardware, there has been a tremendous growth in computer vision research and its applications \cite{AIandCompute}. One of the major tasks of computer vision that is required for real-world applications is to perceive and understand dynamic objects and more importantly humans. 
 
-Provide a general introduction to the area for the degree project. Use references!
+Human Pose Estimation, also referred to as HPE is a fundamental problem in computer vision that also forms a basics for human action and gesture recognition as well as human motion prediction. HPE is defined as the localization of human keypoints like joints, head, eyes, nose etc mainly in images and videos in either a 2D or 3D coordinate space. The widely available and used data like images and videos are 2 dimensional data and lack spatial information which is crucial for most of the applications like autonomous driving, AR/VR, social robots etc. Hence this thesis focus is on 3D Human Pose Estimation.
 
-Link things together with references. This is a reference to a section: \ref{sec:background}.
+% TODO -- add acronym for AR/VR
+% TODO -- etc. or etc.,.
 
+% ---------------------------------------------------------------------------------------TODO -- Maybe have separate brief intro before background
+
+% Link things together with references. This is a reference to a section: \ref{sec:background}.
 \section{Background}
 \label{sec:background}
-Present the background for the area. Give the context by explaining the parts that are needed to understand the degree project and thesis. (Still, keep in mind that this is an introductory part, which does not require too detailed description).
 
-Use references\footnote{You can also add footnotes if you want to clarify the content on the same page.}
+There has been a lot of research done in 3D human pose estimation and more advancements have been made in the past few years leveraging the power of deep learning. The current state of the art implementation explores various ways to solve the task using RGB/D images, 2D poses, 3D poses, multi-view and sequential images. The main approaches either directly estimate 3D pose or, estimate parameters to construct a 3D pose. Some approaches achieve this either directly from RGB/D image or from 2D pose alone.
 
-Detailed description of the area should be moved to Chapter 2, where detailed information about background is given together with related work. 
+The former approaches are usually trained in a cascaded manner i.e by having an intermediate state that learns 2D pose in some way. Most of these methods have complex architectures that are hard to train or use multi-view images making it impractical to scale the training to the wild, where such data is very hard to obtain. Since 2D poses are naturally obtained by projecting 3D poses to a plane, the latter approach of lifting 2D-to-3D is an \textit{ill-posed inverse} problem due to its inherent ambiguity. 
 
-This background presents background to writing a report in latex.
-
-
-Example citation \cite{Jones2017} or for two authors: \cite{Jones2017, Liu2017}
-
-Look at sample table \ref{tab:sample-table-label} for a table sample.
-
-\input{tables/sample-table}
-
-Boxes can be used to organize content
-
-\begin{tcolorbox}[title={Development environment for prototype}]
-	\tt{
-		\textbf{Operating systems }\\
-		computer: Linux - kernel 4.18.5-arch1-1-ARCH\\
-		android phone: 8.1.0\\
-		~\\
-		\textbf{Build tools}\\
-		exp (build tool): version 55.0.4\\
-		~\\
-		...
-	}
-\end{tcolorbox}
+Non-supervised (Weak/Semi/Self/Un-supervised) learning regimes have also gained traction in 3D HPE recently and many of the deep learning techniques that have already improved the results in other computer vision tasks (and even in supervised HPE), are yet to be explored. 
 
 \section{Problem}
-Present the problems found in the area. Preferable use and end this section with a question as a problem statement. 
+How can we learn a strong visual representation of the data to tackle the 3D-pose
+estimation? Could data as its own supervisory goal (self-supervision) resolve the
+ambiguities of the pose estimation?
 
-Use references
-Preferable, state the problem, to be solved, as a question. Do not use a question that can be answered with yes and/or no. 
-
-Use acronyms:
-The \ac{CPU} is very nice. It is a \ac{CPU}
-
-\section{Purpose}
-The purpose of the degree project/thesis is the purpose of the written material, i.e., the thesis. The thesis presents the work / discusses / illustrates and so on.
-
-It is not “The project is about” even though this can be included in the purpose. If so, state the purpose of the project after purpose of the thesis).
 
 \section{Goal}
-The goal means the goal of the degree project. Present following: the goal(s), deliverables and results of the project. 
+
+The main interest of the thesis is to investigate ways to estimate 3D pose directly from image efficiently in an end-to-end manner. And would also try to address the 2D-to-3D lifting issue by exploring probabilistic models. Since a deterministic approach for an inherently ill-posed problem is not ideal. 
+
+Improvements in the aspects of ease of training procedure i.e requiring less data or less labor intense labeling, inference speed, and most importantly accuracy is important and will directly impact its super tasks such as, action and gesture recognition, motion prediction and intention/behaviour prediction.
 
 \section{Benefits, Ethics and Sustainability}
-Describe who will benefit from the degree project, the ethical issues (what ethical problems can arise) and the sustainability aspects of the project.
-
-Use references!
+Human Pose Estimation plays a very important to enable autonomous vehicles and robots to safely interact with humans. It plays a key role in developing higher dimensional communication platforms with AR/VR. It is crucial for surveillance systems to ensure public safety. However such important technologies are only as good as the intentions of its users. Mass surveillance of citizens by their governments is a matter of debate.  
 
 \section{Methodology}
-Introduce, theoretically, the methodologies and methods that can be used in a project and, then, select and introduce the methodologies and methods that are used in the degree project. Must be described on the level that is enough to understand the contents of the thesis. 
 
-Use references!
+The problem of 3D HPE has 3 aspects to be addressed and explored. 
 
-Preferably, the philosophical assumptions, research methods, and research approaches are presented here. Write quantitative / qualitative, deductive / inductive / abductive. Start with theory about methods, choose the methods that are used in the thesis and apply. 
+\paragraph{The neural network:} The architecture and the kind of neural network to be used. 3D poses can be predicted using regular MLP, or using various forms of autoencoder architectures. These models can use linear, convolutional or graph networks to learn the features. This thesis focus on exploring all the above mentioned kinds of networks to build VAEs(Variational Auto-Encoders) to estimate 3D pose. As mentioned in the goals variational inference is a better choice over deterministic models to generate 3D poses due to the natural ambiguity in producing 3D data from 2D data.  
 
+\paragraph{The learning task:} The model could either learn to directly predict the 3D coordinates of the key points, or learn structural parameters that could model a 3D pose. The thesis only explores the former task.
 
-Detailed description of these methodologies and methods should be presented in Chapter 3. In chapter 3, the focus could be research strategies, data collection, data analysis, and quality assurance.
+\paragraph{The learning technique (or the cost):}. The model can be trained by directly comparing the predicted 3D pose and the ground truth thus requiring 3D annotations. Or by projecting the prediction back to 2D to compare with the input(requires only 2D annotations that could be acquire from SOTA in 2D HPE). Adversarial training and self-supervision techniques have also given promising results in the last couple of years. The thesis is prime focus is on the first aspect to investigate the merit in VAE and hence direct comparison of 3D pose and ground truth would be used and could be further extended to other techniques with moderate modifications.
 
+% % TODO -- update
 
 \section{Stakeholders}
-Present the stakeholders for the degree project.
+Daimler’s ‘Environment Perception for Autonomous Driving’ R&D team in Stuttgart conducts cutting-edge research in the field of Computer vision and Deep Learning to improve the State-Of-The-Art and to make Autonomous Driving a reality. This thesis is part of the team’s on-going research in the area of Human Pose Estimation which would help autonomous cars better perceive, understand and interact with humans. Daimler/Mercedes-Benz autonomous cars try to understand humans both, inside and outside the car and Human Pose Estimation is a critical element to accomplish the task.
+
+The question is also of interest to the research area of Human State/Action Recognition in specific and also to areas of computer graphics to model humans in 3D space. Hence it is beneficial to various areas that try to understand and interact with humans. The scientific communities in the areas of Autonomous Driving, AR/VR, Motion Capture, CGI and Human-Robot interaction could be interested in the contribution of this thesis.
 
 \section{Delimitations}
-Explain the delimitations. These are all the things that could affect the study if they were examined and included in the degree project. 
-Use references!
+This thesis focuses only on 3D pose estimation and not the intermediate 2D pose. Data collection is not part of the thesis study but uses only publicly available, widely used and benchmarked datasets. 
 
 \section{Outline}
-In text, describe what is presented in Chapters 2 and forward. Exclude the first chapter and references as well as appendix. 
+The current version of the draft consists of two chapters alone. Chapter \ref{chap:background}, the Theoretical Background further contains related works and would later include theoretical concepts that would be touched in the methodology.
+% TODO -- update outline
