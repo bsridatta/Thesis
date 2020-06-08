@@ -4,26 +4,33 @@
 % TODO -- add theory of all concepts VAEs NSFRM etc
 In this chapter details of various related works and the state-of-the-art in 3D human pose estimation is presented along with some works in the sibling task of hand pose estimation.
 
+NRSFM
+
+Non Supervised Learning
+
+Cross model training
+
+VAE
 
 % TODO should be subsection \subsection{Related Work}
 \section{Related Work}
 \label{sec:relatedwork}
 
 \paragraph{Pose from images and heatmaps:}
-There are numerous works that try to estimate 3D human poses from 2D RGB images or 2D heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo}.  Most of these methods are cascading approach where an intermediate representation of 2D pose or 2D heatmaps are used. For example, \cite{CameraDistanceAware} proposes a general framework with 3 networks. Human detection Network, RootNet, PoseNet. Where, human detection network predicts the region the human is in an image, the RootNet localizes the human's root in global 3D world and PoseNet predicts the 3D pose of a single person w.r.t to the root. where, the root is a fixed reference point of human body say, pelvis.
+There are numerous works that try to estimate 3D human poses from 2D \ac{RGB} images or 2D heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo}.  Most of these methods are cascading approach where an intermediate representation of 2D pose or 2D heatmaps are used. For example, \cite{CameraDistanceAware} proposes a general framework with 3 networks. Human detection Network, RootNet, PoseNet. Where, human detection network predicts the region the human is in an image, the RootNet localizes the human's root in global 3D world and PoseNet predicts the 3D pose of a single person with respect to the root. where, the root is a fixed reference point of human body say, pelvis.
 
 \paragraph{Pose Lifting:}
-2D to 3D pose lifting works such as \cite{poselifter,  amazon1, repnet, c3dpo, unsupervisedAdversarial}, focus on estimating 3D poses from 2D poses alone and assume 2D poses from the SOTA methods in 2D HPE. These methods include simple linear models as described in \cite{MartinezHRL17} with multiple dense layers, dropout and residual connects to regress 3D pose effectively. This approach as helps to develop better modular systems by combining the best of lifting networks with the best of 2D HPE approaches.  
+2D to 3D pose lifting works such as \cite{poselifter,  amazon1, repnet, c3dpo, unsupervisedAdversarial}, focus on estimating 3D poses from 2D poses alone and assume 2D poses from the \ac{SOTA} methods in 2D \ac{HPE}. These methods include simple linear models as described in \cite{MartinezHRL17} with multiple dense layers, dropout and residual connects to regress 3D pose effectively. This approach as helps to develop better modular systems by combining the best of lifting networks with the best of 2D \ac{HPE} approaches.  
 
-\paragraph{NRSfM:}
+\paragraph{\ac{NRSfM}:}
 Instead of directly predicting the 3D coordinates of each keypoint of the 3D pose, \cite{DistillNRSfM, c3dpo, deepNRSFM, nrsfm++} predicts the 3D shape and camera viewpoint using only 2D keypoints. Additionally, \cite{c3dpo, nrsfm++} claim to handle occlusions where other approaches find it challenging.
 % TODO -- verify this claim of nrsfm
 
 \paragraph{Non-Supervised Learning:}
-Weakly supervised methods such as \cite{repnet}, learn without 2D-3D correspondences and unknown cameras enabling better generalization to unknown cameras and poses. \cite{amazon1} proposes a combination of unsupervised and adversarial techniques that train lifter network that outputs 3D pose which is then rotated in random angles and is projected to 2D in a different POV. A discriminator is then used to evaluate if this new 2D pose is in the possible pose distribution which is learnt from 2D pose datasets alone. These approaches make 3D HPE more scalable as they do not require 3D ground truth which are hard to acquire in outdoor settings, where 2D poses can be easily estimated using already mature 2D HPE methods. Additionally requiring only 2D poses that are only quite small in dimension enables easier training and inference on edge computing units. 
+Weakly supervised methods such as \cite{repnet}, learn without 2D-3D correspondences and unknown cameras enabling better generalization to unknown cameras and poses. \cite{amazon1} proposes a combination of unsupervised and adversarial techniques that train lifter network that outputs 3D pose which is then rotated in random angles and is projected to 2D in a different \ac{POV}. A discriminator is then used to evaluate if this new 2D pose is in the possible pose distribution which is learnt from 2D pose datasets alone. These approaches make 3D \ac{HPE} more scalable as they do not require 3D ground truth which are hard to acquire in outdoor settings, where 2D poses can be easily estimated using already mature 2D \ac{HPE} methods. Additionally requiring only 2D poses that are only quite small in dimension enables easier training and inference on edge computing units. 
 
 \paragraph{Non Standard Models:}
-Another interesting approach that this thesis is mainly building up on is cross modal training \cite{CrossingNets, crossmodal}. These approaches train a set of variational autoencoders that are formed by combining encoders and decoders that learn data of different modalities using a shared latent space. For example, \cite{crossmodal}, trains encoder and decoder pair to learn RGB data, an encoder to learn 2D pose and a decoder to learn 3D pose. All these try to learn means and variation on a share latent space. This training technique allows an RGB encoder to learn 3D pose making use of the information learnt by 2D to 3D encoder. This method allows variational inference of 3D poses from RGB image without any intermediate step like the earlier cascading approaches. Making it more efficient and fast for both training and inference without compromising the modularity offered by cascading approaches. 
+Another interesting approach that this thesis is mainly building up on is cross modal training \cite{CrossingNets, crossmodal}. These approaches train a set of variational autoencoders that are formed by combining encoders and decoders that learn data of different modalities using a shared latent space. For example, \cite{crossmodal}, trains encoder and decoder pair to learn \ac{RGB} data, an encoder to learn 2D pose and a decoder to learn 3D pose. All these try to learn means and variation on a share latent space. This training technique allows an \ac{RGB} encoder to learn 3D pose making use of the information learnt by 2D to 3D encoder. This method allows variational inference of 3D poses from \ac{RGB} image without any intermediate step like the earlier cascading approaches. Making it more efficient and fast for both training and inference without compromising the modularity offered by cascading approaches. 
 
 
 
