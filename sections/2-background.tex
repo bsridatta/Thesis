@@ -1,39 +1,49 @@
 \chapter{Theoretical Background}
 \label{chap:background}
+
+% \section{Preliminary Concepts}
+% \label{sec:Preliminary}
+
 % \thispagestyle{fancy}
 % TODO -- add theory of all concepts VAEs NSFRM etc
-In this chapter details of various related works and the state-of-the-art in 3D human pose estimation is presented along with some works in the sibling task of hand pose estimation.
+In this chapter the details of various related works and the state-of-the-art in 3D human pose estimation are presented along with some works in the sibling task of hand pose estimation. 
 
-NRSFM
+% NRSFM
 
-Non Supervised Learning
+% Non Supervised Learning
 
-Cross model training
+% Cross model training
 
-VAE
+% VAE
 
 % TODO should be subsection \subsection{Related Work}
 \section{Related Work}
 \label{sec:relatedwork}
 
-\paragraph{Pose from images and heatmaps:}
-There are numerous works that try to estimate 3D human poses from 2D \ac{RGB} images or 2D heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo}.  Most of these methods are cascading approach where an intermediate representation of 2D pose or 2D heatmaps are used. For example, \cite{CameraDistanceAware} proposes a general framework with 3 networks. Human detection Network, RootNet, PoseNet. Where, human detection network predicts the region the human is in an image, the RootNet localizes the human's root in global 3D world and PoseNet predicts the 3D pose of a single person with respect to the root. where, the root is a fixed reference point of human body say, pelvis.
+\subsection{Pose from images and heatmaps}
+There are numerous works that try to estimate 3D human poses from 2D \ac{RGB} images or 2D joint confidence heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo}. Most of these methods follow a cascading approach, where an explicit intermediate representation of 2D pose or 2D heatmaps is used. For example, \cite{CameraDistanceAware} proposes a general framework with 3 networks. Human detection Network, RootNet, PoseNet. Where, the human detection network predicts the region the human is in an image. The RootNet localizes the human's root in global 3D world. And, the PoseNet predicts the 3D pose of a single person with respect to the root. Where, the root is a fixed reference point of human body say, pelvis. 
 
-\paragraph{Pose Lifting:}
-2D to 3D pose lifting works such as \cite{poselifter,  amazon1, repnet, c3dpo, unsupervisedAdversarial}, focus on estimating 3D poses from 2D poses alone and assume 2D poses from the \ac{SOTA} methods in 2D \ac{HPE}. These methods include simple linear models as described in \cite{MartinezHRL17} with multiple dense layers, dropout and residual connects to regress 3D pose effectively. This approach as helps to develop better modular systems by combining the best of lifting networks with the best of 2D \ac{HPE} approaches.  
+The advantage of such top-down frameworks is to divide the task of RGB to 3D into smaller, well-studied sub-tasks. This makes scaling single-person pose estimation algorithms for multi-person pose estimation easy, as the majority of the data available mostly consists of a single person per frame. In addition to it, this approach provides the opportunity to improve certain modules without affecting or having to re-train the other modules of the system.  
 
-\paragraph{\ac{NRSfM}:}
-Instead of directly predicting the 3D coordinates of each keypoint of the 3D pose, \cite{DistillNRSfM, c3dpo, deepNRSFM, nrsfm++} predicts the 3D shape and camera viewpoint using only 2D keypoints. Additionally, \cite{c3dpo, nrsfm++} claim to handle occlusions where other approaches find it challenging.
-% TODO -- verify this claim of nrsfm
+\subsection{Pose Lifting}
 
-\paragraph{Non-Supervised Learning:}
-Weakly supervised methods such as \cite{repnet}, learn without 2D-3D correspondences and unknown cameras enabling better generalization to unknown cameras and poses. \cite{amazon1} proposes a combination of unsupervised and adversarial techniques that train lifter network that outputs 3D pose which is then rotated in random angles and is projected to 2D in a different \ac{POV}. A discriminator is then used to evaluate if this new 2D pose is in the possible pose distribution which is learnt from 2D pose datasets alone. These approaches make 3D \ac{HPE} more scalable as they do not require 3D ground truth which are hard to acquire in outdoor settings, where 2D poses can be easily estimated using already mature 2D \ac{HPE} methods. Additionally requiring only 2D poses that are only quite small in dimension enables easier training and inference on edge computing units. 
+In contrast to the estimating pose from an image, Pose Lifting works such as \cite{poselifter,  amazon1, repnet, c3dpo, unsupervisedAdversarial}, focus on estimating 3D poses from 2D poses alone. Assuming 2D poses from the \ac{SOTA} methods in 2D \ac{HPE}. These methods include simple linear models as first described in \cite{MartinezHRL17} with a series of fully connected linear layers, and sometimes batch normalization, dropout and, residual connections to regress 3D pose effectively. 
 
-\paragraph{Non Standard Models:}
-Another interesting approach that this thesis is mainly building up on is cross modal training \cite{CrossingNets, crossmodal}. These approaches train a set of variational autoencoders that are formed by combining encoders and decoders that learn data of different modalities using a shared latent space. For example, \cite{crossmodal}, trains encoder and decoder pair to learn \ac{RGB} data, an encoder to learn 2D pose and a decoder to learn 3D pose. All these try to learn means and variation on a share latent space. This training technique allows an \ac{RGB} encoder to learn 3D pose making use of the information learnt by 2D to 3D encoder. This method allows variational inference of 3D poses from \ac{RGB} image without any intermediate step like the earlier cascading approaches. Making it more efficient and fast for both training and inference without compromising the modularity offered by cascading approaches. 
+ \ac{NRSfM} is another promising lifting method that also leverages images along with 2D annotations. \ac{NRSfM} deals with the problem of reconstructing 3D shape (pose/point cloud) and cameras of each projection from a sequence of images with corresponding 2D orthogonal projections (2D keypoints). This approach has been widely used in facial keypoint detection and \cite{deepNRSFM} introduces deep learning variant for the same. Instead of predicting the 3D coordinates of each keypoint/joint of the 3D pose, \cite{DistillNRSfM, c3dpo, deepNRSFM, nrsfm++} predicts the 3D shape and camera pose from 2D pose using this method. 
+
+The Pose Lifting approach facilitates to leverage the already well established 2D \ac{HPE} models that are trained on enormous and diverse labelled data. Thus demanding lesser training data for 3D pose estimation than it would need when learning from images. Since these networks do not have deep and heavy convolution layers they are less computationally inexpensive for both training and inference. Moreover, the 2D and 3D pose data usually can be entirely loaded on to GPU further accelerating the training procedure. Thus addressing the critical problem that hinders scalability of 3D \ac{HPE} models and also helps to develop better modular systems by combining the best of Pose Lifting networks with the best of 2D \ac{HPE}.
+
+\subsection{Non-Supervised Learning}
+The standard way to train a 3D \ac{HPE}
+
+Weakly supervised methods such as \cite{repnet}, learn without 2D-3D correspondences and unknown cameras enabling better generalization to unknown cameras and poses. \cite{amazon1} proposes a combination of unsupervised and adversarial techniques that train lifter network that outputs 3D pose which is then rotated in random angles and is projected to 2D in a different \ac{POV}. A discriminator is then used to evaluate if this new 2D pose is in the possible pose distribution which is learnt from 2D pose datasets alone. These approaches make 3D \ac{HPE} more scalable as they do not require 3D annotations which are hard to acquire in outdoor settings, where 2D poses can be easily estimated using already mature 2D \ac{HPE} methods. Additionally requiring only 2D poses that are only quite small in dimension enables easier training and inference on edge computing units. 
+
+\subsection{Non Standard Models}
+Another interesting approach that this thesis is mainly building upon is cross-modal training \cite{CrossingNets, crossmodal}. These approaches train a set of variational autoencoders that are formed by combining encoders and decoders that learn data of different modalities using a shared latent space. For example, \cite{crossmodal}, trains encoder, and decoder pair to learn \ac{RGB} data, an encoder to learn 2D pose and a decoder to learn 3D pose. All these try to learn means and variation on a shared latent space. This training technique allows an \ac{RGB} encoder to learn 3D pose making use of the information learnt by 2D to 3D encoder. This method allows variational inference of 3D poses from \ac{RGB} image without any intermediate step like the earlier cascading approaches. Making it more efficient and fast for both training and inference without compromising the modularity offered by cascading approaches. 
 
 
 
 
+% The area of 2D \ac{HPE} is well established and matured with reliable systems deployed in the real-world. This was made possible with the high volume of images from diverse settings and the reasonable ease of manual labelling of 2D poses. On the other hand, labelling 3D pose manually is not possible and requires sensors such as \ac{MoCap} to retrieve the ground truth for training the models. Though single-person datasets such as Human3.6M \cite{H3.6}, Human Eva \cite{HumanEva} and, multi-person datasets such as CMU Panoptic \cite{cmuPanoptic} provide 3D pose ground truth. They are obtained using \ac{MoCap} systems which are only limited to indoors or cannot be directly adapted to outdoor environments where the majority of the use cases exist. 
 
 
