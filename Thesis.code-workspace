@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.autoSave": "afterDelay",
+		"files.autoSaveDelay": 300000,
+		"latexCompile.mainFile": "/home/datta/lab/Thesis/Main.tex"
+	}
+}
