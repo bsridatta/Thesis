@@ -1,0 +1,772 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{poselifter}{article}{}
+      \name{author}{3}{}{%
+        {{hash=be53d7e3722247962dc5845ef607d944}{%
+           family={Chang},
+           familyi={C\bibinitperiod},
+           given={Ju\bibnamedelima Yong},
+           giveni={J\bibinitperiod\bibinitdelim Y\bibinitperiod}}}%
+        {{hash=a23531db70491813109095b6aaf7ceab}{%
+           family={Moon},
+           familyi={M\bibinitperiod},
+           given={Gyeongsik},
+           giveni={G\bibinitperiod}}}%
+        {{hash=c263d9b72ddcdbbf0cb70261800eca1a}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Kyoung\bibnamedelima Mu},
+           giveni={K\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{a26614c6a231793b95b621a060a12abe}
+      \strng{fullhash}{a26614c6a231793b95b621a060a12abe}
+      \strng{bibnamehash}{a26614c6a231793b95b621a060a12abe}
+      \strng{authorbibnamehash}{a26614c6a231793b95b621a060a12abe}
+      \strng{authornamehash}{a26614c6a231793b95b621a060a12abe}
+      \strng{authorfullhash}{a26614c6a231793b95b621a060a12abe}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv preprint arXiv:1910.12029}
+      \field{title}{AbsPoseLifter: Absolute 3D Human Pose Lifting Network from a Single Noisy 2D Human Pose}
+      \field{year}{2019}
+    \endentry
+    \entry{amazon1}{article}{}
+      \name{author}{7}{}{%
+        {{hash=22d5041e574fdc8f01728c1f464a0e69}{%
+           family={Chen},
+           familyi={C\bibinitperiod},
+           given={Ching-Hang},
+           giveni={C\bibinithyphendelim H\bibinitperiod}}}%
+        {{hash=5738572bec2375a27788885a27f9bc52}{%
+           family={Tyagi},
+           familyi={T\bibinitperiod},
+           given={Ambrish},
+           giveni={A\bibinitperiod}}}%
+        {{hash=950b6bd713e6d6bf5e1e082dcf37838f}{%
+           family={Agrawal},
+           familyi={A\bibinitperiod},
+           given={Amit},
+           giveni={A\bibinitperiod}}}%
+        {{hash=0bfd5064bd7ed746a9de3bbee967641b}{%
+           family={Drover},
+           familyi={D\bibinitperiod},
+           given={Dylan},
+           giveni={D\bibinitperiod}}}%
+        {{hash=9ed7f3b49a41bfde10c05873fcf387c0}{%
+           family={Rohith},
+           familyi={R\bibinitperiod},
+           given={M.\bibnamedelimi V.},
+           giveni={M\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+        {{hash=947d56383b4989cf5546fbeda7233452}{%
+           family={Stojanov},
+           familyi={S\bibinitperiod},
+           given={Stefan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=7ad025a3ff50080dd4f4ff689ab4d020}{%
+           family={Rehg},
+           familyi={R\bibinitperiod},
+           given={James\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{32e8af0f672fcf7198b6d6365f164f46}
+      \strng{fullhash}{59387a3fc27631c170640f74f4fa9f5a}
+      \strng{bibnamehash}{59387a3fc27631c170640f74f4fa9f5a}
+      \strng{authorbibnamehash}{59387a3fc27631c170640f74f4fa9f5a}
+      \strng{authornamehash}{32e8af0f672fcf7198b6d6365f164f46}
+      \strng{authorfullhash}{59387a3fc27631c170640f74f4fa9f5a}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{CoRR}
+      \field{title}{Unsupervised 3D Pose Estimation with Geometric Self-Supervision}
+      \field{volume}{abs/1904.04812}
+      \field{year}{2019}
+      \verb{eprint}
+      \verb 1904.04812
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1904.04812
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1904.04812
+      \endverb
+    \endentry
+    \entry{occlusionVideo}{inproceedings}{}
+      \name{author}{5}{}{%
+        {{hash=f90fa099ce585c3d1d009abdb2ccf07c}{%
+           family={Cheng},
+           familyi={C\bibinitperiod},
+           given={Yu},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=d6f2b26e2b50e389f737db615a2d7427}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Bo},
+           giveni={B\bibinitperiod}}}%
+        {{hash=2938deb5048323c6e1bfdd80975d5b28}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Bo},
+           giveni={B\bibinitperiod}}}%
+        {{hash=d21b1fa5214e27699146e5a2e0335e64}{%
+           family={Wending},
+           familyi={W\bibinitperiod},
+           given={Yan},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=4390d18585a45e5c5db48a56fe5b7b2a}{%
+           family={Tan},
+           familyi={T\bibinitperiod},
+           given={Robby\bibnamedelima T.},
+           giveni={R\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{7ab8807fe5afc8e9e1605342482eea14}
+      \strng{fullhash}{050d4f2432ab9e4da8da6c95ef803d96}
+      \strng{bibnamehash}{050d4f2432ab9e4da8da6c95ef803d96}
+      \strng{authorbibnamehash}{050d4f2432ab9e4da8da6c95ef803d96}
+      \strng{authornamehash}{7ab8807fe5afc8e9e1605342482eea14}
+      \strng{authorfullhash}{050d4f2432ab9e4da8da6c95ef803d96}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2019 {IEEE/CVF} International Conference on Computer Vision, {ICCV} 2019, Seoul, Korea (South), October 27 - November 2, 2019}
+      \field{title}{Occlusion-Aware Networks for 3D Human Pose Estimation in Video}
+      \field{year}{2019}
+      \field{pages}{723\bibrangedash 732}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1109/ICCV.2019.00081
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1109/ICCV.2019.00081
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1109/ICCV.2019.00081
+      \endverb
+    \endentry
+    \entry{AIandCompute}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=6e8ab90f78fac6e4e6d6b6518e6c89a5}{%
+           family={Dario\bibnamedelima Amodei},
+           familyi={D\bibinitperiod\bibinitdelim A\bibinitperiod},
+           given={Danny\bibnamedelima Hernandez},
+           giveni={D\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \strng{namehash}{6e8ab90f78fac6e4e6d6b6518e6c89a5}
+      \strng{fullhash}{6e8ab90f78fac6e4e6d6b6518e6c89a5}
+      \strng{bibnamehash}{6e8ab90f78fac6e4e6d6b6518e6c89a5}
+      \strng{authorbibnamehash}{6e8ab90f78fac6e4e6d6b6518e6c89a5}
+      \strng{authornamehash}{6e8ab90f78fac6e4e6d6b6518e6c89a5}
+      \strng{authorfullhash}{6e8ab90f78fac6e4e6d6b6518e6c89a5}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://openai.com/blog/ai-and-compute/}}
+      \field{note}{(Accessed on 05/17/2020)}
+      \field{title}{AI and Compute}
+    \endentry
+    \entry{JTA}{inproceedings}{}
+      \name{author}{6}{}{%
+        {{hash=d91f16fa42ee0dfd8ddce335e9cff9c8}{%
+           family={Fabbri},
+           familyi={F\bibinitperiod},
+           given={Matteo},
+           giveni={M\bibinitperiod}}}%
+        {{hash=a88045d6c06510180c10e4815b0f9d62}{%
+           family={Lanzi},
+           familyi={L\bibinitperiod},
+           given={Fabio},
+           giveni={F\bibinitperiod}}}%
+        {{hash=d1282c8311a9bde0fda7c530f991eb0f}{%
+           family={Calderara},
+           familyi={C\bibinitperiod},
+           given={Simone},
+           giveni={S\bibinitperiod}}}%
+        {{hash=3a0466ac3b948cdd2eb9fef9a3738378}{%
+           family={Palazzi},
+           familyi={P\bibinitperiod},
+           given={Andrea},
+           giveni={A\bibinitperiod}}}%
+        {{hash=d976bd1fe13ca2c980a198da0d959e64}{%
+           family={Vezzani},
+           familyi={V\bibinitperiod},
+           given={Roberto},
+           giveni={R\bibinitperiod}}}%
+        {{hash=810bd268a2927d0db658eaeda49ff357}{%
+           family={Cucchiara},
+           familyi={C\bibinitperiod},
+           given={Rita},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{3c963166b3cf679caec6bb3d116250c8}
+      \strng{fullhash}{c787a6d5e63bdd6aefc297ad5ba9f1c1}
+      \strng{bibnamehash}{c787a6d5e63bdd6aefc297ad5ba9f1c1}
+      \strng{authorbibnamehash}{c787a6d5e63bdd6aefc297ad5ba9f1c1}
+      \strng{authornamehash}{3c963166b3cf679caec6bb3d116250c8}
+      \strng{authorfullhash}{c787a6d5e63bdd6aefc297ad5ba9f1c1}
+      \field{sortinit}{F}
+      \field{sortinithash}{fb0c0faa89eb6abae8213bf60e6799ea}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{European Conference on Computer Vision (ECCV)}
+      \field{title}{Learning to Detect and Track Visible and Occluded Body Joints in a Virtual World}
+      \field{year}{2018}
+    \endentry
+    \entry{cmuPanoptic}{article}{}
+      \name{author}{1}{}{%
+        {{hash=b77662ed6c0344a83034f51ecc7faaca}{%
+           family={Hanbyul\bibnamedelima Joo},
+           familyi={H\bibinitperiod\bibinitdelim J\bibinitperiod},
+           given={Hao\bibnamedelima Liu},
+           giveni={H\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \strng{namehash}{b77662ed6c0344a83034f51ecc7faaca}
+      \strng{fullhash}{b77662ed6c0344a83034f51ecc7faaca}
+      \strng{bibnamehash}{b77662ed6c0344a83034f51ecc7faaca}
+      \strng{authorbibnamehash}{b77662ed6c0344a83034f51ecc7faaca}
+      \strng{authornamehash}{b77662ed6c0344a83034f51ecc7faaca}
+      \strng{authorfullhash}{b77662ed6c0344a83034f51ecc7faaca}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{ICCV}
+      \field{title}{Panoptic Studio: A Massively Multiview System for Social Motion Capture}
+      \field{year}{2015}
+    \endentry
+    \entry{HumanEva}{misc}{}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://link.springer.com/article/10.1007/s11263-009-0273-6}}
+      \field{note}{(Accessed on 06/08/2020)}
+      \field{title}{HumanEva : Synchronized Video and Motion Capture Dataset and Baseline Algorithm for Evaluation of Articulated Human Motion | SpringerLink}
+    \endentry
+    \entry{H3.6}{article}{}
+      \name{author}{4}{}{%
+        {{hash=60ede0189e24f59b929d3be092a9e8c8}{%
+           family={{Ionescu}},
+           familyi={I\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=0086b664fcfb05cd0d151645e0a31b59}{%
+           family={{Papava}},
+           familyi={P\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=01ef20226406d99b412b5d2f453a4b39}{%
+           family={{Olaru}},
+           familyi={O\bibinitperiod},
+           given={V.},
+           giveni={V\bibinitperiod}}}%
+        {{hash=da4e078fa03716a2bc18e6ab8b5ee004}{%
+           family={{Sminchisescu}},
+           familyi={S\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{9c107ab93002a3d8c2b559e0f7fe705c}
+      \strng{fullhash}{3b168b2785af2b714e7383991cd6e02f}
+      \strng{bibnamehash}{3b168b2785af2b714e7383991cd6e02f}
+      \strng{authorbibnamehash}{3b168b2785af2b714e7383991cd6e02f}
+      \strng{authornamehash}{9c107ab93002a3d8c2b559e0f7fe705c}
+      \strng{authorfullhash}{3b168b2785af2b714e7383991cd6e02f}
+      \field{sortinit}{I}
+      \field{sortinithash}{9417e9a1288a9371e2691d999083ed39}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Pattern Analysis and Machine Intelligence}
+      \field{number}{7}
+      \field{title}{Human3.6M: Large Scale Datasets and Predictive Methods for 3D Human Sensing in Natural Environments}
+      \field{volume}{36}
+      \field{year}{2014}
+      \field{pages}{1325\bibrangedash 1339}
+      \range{pages}{15}
+    \endentry
+    \entry{deepNRSFM}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=9eb62cb44991589e50f406c0ca8329bd}{%
+           family={Kong},
+           familyi={K\bibinitperiod},
+           given={Chen},
+           giveni={C\bibinitperiod}}}%
+        {{hash=061075e8245a617dab62fc875f316a39}{%
+           family={Lucey},
+           familyi={L\bibinitperiod},
+           given={Simon},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{29da5b3504653dc39ad6a406c7846177}
+      \strng{fullhash}{29da5b3504653dc39ad6a406c7846177}
+      \strng{bibnamehash}{29da5b3504653dc39ad6a406c7846177}
+      \strng{authorbibnamehash}{29da5b3504653dc39ad6a406c7846177}
+      \strng{authornamehash}{29da5b3504653dc39ad6a406c7846177}
+      \strng{authorfullhash}{29da5b3504653dc39ad6a406c7846177}
+      \field{sortinit}{K}
+      \field{sortinithash}{d3edc18d54b9438a72c24c925bfb38f4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2019 {IEEE/CVF} International Conference on Computer Vision, {ICCV} 2019, Seoul, Korea (South), October 27 - November 2, 2019}
+      \field{title}{Deep Non-Rigid Structure From Motion}
+      \field{year}{2019}
+      \field{pages}{1558\bibrangedash 1567}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1109/ICCV.2019.00164
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1109/ICCV.2019.00164
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1109/ICCV.2019.00164
+      \endverb
+    \endentry
+    \entry{unsupervisedAdversarial}{article}{}
+      \name{author}{4}{}{%
+        {{hash=3159d729e569d50a3df7e3d073474975}{%
+           family={Kudo},
+           familyi={K\bibinitperiod},
+           given={Yasunori},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=5c93a2024cc9c3ce8ab661ae5ad89f70}{%
+           family={Ogaki},
+           familyi={O\bibinitperiod},
+           given={Keisuke},
+           giveni={K\bibinitperiod}}}%
+        {{hash=7352dd7110755cf25b6b7cab72dc295b}{%
+           family={Matsui},
+           familyi={M\bibinitperiod},
+           given={Yusuke},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=3c72635a800018128c25c5d3997a27c9}{%
+           family={Odagiri},
+           familyi={O\bibinitperiod},
+           given={Yuri},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{a97f63d428d732ddf80b95a4cafdfe75}
+      \strng{fullhash}{26a8688fa378261d66b1fcc2b70d86c4}
+      \strng{bibnamehash}{26a8688fa378261d66b1fcc2b70d86c4}
+      \strng{authorbibnamehash}{26a8688fa378261d66b1fcc2b70d86c4}
+      \strng{authornamehash}{a97f63d428d732ddf80b95a4cafdfe75}
+      \strng{authorfullhash}{26a8688fa378261d66b1fcc2b70d86c4}
+      \field{sortinit}{K}
+      \field{sortinithash}{d3edc18d54b9438a72c24c925bfb38f4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{CoRR}
+      \field{title}{Unsupervised Adversarial Learning of 3D Human Pose from 2D Joint Locations}
+      \field{volume}{abs/1803.08244}
+      \field{year}{2018}
+      \verb{eprint}
+      \verb 1803.08244
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1803.08244
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1803.08244
+      \endverb
+    \endentry
+    \entry{MartinezHRL17}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=fe87db8572f0584b0e4c65d553a4ea49}{%
+           family={Martinez},
+           familyi={M\bibinitperiod},
+           given={Julieta},
+           giveni={J\bibinitperiod}}}%
+        {{hash=7a41bd6dd8c8fe165c6a8c6cde582cd2}{%
+           family={Hossain},
+           familyi={H\bibinitperiod},
+           given={Rayat},
+           giveni={R\bibinitperiod}}}%
+        {{hash=586007140096e6d78832f56de1edf859}{%
+           family={Romero},
+           familyi={R\bibinitperiod},
+           given={Javier},
+           giveni={J\bibinitperiod}}}%
+        {{hash=16338b21a38c654c79c5bc6d227cb313}{%
+           family={Little},
+           familyi={L\bibinitperiod},
+           given={James\bibnamedelima J.},
+           giveni={J\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {{IEEE} Computer Society}%
+      }
+      \strng{namehash}{bac31891fb4c7f4ca3a9ccef50690e5a}
+      \strng{fullhash}{cc23baffa97bd8b1a332468aad9d4df4}
+      \strng{bibnamehash}{cc23baffa97bd8b1a332468aad9d4df4}
+      \strng{authorbibnamehash}{cc23baffa97bd8b1a332468aad9d4df4}
+      \strng{authornamehash}{bac31891fb4c7f4ca3a9ccef50690e5a}
+      \strng{authorfullhash}{cc23baffa97bd8b1a332468aad9d4df4}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{{IEEE} International Conference on Computer Vision, {ICCV} 2017, Venice, Italy, October 22-29, 2017}
+      \field{title}{A Simple Yet Effective Baseline for 3d Human Pose Estimation}
+      \field{year}{2017}
+      \field{pages}{2659\bibrangedash 2668}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1109/ICCV.2017.288
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1109/ICCV.2017.288
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1109/ICCV.2017.288
+      \endverb
+    \endentry
+    \entry{CameraDistanceAware}{article}{}
+      \name{author}{3}{}{%
+        {{hash=a23531db70491813109095b6aaf7ceab}{%
+           family={Moon},
+           familyi={M\bibinitperiod},
+           given={Gyeongsik},
+           giveni={G\bibinitperiod}}}%
+        {{hash=be53d7e3722247962dc5845ef607d944}{%
+           family={Chang},
+           familyi={C\bibinitperiod},
+           given={Ju\bibnamedelima Yong},
+           giveni={J\bibinitperiod\bibinitdelim Y\bibinitperiod}}}%
+        {{hash=c263d9b72ddcdbbf0cb70261800eca1a}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Kyoung\bibnamedelima Mu},
+           giveni={K\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{cd2b32fe71029d70de8e265efd9e162c}
+      \strng{fullhash}{cd2b32fe71029d70de8e265efd9e162c}
+      \strng{bibnamehash}{cd2b32fe71029d70de8e265efd9e162c}
+      \strng{authorbibnamehash}{cd2b32fe71029d70de8e265efd9e162c}
+      \strng{authornamehash}{cd2b32fe71029d70de8e265efd9e162c}
+      \strng{authorfullhash}{cd2b32fe71029d70de8e265efd9e162c}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{CoRR}
+      \field{title}{Camera Distance-aware Top-down Approach for 3D Multi-person Pose Estimation from a Single {RGB} Image}
+      \field{volume}{abs/1907.11346}
+      \field{year}{2019}
+      \verb{eprint}
+      \verb 1907.11346
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1907.11346
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1907.11346
+      \endverb
+    \endentry
+    \entry{c3dpo}{inproceedings}{}
+      \name{author}{5}{}{%
+        {{hash=4903455b6040d0938c5c9daaa5890de1}{%
+           family={Novotny},
+           familyi={N\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=29e72fba9e2b3c5537682a7be7bc14e4}{%
+           family={Ravi},
+           familyi={R\bibinitperiod},
+           given={Nikhila},
+           giveni={N\bibinitperiod}}}%
+        {{hash=0ff8508086e7a2ac42be5574d8205ced}{%
+           family={Graham},
+           familyi={G\bibinitperiod},
+           given={Benjamin},
+           giveni={B\bibinitperiod}}}%
+        {{hash=6ff34c28edc9dbeffd3f6181c331596a}{%
+           family={Neverova},
+           familyi={N\bibinitperiod},
+           given={Natalia},
+           giveni={N\bibinitperiod}}}%
+        {{hash=85ab53268da1006b51b453d57d3566f2}{%
+           family={Vedaldi},
+           familyi={V\bibinitperiod},
+           given={Andrea},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{e320b504cc623cd3b1c0d96a02f0af7a}
+      \strng{fullhash}{384451718e28d5093dfc4927a7949cfe}
+      \strng{bibnamehash}{384451718e28d5093dfc4927a7949cfe}
+      \strng{authorbibnamehash}{384451718e28d5093dfc4927a7949cfe}
+      \strng{authornamehash}{e320b504cc623cd3b1c0d96a02f0af7a}
+      \strng{authorfullhash}{384451718e28d5093dfc4927a7949cfe}
+      \field{sortinit}{N}
+      \field{sortinithash}{98cf339a479c0454fe09153a08675a15}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the IEEE International Conference on Computer Vision}
+      \field{title}{C3DPO: Canonical 3d pose networks for non-rigid structure from motion}
+      \field{year}{2019}
+      \field{pages}{7688\bibrangedash 7697}
+      \range{pages}{10}
+    \endentry
+    \entry{crossmodal}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=1f12bb11a3dbeef31696ec2833bf0a01}{%
+           family={Spurr},
+           familyi={S\bibinitperiod},
+           given={Adrian},
+           giveni={A\bibinitperiod}}}%
+        {{hash=f47cc1ff1ed8ea8025326fb247ba534f}{%
+           family={Song},
+           familyi={S\bibinitperiod},
+           given={Jie},
+           giveni={J\bibinitperiod}}}%
+        {{hash=e22ccf8828a5e97a79ea14fe456e8405}{%
+           family={Park},
+           familyi={P\bibinitperiod},
+           given={Seonwook},
+           giveni={S\bibinitperiod}}}%
+        {{hash=e4282a8b050f6ec88f43896369f6fe38}{%
+           family={Hilliges},
+           familyi={H\bibinitperiod},
+           given={Otmar},
+           giveni={O\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {{IEEE} Computer Society}%
+      }
+      \strng{namehash}{8d12975ea8208509c80850acc70ae201}
+      \strng{fullhash}{92d1bfbdd41bfb8b6ba6841291d3a340}
+      \strng{bibnamehash}{92d1bfbdd41bfb8b6ba6841291d3a340}
+      \strng{authorbibnamehash}{92d1bfbdd41bfb8b6ba6841291d3a340}
+      \strng{authornamehash}{8d12975ea8208509c80850acc70ae201}
+      \strng{authorfullhash}{92d1bfbdd41bfb8b6ba6841291d3a340}
+      \field{sortinit}{S}
+      \field{sortinithash}{c319cff79d99c853d775f88277d4e45f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2018 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR} 2018, Salt Lake City, UT, USA, June 18-22, 2018}
+      \field{title}{Cross-Modal Deep Variational Hand Pose Estimation}
+      \field{year}{2018}
+      \field{pages}{89\bibrangedash 98}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1109/CVPR.2018.00017
+      \endverb
+      \verb{urlraw}
+      \verb http://openaccess.thecvf.com/content\_cvpr\_2018/html/Spurr\_Cross-Modal\_Deep\_Variational\_CVPR\_2018\_paper.html
+      \endverb
+      \verb{url}
+      \verb http://openaccess.thecvf.com/content%5C_cvpr%5C_2018/html/Spurr%5C_Cross-Modal%5C_Deep%5C_Variational%5C_CVPR%5C_2018%5C_paper.html
+      \endverb
+    \endentry
+    \entry{CrossingNets}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=b3e326a238efa7269302402456b97829}{%
+           family={Wan},
+           familyi={W\bibinitperiod},
+           given={Chengde},
+           giveni={C\bibinitperiod}}}%
+        {{hash=a4c2aeea767dda15c9c6adb53b632ccc}{%
+           family={Probst},
+           familyi={P\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+        {{hash=4e3c4333156c93f2e568db6387d4c7f1}{%
+           family={Gool},
+           familyi={G\bibinitperiod},
+           given={Luc\bibnamedelima Van},
+           giveni={L\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+        {{hash=1c26d27d4708774ecf05907e817e1ddd}{%
+           family={Yao},
+           familyi={Y\bibinitperiod},
+           given={Angela},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {{IEEE} Computer Society}%
+      }
+      \strng{namehash}{3e2770d3fbd8a7dddbc5c29cebe85d90}
+      \strng{fullhash}{1f37619b5999c3d2936e4bf9bbd47de2}
+      \strng{bibnamehash}{1f37619b5999c3d2936e4bf9bbd47de2}
+      \strng{authorbibnamehash}{1f37619b5999c3d2936e4bf9bbd47de2}
+      \strng{authornamehash}{3e2770d3fbd8a7dddbc5c29cebe85d90}
+      \strng{authorfullhash}{1f37619b5999c3d2936e4bf9bbd47de2}
+      \field{sortinit}{W}
+      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2017 {IEEE} Conference on Computer Vision and Pattern Recognition, {CVPR} 2017, Honolulu, HI, USA, July 21-26, 2017}
+      \field{title}{Crossing Nets: Combining GANs and VAEs with a Shared Latent Space for Hand Pose Estimation}
+      \field{year}{2017}
+      \field{pages}{1196\bibrangedash 1205}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1109/CVPR.2017.132
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1109/CVPR.2017.132
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1109/CVPR.2017.132
+      \endverb
+    \endentry
+    \entry{repnet}{article}{}
+      \name{author}{2}{}{%
+        {{hash=a794e0fc7e13a7739aec50d3fe9855b0}{%
+           family={Wandt},
+           familyi={W\bibinitperiod},
+           given={Bastian},
+           giveni={B\bibinitperiod}}}%
+        {{hash=0b5e0c497df82f8933f6b72c99a8b86d}{%
+           family={Rosenhahn},
+           familyi={R\bibinitperiod},
+           given={Bodo},
+           giveni={B\bibinitperiod}}}%
+      }
+      \strng{namehash}{8e1fc491b7a292311687298cb32b2601}
+      \strng{fullhash}{8e1fc491b7a292311687298cb32b2601}
+      \strng{bibnamehash}{8e1fc491b7a292311687298cb32b2601}
+      \strng{authorbibnamehash}{8e1fc491b7a292311687298cb32b2601}
+      \strng{authornamehash}{8e1fc491b7a292311687298cb32b2601}
+      \strng{authorfullhash}{8e1fc491b7a292311687298cb32b2601}
+      \field{sortinit}{W}
+      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{CoRR}
+      \field{title}{RepNet: Weakly Supervised Training of an Adversarial Reprojection Network for 3D Human Pose Estimation}
+      \field{volume}{abs/1902.09868}
+      \field{year}{2019}
+      \verb{eprint}
+      \verb 1902.09868
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1902.09868
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1902.09868
+      \endverb
+    \endentry
+    \entry{DistillNRSfM}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=e49ed018aec5a87191f4d44b232aea34}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Chaoyang},
+           giveni={C\bibinitperiod}}}%
+        {{hash=9eb62cb44991589e50f406c0ca8329bd}{%
+           family={Kong},
+           familyi={K\bibinitperiod},
+           given={Chen},
+           giveni={C\bibinitperiod}}}%
+        {{hash=061075e8245a617dab62fc875f316a39}{%
+           family={Lucey},
+           familyi={L\bibinitperiod},
+           given={Simon},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{7549ee16ace195b1938d38e10991d19a}
+      \strng{fullhash}{7549ee16ace195b1938d38e10991d19a}
+      \strng{bibnamehash}{7549ee16ace195b1938d38e10991d19a}
+      \strng{authorbibnamehash}{7549ee16ace195b1938d38e10991d19a}
+      \strng{authornamehash}{7549ee16ace195b1938d38e10991d19a}
+      \strng{authorfullhash}{7549ee16ace195b1938d38e10991d19a}
+      \field{sortinit}{W}
+      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{2019 {IEEE/CVF} International Conference on Computer Vision, {ICCV} 2019, Seoul, Korea (South), October 27 - November 2, 2019}
+      \field{title}{Distill Knowledge From NRSfM for Weakly Supervised 3D Pose Learning}
+      \field{year}{2019}
+      \field{pages}{743\bibrangedash 752}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1109/ICCV.2019.00083
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1109/ICCV.2019.00083
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1109/ICCV.2019.00083
+      \endverb
+    \endentry
+    \entry{nrsfm++}{article}{}
+      \name{author}{3}{}{%
+        {{hash=e49ed018aec5a87191f4d44b232aea34}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Chaoyang},
+           giveni={C\bibinitperiod}}}%
+        {{hash=b2dc759174e1ae2d25f9ed0f8edd4a8d}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={Chen-Hsuan},
+           giveni={C\bibinithyphendelim H\bibinitperiod}}}%
+        {{hash=061075e8245a617dab62fc875f316a39}{%
+           family={Lucey},
+           familyi={L\bibinitperiod},
+           given={Simon},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{852138210acb2dbb8f09af30df7a3b9b}
+      \strng{fullhash}{852138210acb2dbb8f09af30df7a3b9b}
+      \strng{bibnamehash}{852138210acb2dbb8f09af30df7a3b9b}
+      \strng{authorbibnamehash}{852138210acb2dbb8f09af30df7a3b9b}
+      \strng{authornamehash}{852138210acb2dbb8f09af30df7a3b9b}
+      \strng{authorfullhash}{852138210acb2dbb8f09af30df7a3b9b}
+      \field{sortinit}{W}
+      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprinttype}{arXiv}
+      \field{journaltitle}{CoRR}
+      \field{title}{Deep NRSfM++: Towards 3D Reconstruction in the Wild}
+      \field{volume}{abs/2001.10090}
+      \field{year}{2020}
+      \verb{eprint}
+      \verb 2001.10090
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2001.10090
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2001.10090
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
