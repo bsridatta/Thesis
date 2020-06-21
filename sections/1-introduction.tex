@@ -1,19 +1,19 @@
 \chapter{Introduction}
 \label{chap:introduction}
-With rapid advancements in deep learning facilitated by the developments in computational hardware, there has been a tremendous growth in computer vision research and its applications \cite{AIandCompute}. One of the major tasks of computer vision that is required for real-world applications is to perceive and understand dynamic objects and more importantly humans. 
+With rapid advancements in deep learning facilitated by the developments in computational hardware, there has been tremendous growth in computer vision research and its applications \cite{AIandCompute}. One of the major tasks of computer vision that is required for real-world applications is to perceive and understand dynamic objects and more importantly humans.  
 
-Human Pose Estimation, also referred to as HPE is a fundamental problem in computer vision that also forms a basics for human action and gesture recognition as well as human motion prediction. \ac{HPE} is defined as the localization of human keypoints like joints, head, eyes, nose etc mainly in images and videos in either a 2D or 3D coordinate space. The widely available and used data like images and videos are 2 dimensional data and lack spatial information which is crucial for most of the applications like autonomous driving, \ac{AR/VR}, social robots etc. Hence this thesis focus is on 3D Human Pose Estimation.
+Human Pose Estimation, also referred to as HPE is a fundamental problem in computer vision that also forms a basis for human action and gesture recognition as well as human motion prediction. \ac{HPE} is defined as the localization of human joints (also known as keypoints, including head, eyes, ears, nose etc) mainly in images and videos in either a 2D or 3D coordinate space. The widely available and used data like images and videos are 2-dimensional data and lack spatial information which is crucial for most of the applications like autonomous driving, \ac{AR/VR}, social robots etc. Hence this thesis focus is on 3D Human Pose Estimation.
 
 % TODO -- add acronym for AR/VR
 % TODO -- etc. or etc.,.
 
-% ---------------------------------------------------------------------------------------TODO -- Maybe have separate brief intro before background
+% ---------------------------------------------------------------------------------------TODO -- Maybe have separate brief intro before the background
 
 % Link things together with references. This is a reference to a section: \ref{sec:background}.
 \section{Background}
 \label{sec:background}
 
-There has been a lot of research done in 3D human pose estimation and more advancements have been made in the past few years leveraging the power of deep learning. The current state of the art implementation explores various ways to solve the task using \ac{RGB}/Depth images, 2D poses, 3D poses, multi-view and sequential images. The main approaches either directly estimate 3D pose or, estimate parameters to construct a 3D pose. Some approaches achieve this either directly from \ac{RGB}/D image or from 2D pose alone.
+There has been a lot of research done in 3D human pose estimation and more advancements have been made in the past few years leveraging the power of deep learning. The current state of the art methods explores various ways to solve the task using \ac{RGB}/Depth image channels, 2D poses, 3D poses, multi-view and sequential images. The main \ac{SOTA} approaches either directly estimate 3D pose from an \ac{RGB}/D image in a bottom-up manner, or start with an intermediate 2D pose or, 2D joint heatmaps to finally recover the 3D pose by a \textit{lifting} network. Typically, these approaches directly estimate the 3D coordinates of the keypoints or estimate the shape and camera parameters to reconstruct the 3D pose.
 
 The former approaches are usually trained in a cascaded manner i.e by having an intermediate state that learns 2D pose in some way. Most of these methods have complex architectures that are hard to train or use multi-view images making it impractical to scale the training to the wild, where such data is very hard to obtain. Since 2D poses are naturally obtained by projecting 3D poses to a plane, the latter approach of lifting 2D-to-3D is an \textit{ill-posed inverse} problem due to its inherent ambiguity. 
 
@@ -25,22 +25,22 @@ How can we learn a strong visual representation of the data to tackle the 3D-pos
 
 \section{Goal}
 
-The main interest of the thesis is to investigate ways to estimate 3D pose directly from image efficiently in an end-to-end manner. And would also try to address the 2D-to-3D lifting issue by exploring probabilistic models. Since a deterministic approach for an inherently ill-posed problem is not ideal. 
+The main aim of the thesis is to investigate \ac{SOTA} unsupervised learning approaches to estimate 3D human pose from images. And to also investigate 2D-to-3D lifting methods to tackle the challenges of 3D pose estimation in the wild. 
 
-Improvements in the aspects of ease of training procedure i.e requiring less data or less labor intense labeling, inference speed, and most importantly accuracy is important and will directly impact its super tasks such as, action and gesture recognition, motion prediction and intention/behaviour prediction.
+Improvements in the aspects of ease of training procedure i.e requiring less data or less labor-intense labeling, inference speed, and most importantly accuracy is important and will directly impact its super tasks such as, action and gesture recognition, motion prediction and intention/behaviour prediction.
 
 \section{Benefits, Ethics and Sustainability}
-Human Pose Estimation plays a very important to enable autonomous vehicles and robots to safely interact with humans. It plays a key role in developing higher dimensional communication platforms with \ac{AR/VR}. It is crucial for surveillance systems to ensure public safety. However such important technologies are only as good as the intentions of its users. Mass surveillance of citizens by their governments is a matter of debate.  
+Human Pose Estimation plays a very important role to enable autonomous vehicles and robots to safely interact with humans. It plays a key role in developing higher dimensional communication platforms with \ac{AR/VR}. It is crucial for surveillance systems to ensure public safety. However such important technologies are only as good as the intentions of its users. Mass surveillance of citizens by their governments is a matter of debate.  
 
 \section{Methodology}
 
 The problem of 3D \ac{HPE} has 3 aspects to be addressed and explored. 
 
-\paragraph{The neural network:} The architecture and the kind of neural network to be used. 3D poses can be predicted using regular linear neural network, or using various forms of autoencoder architectures. These models can use linear, convolutional or graph networks to learn the features. This thesis focus on exploring all the above mentioned kinds of networks to build \ac{VAE} to estimate 3D pose. As mentioned in the goals variational inference is a better choice over deterministic models to generate 3D poses due to the natural ambiguity in producing 3D data from 2D data.  
+\paragraph{The neural network:} The architecture and the kind of neural network to be used. 3D poses can be predicted using regular linear neural network, or using various forms of autoencoder architectures. These models can use linear, convolutional or graph networks to learn the features. This thesis focus on exploring all the above-mentioned kinds of networks to solve the 3D \ac{HPE} within the context of probabilistic inference models, typically \ac{VAE}s, as a deterministic approach for an inherently ill-posed problem is not ideal. 
 
-\paragraph{The learning task:} The model could either learn to directly predict the 3D coordinates of the key points, or learn structural parameters that could model a 3D pose. The thesis only explores the former task.
+\paragraph{The learning task:} The model could either learn to directly predict the 3D coordinates of the keypoints, or learn structural parameters that could model a 3D pose. The thesis only explores the former task.
 
-\paragraph{The learning technique (or the cost):}. The model can be trained by directly comparing the predicted 3D pose and the ground truth thus requiring 3D annotations. Or by projecting the prediction back to 2D to compare with the input (requires only 2D annotations that could be acquire from \ac{SOTA} in 2D \ac{HPE}). Adversarial training and self-supervision techniques have also given promising results in the last couple of years. The thesis is prime focus is on the first aspect to investigate the merit in \ac{VAE} and hence direct comparison of 3D pose and ground truth would be used and could be further extended to other techniques with moderate modifications.
+\paragraph{The learning technique (or the cost):}. The model can be either trained by directly comparing the predicted 3D pose and the ground truth thus requiring 3D annotations or, by projecting the prediction back to 2D to compare with the input (requires only 2D annotations that could be acquire from \ac{SOTA} in 2D \ac{HPE}). Adversarial training and self-supervision techniques have also given promising results in the last couple of years. The thesis's prime focus is on the first aspect of investigating the merit in using \ac{VAE} for 3D \ac{HPE} hence direct comparison of 3D pose and ground truth would be used and could be further extended to other techniques with moderate modifications.
 
 % % TODO -- update
 

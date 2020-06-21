@@ -29,13 +29,13 @@ The Pose Lifting approach facilitates to leverage the already well established 2
 
 \subsection{Non-Supervised Learning}
 
-The standard way to train 3D/2D \ac{HPE} is by minimizing the distance between the predicted 3D/2D pose and its corresponding ground truth. The area of 2D \ac{HPE} is well established and matured with reliable systems deployed in the real world. This was made possible with the high volume of images from diverse settings and the reasonable ease of manual labelling of 2D poses. On the other hand, labelling 3D pose manually is not practical. Though single-person datasets such as Human3.6M \cite{H3.6}, Human Eva \cite{HumanEva} and, multi-person datasets such as CMU Panoptic \cite{cmuPanoptic} provide 3D pose ground truth. They are obtained using \ac{MoCap} systems which are only limited to indoors or cannot be directly adapted to outdoor environments where the majority of the use cases exist fig[\ref{fig:h36image}]. It is also worth mentioning JTA(Joint Track Auto) dataset \cite{JTA} that is made using the GTA(Grand Theft Auto) game engine which is technically scalable with its own limitations. But datasets from simulations come with the difficulty of domain adaptation to be transferable to the real world.
+The standard way to train 3D/2D \ac{HPE} is by minimizing the distance between the predicted 3D/2D pose and its corresponding ground truth. The area of 2D \ac{HPE} is well established and matured with reliable systems deployed in the real world. This was made possible with the high volume of images from diverse settings and the reasonable ease of manual labelling of 2D poses. On the other hand, labelling 3D pose manually is not practical. Though single-person datasets such as Human3.6M \cite{H3.6}, Human Eva \cite{HumanEva} and, multi-person datasets such as CMU Panoptic \cite{cmuPanoptic} provide 3D pose ground truth. They are obtained using \ac{MoCap} systems which are only limited to indoors or cannot be directly adapted to outdoor environments where the majority of the use cases exist fig[\ref{fig:h36_mocap}]. It is also worth mentioning JTA(Joint Track Auto) dataset \cite{JTA} that is made using the GTA(Grand Theft Auto) game engine which is technically scalable with its own limitations. But datasets from simulations come with the difficulty of domain adaptation to be transferable to the real world.
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=30mm]{figures/h36image.png}
-    \caption{Image from Human3.6 Dataset \cite{H3.6} of subject wearing \ac{MoCap} sensors}
-    \label{fig:h36image}
+    \includegraphics[width=30mm]{figures/h36_mocap.png}
+    \caption{Image from Human3.6 Dataset \cite{H3.6} of subject wearing \ac{MoCap} markers}
+    \label{fig:h36_mocap}
 \end{figure}
 
 To overcome this bottleneck, \cite{unsupervisedAdversarial} proposes unsupervised training of a generative adversarial network by projecting the predicted 3D pose back to 2D and minimizing its distance with the input 2D pose. And further training a discriminator to distinguish the real 2D pose from the projected poses. Thus removing the need for any explicit 3D annotations besides 2D poses that are either manually labelled or obtained using 2D \ac{HPE} models. RepNet \cite{repnet}, trains an adversarial network without 2D-3D correspondences in a weakly supervised manner. Moreover, it also does not require camera parameters to project the 3D pose but learns to predict them. Thus enabling better generalization to more diverse data with unknown cameras and poses.
@@ -43,13 +43,14 @@ To overcome this bottleneck, \cite{unsupervisedAdversarial} proposes unsupervise
 To test the maximum capability of Pose Lifting networks, \cite{amazon1} proposes a combination of unsupervised and adversarial learning that mainly leverages the property of \textit{plane-invariance}. It is the property that 2D projections of a 3D pose from different camera viewpoints, when lifted should produce identical and the original 3D pose. In this method, the predicted 3D pose is rotated in random angles and is reprojected to 2D in a different \ac{POV}. A discriminator is then used to evaluate if this new 2D pose is in the possible pose distribution which is learnt from 2D pose datasets alone. These steps are redone in reverse order to obtain the original 2D input. This cycle provides three intermediate representations of the single 2D input that the models learn from. Additionally, this approach exploits the temporal consistency in the datasets as well as integrates a domain adaptation network to learn from different datasets and distributions to achieve comparable results to that of the methods that require more supervision.
 
 
-\subsection{Multimodal Training}
+\subsection{Multimodal Representation Learning}
+\label{section:multimodal_representation_learning}
 Another interesting approach is training \ac{VAE}s using multiple modalities like images, poses, depth maps \cite{CrossingNets, crossmodal, MMVAE,HandDisentangled}. \ac{MVAE}s learn representation from different modalities in the same latent space. True multimodal learning needs to fulfill 4 criteria as follows: i) \textit{Latent Factorization} - Implicit factorization of latent space into private, shared subspaces based on modality as illustrated in the figure[\ref{fig:criteria}]. ii) \textit{Coherent Joint Generation} - Coherence in generations of different modalities from the same latent value with respect to the shared aspects of the latent. iii) \textit{Coherent Cross Generation} - Generation of one modality conditioned on data from different modality while preserving the similarity between them. iv) \textit{Synergy} Enhancement in generation quality of one modality as a result of learning representations of different modalities. 
 
 \begin{figure}[!h]
     \centering
     \includegraphics[scale=0.4]{figures/criteria.png}
-    \caption{Criteria for Multimodal Generation}
+    \caption{Criteria for Multimodal Generation \cite{MMVAE}}
     \label{fig:criteria}
 \end{figure}
 
