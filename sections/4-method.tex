@@ -1,18 +1,27 @@
 \chapter{Method}
 % \thispagestyle{fancy}
+% FIXME -- change from cross model to vae-gan
 The initial method that is being explored is using \ac{VAE} to estimate 3D pose from both RGB image and 2D pose. This approach is based on the crossmodal hand pose estimation \cite{crossmodal} but with the goal to test the performance on human poses and to investigate other ideas and techniques that the paper has not addressed. Currently we explore the image and pose modalities and investigate training \ac{VAE} for image to 3D and 2D to 3D pose estimation.
 
-\section{CrossModal Architecture}
-As described in section[\ref{section:multimodal_representation_learning}], the crossmodal training involves training the encoders of each modality to learn to represent the input in the same latent space. Similarly the decoders learn to sample an embedding from this shared latent space and reconstruct an image or pose respectively. In contrast to the \cite{crossmodal}, that uses an RGB to RGB and 3D to 3D encoder-decoder pair to make enable self-supervision, we use 2D encoder instead of a 3D to evaluate cross-generation and synergy for 3D \ac{HPE} from images or 2D pose. The prediction of the 3D decoder could be reprojected to 2D to eliminate the need for 3D annotation. 
+%TODO -- Add architecutre image here
 
-\subsection{Image \ac{VAE}}
-To leverage the power of transfer learning, a pre-trained ResNet-18 \cite{resnet} with two additional linear layers one for mean and another for log-variance is used as the encoder and a series of five 2D convolutional layers, each followed by a batch normalization and an activation function like ReLU or Tahn is used as the image decoder. 
+\section{Architecture}
+\subsection{VAE} % FIXME -- \section{CrossModal Architecture}
+As described in section[\ref{section:multimodal_representation_learning}], the crossmodal training involves training the encoders of each modality to learn to represent the input in the same latent space. Similarly the decoders learn to sample an embedding from this shared latent space and reconstruct an image or pose respectively. In contrast to the \cite{crossmodal}, that uses an RGB to RGB and 3D to 3D encoder-decoder pair to make enable self-supervision, we use 2D encoder instead of a 3D to evaluate cross-generation and synergy for 3D \ac{HPE} from images or 2D pose. The prediction of the 3D decoder could be reprojected to 2D to eliminate the need for 3D annotation.
 
-\subsection{Pose \ac{VAE}}
+\subsection{Discriminator}%FIXME -- \subsection{Image \ac{VAE}}
+% TODO -- Add loss fucntion etc 
+To leverage the power of transfer learning, a pre-trained ResNet-18 \cite{resnet} with two additional linear layers one for mean and another for log-variance is used as the encoder and a series of five 2D convolutional layers, each followed by a batch normalization and an activation function like ReLU or Tahn is used as the image decoder.
+
+\subsection{Hybrid} % FIXME -- \subsection{Pose \ac{VAE}}
 For the sake of simplicity and consistency with the previous works for benchmarking the performance, we use a series of 5 linear and ReLU activation blocks with additional linear layers for mean and log-variance for the 2D pose encoder and a linear later for upsampling means to hidden dimensions of the main linear blocks.
 
-\section{Training Scheme and Loss Function}
+\section{Training Scheme and Loss Function} %FIXME -- is this apt section? or maybe training procedure?
+% TODO the bigger picture sum of all the losses and importance of each loss etc
 Training a \ac{VAE} is a notoriously difficult task, as it involves optimizing not just the reconstruction loss but also the \ac{KLD} loss. With crossmodal training the number of metrics to optimize increases multi-fold. As described in section[\ref{section:multimodal_representation_learning}], The training scheme for crossmodal training (for crossmodal generation) involves training combinations of encoder and decoder of either the same or different modalities in the same epoch. The reconstruction loss function of that particular combination depends on the decoder. The image decoder uses \ac{L1} loss and the 3D pose decoder uses \ac{MSE} loss. Though the \ac{KLD} loss is the same for both, it is normalized with the number of elements in the reconstruction, i.e 16*3 for 3D pose and 256*256*3 for RGB images.
 
-\section{Evaluation Metrics}
-3D human pose and Human3.6M in particular is mainly evaluated by \ac{MPJPE} metric. MPJPE as it literally abbreviates, is the mean of the position estimate for all the joints of a pose. Where per-joint position estimate is nothing but the euclidian distance (usually measured in mm) between the predicted joint to its ground truth. 
+\section{Bag of tricks} % TODO -- add tricks to make it work here or in work? -- it should be here
+\lipsum[1-10] %FIXME
+
+\section{Evaluation Metrics} % FIXME
+3D human pose and Human3.6M in particular is mainly evaluated by \ac{MPJPE} metric. MPJPE as it literally abbreviates, is the mean of the position estimate for all the joints of a pose. Where per-joint position estimate is nothing but the euclidian distance (usually measured in mm) between the predicted joint to its ground truth.
