@@ -1,14 +1,21 @@
 \chapter{Theoretical Background}
 \label{chap:background}
 
-% \section{Preliminary Concepts}
-% \label{sec:Preliminary}
-
 % \thispagestyle{fancy}
-% TODO -- add the theory of all concepts VAEs NSFRM etc
 In this chapter the details of various related works and the state-of-the-art in 3D Human Pose Estimation are presented along with some works in the sibling task of hand pose estimation.
 
-% TODO should be subsection \subsection{Related Work}
+% TODO -- add the theory of all concepts VAEs NSFRM etc
+\section{Preliminary Concepts}
+\label{sec:Preliminary}
+
+% TODO -- add the theory of all concepts VAEs NSFRM etc
+\subsection{Auto Encoders}
+% TODO -- add the theory of all concepts VAEs NSFRM etc
+\subsection{Variational Auto Encoders}
+% TODO -- add the theory of all concepts VAEs NSFRM etc
+\subsection{Generative Adversarial Networks}
+
+% TODO -- polish related works
 \section{Related Work}
 \label{sec:relatedwork}
 
@@ -45,7 +52,7 @@ To test the maximum capability of Pose Lifting networks, \cite{amazon1} proposes
 
 \subsection{Multimodal Representation Learning}
 \label{section:multimodal_representation_learning}
-Another interesting approach is training \ac{VAE}s using multiple modalities like images, poses, depth maps \cite{CrossingNets, crossmodal, MMVAE,HandDisentangled}. \ac{MVAE}s learn representation from different modalities in the same latent space. True multimodal learning needs to fulfill 4 criteria as follows: i) \textit{Latent Factorization} - Implicit factorization of latent space into private, shared subspaces based on modality as illustrated in the figure[\ref{fig:criteria}]. ii) \textit{Coherent Joint Generation} - Coherence in generations of different modalities from the same latent value with respect to the shared aspects of the latent. iii) \textit{Coherent Cross Generation} - Generation of one modality conditioned on data from different modality while preserving the similarity between them. iv) \textit{Synergy} Enhancement in generation quality of one modality as a result of learning representations of different modalities. 
+Another interesting approach is training \ac{VAE}s using multiple modalities like images, poses, depth maps \cite{CrossingNets, crossmodal, MMVAE,HandDisentangled}. \ac{MVAE}s learn representation from different modalities in the same latent space. True multimodal learning needs to fulfill 4 criteria as follows: i) \textit{Latent Factorization} - Implicit factorization of latent space into private, shared subspaces based on modality as illustrated in the figure[\ref{fig:criteria}]. ii) \textit{Coherent Joint Generation} - Coherence in generations of different modalities from the same latent value with respect to the shared aspects of the latent. iii) \textit{Coherent Cross Generation} - Generation of one modality conditioned on data from different modality while preserving the similarity between them. iv) \textit{Synergy} Enhancement in generation quality of one modality as a result of learning representations of different modalities.
 
 \begin{figure}[!h]
     \centering
@@ -54,7 +61,4 @@ Another interesting approach is training \ac{VAE}s using multiple modalities lik
     \label{fig:criteria}
 \end{figure}
 
-\ac{MMVAE} proposed by \cite{MMVAE} fulfills all 4 of the above-mentioned criteria learning representations of image and text data, while other approaches focus on leveraging specific advantages of multimodal learning. Consider the cross-modal learning for 3D Hand Pose Estimation proposed by \cite{crossmodal}. It involves training an encoder-decoder pair to learn image representation, and another such pair to learn 3D hand pose representations in the same latent space. This training procedure focuses on cross-generation and synergy. That is, using the shared latent space of the image and pose representations, the \ac{RGB} image encoder combined with the pose decoder can generate 3D poses and vice versa while preserving the commonality between the conditioned and the generated data. With this approach, it is possible to train a \ac{VAE} for 3D \ac{HPE} from \ac{RGB} images without explicit intermediate stages like the earlier mentioned cascading approaches. Making it more efficient and fast for both training and inference without compromising the modularity offered by cascading approaches. 
-
-
-
+\ac{MMVAE} proposed by \cite{MMVAE} fulfills all 4 of the above-mentioned criteria learning representations of image and text data, while other approaches focus on leveraging specific advantages of multimodal learning. Consider the cross-modal learning for 3D Hand Pose Estimation proposed by \cite{crossmodal}. It involves training an encoder-decoder pair to learn image representation, and another such pair to learn 3D hand pose representations in the same latent space. This training procedure focuses on cross-generation and synergy. That is, using the shared latent space of the image and pose representations, the \ac{RGB} image encoder combined with the pose decoder can generate 3D poses and vice versa while preserving the commonality between the conditioned and the generated data. With this approach, it is possible to train a \ac{VAE} for 3D \ac{HPE} from \ac{RGB} images without explicit intermediate stages like the earlier mentioned cascading approaches. Making it more efficient and fast for both training and inference without compromising the modularity offered by cascading approaches.
