@@ -2,25 +2,47 @@
 \label{chap:background}
 
 % \thispagestyle{fancy}
-In this chapter the details of various related works and the state-of-the-art in 3D Human Pose Estimation are presented along with some works in the sibling task of hand pose estimation.
+This chapter provides the theory essential to understand the major components of the thesis. Prior knowledge of Artificial Neural Networks \cite{theory_ann_wiki} and fundemental concepts of Deep Learning \cite{theory_dl} is assumed.    
 
 % TODO -- add the theory of all concepts VAEs NSFRM etc
 \section{Preliminary Concepts}
 \label{sec:Preliminary}
 
 % TODO -- add the theory of all concepts VAEs NSFRM etc
-\subsection{Auto Encoders}
-\lipsum[1-4] %FIXME
+\subsection{Autoencoder}
+
+Autoencoders are a variant of Artificial Neural Networks that are designed to learn an identity function that generates the input back. The network has a bottleneck layer dividing the network into two parts, an encoder and a decoder as illustrated in fig\ref{fig:AE_pic}. The former learns to compress the high demensional input to a low dimensional intermediate representation at the bottleneck, while the latter learns to reconstruct the input using the low dimensional input alone. The network thus efficiently learns to compressing data which is used for dimensionality reduction and feature learning. In recent years, autoencoders are popularly used as generative networks leveraging their ability to learn feature representations in an unsupervised way.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.4]{figures/autoencoder-architecture.png}
+    \caption{Illustration of Autoencoder architecture. (Image source: \cite{autoencoder2betavae})}
+    \label{fig:AE_pic}
+\end{figure}
+
 % TODO -- add the theory of all concepts VAEs NSFRM etc
 \subsection{Variational Auto Encoders}
 \lipsum[1-4] %FIXME
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.4]{figures/vae-architecture.png}
+    \caption{Illustration of Variational Autoencoder architecture. (Image source: \cite{autoencoder2betavae})}
+    \label{fig:vae_pic}
+\end{figure}
+
 % TODO -- add the theory of all concepts VAEs NSFRM etc
 \subsection{Generative Adversarial Networks}
+
+
+
 \lipsum[1-4] %FIXME
 
 % FIXME -- polish related works
 \section{Research Area Introduction}
-\label{sec:field introduction}
+\label{sec:Research area introduction}
+
+In this section the details of various related works and the state-of-the-art in 3D Human Pose Estimation are presented along with some works in the sibling task of hand pose estimation.
 
 \subsection{Pose from images}
 There are numerous works that try to estimate 3D human poses from 2D \ac{RGB} images or 2D joint confidence heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo}. Most of these methods follow a cascading approach, where an explicit intermediate representation of 2D pose or 2D heatmaps is used.
