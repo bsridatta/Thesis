@@ -8,6 +8,6 @@
 		"files.autoSave": "afterDelay",
 		"files.autoSaveDelay": 300000,
 		"latexCompile.mainFile": "/home/datta/lab/Thesis/Main.tex",
-		"workbench.colorTheme": "GitHub Light"
+		"workbench.colorTheme": "GitHub Dark"
 	},
 }
