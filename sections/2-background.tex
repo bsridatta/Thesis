@@ -8,24 +8,23 @@ This chapter provides the theory essential to understand the major components of
 \section{Preliminary Concepts}
 \label{sec:Preliminary}
 
-% TODO -- add the theory of all concepts VAEs NSFRM etc
 \subsection{Autoencoder}
 Autoencoders are a variant of \acp{ann}, which are designed to learn an identity function that generates the input data sample back. The network has a bottleneck($z$), dividing the network into two parts, an encoder and a decoder as illustrated in fig[\ref{fig:ar_arch}]. The former learns to compress the high demensional input data to a low dimensional intermediate representation, \textit{latent representation}, at the bottleneck. While the latter learns to reconstruct the data from the latent distribution. Thus learning to efficiently compressing the data. 
 
 To put it in other words, in the process of learning to reconstruct the data, the encoder learns to filter the most important features of the given data distribution, so as it preserve the complete properties within the limits of the bottleneck. While the decoder learns more general properties of the distribution which is used along with the compact latent representation from the encoder to fully recover the data distribution. The network is trained to minimize the similarity between the reconstruction and the original data sample. This similarity can be determined by metrics such as \ac{mse}, \ac{l1} or Cross-Entropy loss. 
 
-The idea of an autoencoder dates back to the 80's proposed as a method for pre-training and feature learning \cite{ballard1987modular, rumelhart1985learning}, learnt dimensionality reduction \cite{hinton_dimentionality}. In recent years, autoencoders are most popularly used as generative networks leveraging their ability to learn feature representations in an unsupervised way. Another interesting variant of autoencoders are denoising autoencoders \cite{vincent2008extracting}, where the input is a noised data and the decoder generates original data without noise. This variant is further evolved to accomplish the tasks of image denoising, watermark removal, inpainting, super resolution, colorization, de-colorization and compression \cite{zhang2016colorful, imagedenoisingpaper}. Improved variants of autoencoders that are relant to this thesis are introduced next.  %FIXME add more?
+The idea of an autoencoder dates back to the 80's proposed as a method for pre-training and feature learning \cite{ballard1987modular, rumelhart1985learning}, learnt dimensionality reduction \cite{hinton_dimentionality}. In recent years, autoencoders are most popularly used as generative networks leveraging their ability to learn feature representations in an unsupervised way. Another interesting variant of autoencoders are denoising autoencoders \cite{vincent2008extracting}, where the input is a noised data and the decoder generates original data without noise. This variant is further evolved to accomplish the tasks of image denoising, watermark removal, inpainting, super resolution, colorization, de-colorization and compression \cite{zhang2016colorful, imagedenoisingpaper}. The variant of autoencoders that is used in this thesis is introduced next.  %FIXME add more?
 
 \begin{figure}[!h]
     \centering
     \includegraphics[scale=1]{figures/ae_arch.pdf}
-    \caption{Illustration of Autoencoder architecture.}
+    \caption{Illustration of autoencoder architecture.}
     \label{fig:ar_arch}
 \end{figure}
 
 % TODO -- add the theory of all concepts VAEs NSFRM etc
-\subsection{Variational Auto Encoders}
-
+\subsection{Variational Autoencoders}
+\acp{vae} unlike standard autoencoders learn to encode data as a probablistic distribution rather than a deterministic vector. The lantent space of the former is continuous while the rearer is discontinous and clustered. As decoder of the \ac{vae} is trained generate data from this continous space, it can generate realistic data by randomly sampling from this infitely large latent space.
 
 \begin{figure}[!h]
     \centering
