@@ -44,7 +44,7 @@ p(x)=\int p(x | z) p(z) dz
 \end{gathered}
 \end{equation}
 
-Hence, we try to approximate the posterior distribution by another distribution $q_{\theta}(z|x)$ (the encoder) parametraized by $\theta$ using variational inference. Variational inference uses optimzation to find a distribution that minimizes the \ac{kld} to the posterior distribution, $\min D_{KL}(q(z \mid x) \| p(z \mid x))$ \cite{variational_inference}. This could be also achieved by maximizing:
+Hence, we try to approximate the posterior distribution by another distribution $q_{\theta}(z|x)$ (the encoder) parametraized by $\theta$ using variational inference. Variational inference uses optimzation to find a distribution that minimizes the \ac{kld} to the posterior distribution, $\min D_{KL}(q(z| x) \| p(z| x))$ \cite{variational_inference}. This could be also achieved by maximizing:
 
 \begin{equation} \label{eqn:minKLd}
 \begin{gathered}[b]
