@@ -9,11 +9,7 @@ This chapter provides the theory essential to understand the major components of
 \label{sec:Preliminary}
 
 \subsection{Autoencoder}
-Autoencoders are a variant of \acp{ann}, which are designed to learn an identity function that generates the input data sample back. The network has a bottleneck($z$), dividing the network into two parts, an encoder and a decoder as illustrated in fig[\ref{fig:ar_arch}]. The former learns to compress the high demensional input data to a low dimensional intermediate representation, \textit{latent representation}, at the bottleneck. While the latter learns to reconstruct the data from the latent distribution. Thus learning to efficiently compressing the data. 
-
-To put it in other words, in the process of learning to reconstruct the data, the encoder learns to filter the most important features of the given data distribution, so as it preserve the complete properties within the limits of the bottleneck. While the decoder learns more general properties of the distribution which is used along with the compact latent representation from the encoder to fully recover the data distribution. The network is trained to minimize the similarity between the reconstruction and the original data sample. This similarity can be determined by metrics such as \ac{mse}, \ac{l1} or Cross-Entropy loss. 
-
-The idea of an autoencoder dates back to the 80's proposed as a method for pre-training and feature learning \cite{ballard1987modular, rumelhart1985learning}, learnt dimensionality reduction \cite{hinton_dimentionality}. In recent years, autoencoders are most popularly used as generative networks leveraging their ability to learn feature representations in an unsupervised way. Another interesting variant of autoencoders are denoising autoencoders \cite{vincent2008extracting}, where the input is a noised data and the decoder generates original data without noise. This variant is further evolved to accomplish the tasks of image denoising, watermark removal, inpainting, super resolution, colorization, de-colorization and compression \cite{zhang2016colorful, imagedenoisingpaper}. The variant of autoencoders that is used in this thesis is introduced next.  %FIXME add more?
+Autoencoders are a variant of \acp{ann}, which are designed to learn an identity function that generates the input data sample back. The network has a bottleneck($z$), dividing the network into two parts, an encoder and a decoder as illustrated in fig[\ref{fig:ar_arch}]. The former learns to compress the high demensional input data to a low dimensional intermediate representation, \textit{latent representation}, at the bottleneck. While the latter learns to reconstruct the data from the latent distribution. Thus learning to efficiently compressing the data.
 
 \begin{figure}[!h]
     \centering
@@ -22,9 +18,15 @@ The idea of an autoencoder dates back to the 80's proposed as a method for pre-t
     \label{fig:ar_arch}
 \end{figure}
 
+To put it in other words, in the process of learning to reconstruct the data, the encoder learns to filter the most important features of the given data distribution, so as it preserve the complete properties within the limits of the bottleneck. While the decoder learns more general properties of the distribution which is used along with the compact latent representation from the encoder to fully recover the data distribution. The network is trained to minimize the similarity between the reconstruction and the original data sample. This similarity can be determined by metrics such as \ac{mse}, \ac{l1} or Cross-Entropy loss.
+
+The idea of an autoencoder dates back to the 80's proposed as a method for pre-training and feature learning \cite{ballard1987modular, rumelhart1985learning}, learnt dimensionality reduction \cite{hinton_dimentionality}. In recent years, autoencoders are most popularly used as generative networks leveraging their ability to learn feature representations in an unsupervised way. Another interesting variant of autoencoders are denoising autoencoders \cite{vincent2008extracting}, where the input is a noised data and the decoder generates original data without noise. This variant is further evolved to accomplish the tasks of image denoising, watermark removal, inpainting, super resolution, colorization, de-colorization and compression \cite{zhang2016colorful, imagedenoisingpaper}. The variant of autoencoders that is used in this thesis is introduced next.
+%FIXME add more?
+
+
 % TODO -- add the theory of all concepts VAEs NSFRM etc
 \subsection{Variational Autoencoders}
-\acp{vae} unlike standard autoencoders learn to encode data as a probablistic distribution rather than a deterministic vector. The lantent space of the former is continuous while the rearer is discontinous and clustered. As decoder of the \ac{vae} is trained generate data from this continous space, it can generate realistic data by randomly sampling from this infinitely large latent space. 
+\acp{vae}, unlike standard autoencoders learn to encode a data sample $x$ as a probabilistic distribution rather than a deterministic value for the latent attribute \cite{jeremy_jordan_2018}. The encoder $q$ produces the probablistic distribution by predicting two vectors that represent the mean $\mu$ and variance $\sigma$ of a distribution for each of the latent attributes of $x$. And the decoder $p$ takes a random sample $z$ from this distribution to recover the sample as illustrated in fig[\ref{fig:vae_arch}]. 
 
 \begin{figure}[!h]
     \centering
@@ -32,6 +34,41 @@ The idea of an autoencoder dates back to the 80's proposed as a method for pre-t
     \caption{Illustration of Variational Autoencoder architecture.}
     \label{fig:vae_arch}
 \end{figure}
+
+To put it formally, we have a hidden variable $z$ which generates $x$. Since we only have $x$ and would want to learn $z$ i.e $p(z | x)$. But computing this posterior distribution is hard as computing $p(x)$ \ref{eqn:pofx} is usually itractable \cite{kingma2013autoencoding}. 
+
+\begin{equation}\label{eqn:pofx}
+\begin{gathered}[b]
+p(z | x)=\frac{p(x | z) p(z)}{p(x)} \\
+p(x)=\int p(x | z) p(z) dz
+\end{gathered}
+\end{equation}
+
+Hence, we try to approximate the posterior distribution by another distribution $q_{\theta}(z|x)$ (the encoder) parametraized by $\theta$ using variational inference. Variational inference uses optimzation to find a distribution that minimizes the \ac{kld} to the posterior distribution, $\min D_{KL}(q(z \mid x) \| p(z \mid x))$ \cite{variational_inference}. This could be also achieved by maximizing:
+
+\begin{equation} \label{eqn:minKLd}
+\begin{gathered}[b]
+\max E_{q(z | x)} \log p(x | z) - KL(q(z | x) || p(z))
+\end{gathered}
+\end{equation}
+
+The first term is the   The lantent space of the former is continuous while that of the rearer is discrete and clustered.
+As decoder of the \ac{vae} is trained generate data from this continous space, it can generate realistic data by randomly sampling from this infinitely large latent space as illustrated in the fig[\ref{fig:vae_latent_attribute}].
+
+
+This also enables smooth interpolation of data produced from one point in the latent space to another. In addition to that we can also perform arithematics in vector space, similar to the popular example from Natural Language Processing, $King - Man + Women = Queen$ but on higher dimentional data
+
+
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.4]{figures/vae_latent_attribute.png}
+    \caption{Probablistic distribution of latent attributes. Image Source \cite{jeremy_jordan_2018}}
+    \label{fig:vae_latent_attribute}
+\end{figure}
+
+
+
 
 % TODO -- add the theory of all concepts VAEs NSFRM etc
 \subsection{Generative Adversarial Networks}
@@ -51,7 +88,7 @@ from the laearned features representations from gans, we can use it as the simil
 In this section the details of various related works and the state-of-the-art in 3D Human Pose Estimation are presented along with some works in the sibling task of hand pose estimation.
 
 \subsection{Pose from images}
-There are numerous works that try to estimate 3D human poses from 2D \ac{rgb} images or 2D joint confidence heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo}. Most of these methods follow a cascading approach, where an explicit intermediate representation of 2D pose or 2D heatmaps is used.
+There are numerous works that try to estimate 3D human poses from z2D \ac{rgb} images or 2D joint confidence heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo}. Most of these methods follow a cascading approach, where an explicit intermediate representation of 2D pose or 2D heatmaps is used.
 
 For example, \cite{CameraDistanceAware} proposes a general framework with 3 networks. Human detection Network, RootNet, PoseNet. Where, the human detection network predicts the region the human is in an image. The RootNet localizes the human's root in the global 3D world. And, the PoseNet predicts the 3D pose of a single person with respect to the root. Where, the root is a fixed reference point of the human body say, pelvis.
 
