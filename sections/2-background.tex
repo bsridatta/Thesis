@@ -23,10 +23,9 @@ To put it in other words, in the process of learning to reconstruct the data, th
 The idea of an autoencoder dates back to the 80's proposed as a method for pre-training and feature learning \cite{ballard1987modular, rumelhart1985learning}, learnt dimensionality reduction \cite{hinton_dimentionality}. In recent years, autoencoders are most popularly used as generative networks leveraging their ability to learn feature representations in an unsupervised way. Another interesting variant of autoencoders are denoising autoencoders \cite{vincent2008extracting}, where the input is a noised data and the decoder generates original data without noise. This variant is further evolved to accomplish the tasks of image denoising, watermark removal, inpainting, super resolution, colorization, de-colorization and compression \cite{zhang2016colorful, imagedenoisingpaper}. The variant of autoencoders that is used in this thesis is introduced next.
 %FIXME add more?
 
-
-% TODO -- add the theory of all concepts VAEs NSFRM etc
+% FIXME spell check
 \subsection{Variational Autoencoders}
-\acp{vae}, unlike standard autoencoders learn to encode a data sample $x$ as a probabilistic distribution rather than a deterministic value for the latent attribute \cite{jeremy_jordan_2018}. The encoder $q$ produces the probablistic distribution by predicting two vectors that represent the mean $\mu$ and variance $\sigma$ of a distribution for each of the latent attributes of $x$. And the decoder $p$ takes a random sample $z$ from this distribution to recover the sample as illustrated in fig[\ref{fig:vae_arch}]. 
+\acp{vae}, unlike standard autoencoders learn to encode a data sample $x$ as a probabilistic distribution rather than a deterministic value for the latent attribute \cite{jeremy_jordan_2018}. The encoder $q$ produces the probablistic distribution by predicting two vectors that represent the mean $\mu$ and variance $\sigma$ of a distribution for each of the latent attributes of $x$. And the decoder $p$ takes a random sample $z$ from this distribution to recover the sample as illustrated in fig[\ref{fig:vae_arch}].
 
 \begin{figure}[!h]
     \centering
@@ -35,30 +34,42 @@ The idea of an autoencoder dates back to the 80's proposed as a method for pre-t
     \label{fig:vae_arch}
 \end{figure}
 
-To put it formally, we have a hidden variable $z$ which generates $x$. Since we only have $x$ and would want to learn $z$ i.e $p(z | x)$. But computing this posterior distribution is hard as computing $p(x)$ \ref{eqn:pofx} is usually itractable \cite{kingma2013autoencoding}. 
+To put it formally, we have a hidden variable $z$ which generates $x$. Since we only have $x$ and would want to learn $z$ i.e $p(z | x)$. But computing this posterior distribution is hard as computing $p(x)$ \ref{eqn:pofx} is usually itractable \cite{kingma2013autoencoding}.
 
 \begin{equation}\label{eqn:pofx}
-\begin{gathered}[b]
-p(z | x)=\frac{p(x | z) p(z)}{p(x)} \\
-p(x)=\int p(x | z) p(z) dz
-\end{gathered}
+    \begin{gathered}[b]
+        p(z | x)=\frac{p(x | z) p(z)}{p(x)} \\
+        p(x)=\int p(x | z) p(z) dz
+    \end{gathered}
 \end{equation}
 
-Hence, we try to approximate the posterior distribution by another distribution $q_{\theta}(z|x)$ (the encoder) parametraized by $\theta$ using variational inference. Variational inference uses optimzation to find a distribution that minimizes the \ac{kld} to the posterior distribution, $\min D_{KL}(q(z| x) \| p(z| x))$ \cite{variational_inference}. This could be also achieved by maximizing:
+Hence, we try to approximate the posterior distribution by another distribution $q(z|x)$ (the encoder) using variational inference. Variational inference uses optimzation to find a distribution that minimizes the \ac{kld} to the posterior distribution, $\min D_{\mathrm{KL}}(q(z| x) \| p(z| x))$ while trying to keep the learnt distribution close to tthe true prior distribution $p(z)$\cite{variational_inference}. The prior $p(z)$ is usually assumed to be a unit gaussian distribution. The above can also be achieved by maximizing:
 
 \begin{equation} \label{eqn:minKLd}
-\begin{gathered}[b]
-\max E_{q(z | x)} \log p(x | z) - KL(q(z | x) || p(z))
-\end{gathered}
+    \begin{gathered}[b]
+        \max \mathbb{E}_{q(z | x)} \log p(x | z) - D_{\mathrm{KL}}(q(z | x) || p(z))
+    \end{gathered}
 \end{equation}
 
-The first term is the   The lantent space of the former is continuous while that of the rearer is discrete and clustered.
-As decoder of the \ac{vae} is trained generate data from this continous space, it can generate realistic data by randomly sampling from this infinitely large latent space as illustrated in the fig[\ref{fig:vae_latent_attribute}].
+The first term is the above equation makes sure the reconstruction of the data sample $x$, while the second term tries to keep the learnt distribution $q(z|x)$ close to the true prior $p(z)$. Hence the loss term to \textit{minimize} while training the vae is $\mathcal{L}_{\mathrm{VAE}}$ \ref{eqn:vae_loss}.
 
+\begin{equation} \label{eqn:vae_loss}
+    \begin{gathered}[b]
+        \mathcal{L}_{\mathrm{VAE}}=-\mathbb{E}_{q(z | x)} \log p(x | z) + D_{\mathrm{KL}}(q(z | x) || p(z)) =\mathcal{L}_{\text {recon}} +\mathcal{L}_{\text {prior }}
+    \end{gathered}
+\end{equation}
 
-This also enables smooth interpolation of data produced from one point in the latent space to another. In addition to that we can also perform arithematics in vector space, similar to the popular example from Natural Language Processing, $King - Man + Women = Queen$ but on higher dimentional data
+However, the reconstruction error in the loss requires sampling $z$, which is a stochastic process and it is not possible to perform backprogation. To address this problem, the \textbf{\textit{reparametrization trick}} is used. Where $\epsilon$ is randomly sampled from a unit gaussian distribution $\mathcal{N}(0,1)$ and is used to scale the variance $\sigma$ of the latent distribution represneted by the encoder $q_{\theta}(z|x)$. The sum of the mean $\mu$ and the scaled variance $\sigma \odot \epsilon$ gives $z$, which is now differnetiable while being stochastic as illustrated in the fig[\ref{fig:reparametrization_trick}].
 
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.5]{figures/reparametrization_trick.png}
+    \includegraphics[scale=0.5]{figures/rep_trick.png}
+    \caption{The reparametrization trick. Image Source \cite{jeremy_jordan_2018}}
+    \label{fig:reparametrization_trick}
+\end{figure}
 
+Hence the lantent space of a \ac{vae} is continuous while that of a standard autoencoder is discrete and clustered. As decoder of the \ac{vae} is trained generate data from this continous space, it can generate realistic data by randomly sampling from this infinitely large latent space as illustrated in the fig[\ref{fig:vae_latent_attribute}]. This also enables smooth interpolation of data produced from one point in the latent space to another. In addition to that we can also perform arithematics in vector space, similar to the popular example from Natural Language Processing, $King - Man + Women = Queen$ but on much higher dimentional embedding space. 
 
 \begin{figure}[!h]
     \centering
@@ -67,8 +78,15 @@ This also enables smooth interpolation of data produced from one point in the la
     \label{fig:vae_latent_attribute}
 \end{figure}
 
+\subsection{Beta Variational Autoencoder}
 
+A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As discussed the \ac{kld} term encourages the network to learn a distribution rather than a single value. If the variance of the distribution is not high, then it is again similar to an autoencoder. The more enforcement from \ac{kld}, the diverse the distribution. The \ac{vae} is forced to disentagle the representations, i.e the lesser is the correlation betweeen each dimension in the latent space. Such disentagled representations are very useful for generative models. More importantly it improves the interpretablility of the latent space and can be leveraged to generalize to different downstream tasks. This emphasis on the latent space distributions can be achieved by distentangled variational autoencoders or $\beta$-\ac{vae}, where $\beta$ is the weight coeffiecient of the \ac{kld} term in the \ac{vae} loss function \ref{eqn:vae_loss}. So, the loss for the $\beta$-\ac{vae} is $\mathcal{L}_{\mathrm{VAE}}$ \ref{eqn:bvae_loss}. The higher the beta the stronger the constrain on the disentaglement. This constrain will negatively effect the representation capability of the \ac{vae}.
 
+\begin{equation} \label{eqn:bvae_loss}
+    \begin{gathered}[b]
+        \mathcal{L}_{\mathrm{VAE}}=-\mathbb{E}_{q(z | x)} \log p(x | z) + \beta (D_{\mathrm{KL}}(q(z | x) || p(z)))
+    \end{gathered}
+\end{equation}
 
 % TODO -- add the theory of all concepts VAEs NSFRM etc
 \subsection{Generative Adversarial Networks}
