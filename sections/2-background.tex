@@ -9,13 +9,13 @@ This chapter provides the theory essential to understand the major components of
 \label{sec:Preliminary}
 
 \subsection{Autoencoder}
-Autoencoders are a variant of \acp{ann}, which are designed to learn an identity function that generates the input data sample back. The network has a bottleneck($z$), dividing the network into two parts, an encoder and a decoder as illustrated in fig[\ref{fig:ar_arch}]. The former learns to compress the high demensional input data to a low dimensional intermediate representation, \textit{latent representation}, at the bottleneck. While the latter learns to reconstruct the data from the latent distribution. Thus learning to efficiently compressing the data.
+Autoencoders are a variant of \acp{ann}, which are designed to learn an identity function that generates the input data sample back. The network has a bottleneck($z$), dividing the network into two parts, an encoder and a decoder as illustrated in fig[\ref{fig:ae_arch}]. The former learns to compress the high demensional input data to a low dimensional intermediate representation, \textit{latent representation}, at the bottleneck. While the latter learns to reconstruct the data from the latent distribution. Thus learning to efficiently compressing the data.
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=1]{figures/ae_arch.pdf}
+    \includegraphics[scale=0.4]{figures/ae_arch.png}
     \caption{Illustration of autoencoder architecture.}
-    \label{fig:ar_arch}
+    \label{fig:ae_arch}
 \end{figure}
 
 To put it in other words, in the process of learning to reconstruct the data, the encoder learns to filter the most important features of the given data distribution, so as it preserve the complete properties within the limits of the bottleneck. While the decoder learns more general properties of the distribution which is used along with the compact latent representation from the encoder to fully recover the data distribution. The network is trained to minimize the similarity between the reconstruction and the original data sample. This similarity can be determined by metrics such as \ac{mse}, \ac{l1} or Cross-Entropy loss.
@@ -29,12 +29,12 @@ The idea of an autoencoder dates back to the 80's proposed as a method for pre-t
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=1]{figures/vae_arch.pdf}
+    \includegraphics[scale=0.2]{figures/vae_arch.png}
     \caption{Illustration of Variational Autoencoder architecture.}
     \label{fig:vae_arch}
 \end{figure}
 
-To put it formally, we have a hidden variable $z$ which generates $x$. Since we only have $x$ and would want to learn $z$ i.e $p(z | x)$. But computing this posterior distribution is hard as computing $p(x)$ \ref{eqn:pofx} is usually itractable \cite{kingma2013autoencoding}.
+To put it formally, we have a hidden variable $z$ which generates $x$. Since we only have $x$ and would want to learn $z$ i.e $p(z | x)$. But computing this posterior distribution is hard as computing $p(x)$ eqn \ref{eqn:pofx} is usually itractable \cite{kingma2013autoencoding}.
 
 \begin{equation}\label{eqn:pofx}
     \begin{gathered}[b]
@@ -51,7 +51,7 @@ Hence, we try to approximate the posterior distribution by another distribution 
     \end{gathered}
 \end{equation}
 
-The first term is the above equation makes sure the reconstruction of the data sample $x$, while the second term tries to keep the learnt distribution $q(z|x)$ close to the true prior $p(z)$. Hence the loss term to \textit{minimize} while training the vae is $\mathcal{L}_{\mathrm{VAE}}$ \ref{eqn:vae_loss}.
+The first term is the above equation makes sure the reconstruction of the data sample $x$, while the second term tries to keep the learnt distribution $q(z|x)$ close to the true prior $p(z)$. Hence the loss term to \textit{minimize} while training the vae is $\mathcal{L}_{\mathrm{VAE}}$ eqn \ref{eqn:vae_loss}.
 
 \begin{equation} \label{eqn:vae_loss}
     \begin{gathered}[b]
@@ -69,7 +69,7 @@ However, the reconstruction error in the loss requires sampling $z$, which is a 
     \label{fig:reparametrization_trick}
 \end{figure}
 
-Hence the lantent space of a \ac{vae} is continuous while that of a standard autoencoder is discrete and clustered. As decoder of the \ac{vae} is trained generate data from this continous space, it can generate realistic data by randomly sampling from this infinitely large latent space as illustrated in the fig[\ref{fig:vae_latent_attribute}]. This also enables smooth interpolation of data produced from one point in the latent space to another. In addition to that we can also perform arithematics in vector space, similar to the popular example from Natural Language Processing, $King - Man + Women = Queen$ but on much higher dimentional embedding space. 
+Hence the learnt lantent space of a \ac{vae} is continuous while that of a standard autoencoder is discrete and clustered. As decoder of the \ac{vae} is trained generate data from this continous space, it can generate realistic data by randomly sampling from this infinitely large latent space as illustrated in the fig[\ref{fig:vae_latent_attribute}]. This also enables smooth interpolation of data produced from one point in the latent space to another. In addition to that we can also perform arithematics in vector space, similar to the popular example from Natural Language Processing, $King - Man + Women = Queen$ but on much higher dimentional embedding space. 
 
 \begin{figure}[!h]
     \centering
@@ -80,7 +80,7 @@ Hence the lantent space of a \ac{vae} is continuous while that of a standard aut
 
 \subsection{Beta Variational Autoencoder}
 
-A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As discussed the \ac{kld} term encourages the network to learn a distribution rather than a single value. If the variance of the distribution is not high, then it is again similar to an autoencoder. The more enforcement from \ac{kld}, the diverse the distribution. The \ac{vae} is forced to disentagle the representations, i.e the lesser is the correlation betweeen each dimension in the latent space. Such disentagled representations are very useful for generative models. More importantly it improves the interpretablility of the latent space and can be leveraged to generalize to different downstream tasks. This emphasis on the latent space distributions can be achieved by distentangled variational autoencoders or $\beta$-\ac{vae}, where $\beta$ is the weight coeffiecient of the \ac{kld} term in the \ac{vae} loss function \ref{eqn:vae_loss}. So, the loss for the $\beta$-\ac{vae} is $\mathcal{L}_{\mathrm{VAE}}$ \ref{eqn:bvae_loss}. The higher the beta the stronger the constrain on the disentaglement. This constrain will negatively effect the representation capability of the \ac{vae}.
+A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As discussed the \ac{kld} term encourages the network to learn a distribution rather than a single value. If the variance of the distribution is not high, then it is again similar to an autoencoder. The more enforcement from \ac{kld}, the diverse the distribution. The \ac{vae} is forced to disentagle the representations, i.e the lesser is the correlation betweeen each dimension in the latent space. Such disentagled representations are very useful for generative models. More importantly it improves the interpretablility of the latent space and can be leveraged to generalize to different downstream tasks. This emphasis on the latent space distributions can be achieved by distentangled variational autoencoders or $\beta$-\ac{vae}, where $\beta$ is the weight coeffiecient of the \ac{kld} term in the \ac{vae} loss function eqn \ref{eqn:vae_loss}. So, the loss for the $\beta$-\ac{vae} is $\mathcal{L}_{\mathrm{VAE}}$ [eqn \ref{eqn:bvae_loss}]. The higher the beta the stronger the constrain on the disentaglement. This constrain will negatively effect the representation capability of the \ac{vae}.
 
 \begin{equation} \label{eqn:bvae_loss}
     \begin{gathered}[b]
@@ -88,8 +88,26 @@ A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As d
     \end{gathered}
 \end{equation}
 
-% TODO -- add the theory of all concepts VAEs NSFRM etc
 \subsection{Generative Adversarial Networks}
+\ac{gan} is an \ac{ann} that is used for generative tasks to make the prediction \textit{realistic}. A \ac{gan} is actually a combination of 2 networks namely, the generator $G$ and the discriminator $D$. The generetor learns to map a random sample or say, noise $Z$ drawn from a latent distribution with density $p(z)$ to a higher dimensional data distribution with density $p(g)$. Where the discriminator takes the output of the generator and tries to differnetiate real data samples $x$ from the fakes which do not belong to the real distribution $p(r)$  as illustrated in the fig[\ref{fig:gan_arch}]. 
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.4]{figures/gan_arch.png}
+    \caption{Illustration of GAN architecture. G is the generator network and D is the discriminator network.}
+    \label{fig:gan_arch}
+\end{figure}
+
+The goal of the generator is to produce samples, $G(z)$ that fool the discriminator into beleiving them as real samples. While the goal of the discriminator is to distinguish between the samples produced by the generator and the real samples by predicting reals as 1 and 0 for fakes. This inverse goals of the two networks can be viewed as a game of tug of war or a 2 player minmax game. The result of the game being that the generator would ideally learn to produce realisitic data samples by sampling noise from a latent space. We effectively train $G$ to minimize $\log(1-D(G({z})))$ and $D$ to maximize $\log(D(x))$ making the loss function as $\mathcal{L}_{\mathrm{GAN}}$ [eqn \ref{eqn:gan_loss}].
+
+\begin{equation} \label{eqn:gan_loss}
+    \begin{gathered}[b]
+        {L}_{\mathrm{GAN}}=\mathbb{E}_{{x} \sim p({r})}[\log D({x})]+\mathbb{E}_{{z} \sim p({z})}[\log (1-D(G({z})))]
+    \end{gathered}
+\end{equation}
+
+
+
 
 
 % TODO -- add the theory of all concepts VAEs NSFRM etc
