@@ -128,12 +128,33 @@ At global optimality $p_{g}=p_{r}$ and for a given generator $G$, the discrimina
 \end{aligned}
 \end{equation}
 
-The \ac{JSD} It is hard to stabilize the \ac{gan}'s minimax game \cite{martin2017principled}. It requires carefully tuned hyperparameters to maintain an equilibrium between the two players. Failing to find the proper balance betweem the networks leads to the problem of \textit{Non-Convergence} where the training oscillates and never converge. When the generator is not strong enough and learns to produce samples that fool the discriminator, it eventually would restrict itself to only learn to produce such samples. This problem is refered to as \textit{Mode Collapse} \cite{commonganprobs}.
-
-
+The \ac{JSD} between two distributions is always non-negative and will be equal to zero only when both the distributions are eqaual \cite{js_divergence}. As we derived in Eq. \ref{eqn:c_of_g} above, the best value of $C$ i.e $-\log 4$ is possible only when $p_{g}=p_{r}$. It is hard to stabilize the \ac{gan}'s minimax game \cite{martin2017principled}. It requires carefully tuned hyperparameters to maintain an equilibrium between the two players. Failing to find the proper balance betweem the networks leads to the problem of \textit{Non-Convergence}, where the training oscillates and never converge. When the generator is not strong enough and learns to produce samples that fool the discriminator, it eventually would restrict itself to only learn to produce such samples. This problem is refered to as \textit{Mode Collapse} \cite{commonganprobs}. There are many hacks as well as principled approachs that are formualated to handle these problems with considerable success \cite{openaigan2wgan}.
 
 \subsection{WGAN}
-\acp{wgan} is a variant of \acp{gan} where the second network is not a discriminator that predicts binary labels of 1 and 0 for real or fake, but is a critic   that scores the samples on how real they look.
+\acp{wgan} is a variant of \acp{gan}, where the second network is a critic that scores the samples on how real they look rather than a discriminator that predicts binary labels of 1 and 0 for real or fake. \ac{wgan} use 1-Wasserstein distance \cite{wasserstein_metric_2020} or \ac{emd} instead of the \ac{jsd} used in the standard discrimantor based \ac{gan}. Since the Wasserstein distance is non-evaluative, a modified version Eq. \ref{eqn:wasserstein_loss} of it is proposed as the loss function in \cite{soumith2017wasserstein}. Where $f$ being the critic network parmetrized by $w$.
+
+\begin{equation} \label{eqn:wasserstein_loss}
+    \begin{aligned}[b]
+        L=\mathbb{E}_{x \sim P_{r}}\left[f_{w}(x)\right]-\mathbb{E}_{x \sim P_{g}}\left[f_{w}(x)\right]
+    \end{aligned}
+\end{equation}
+
+
+% \begin{equation} \label{eqn:wasserstein}
+%     \begin{aligned}[b]
+%          W\left(P_{r}, P_{g}\right)=\inf _{\gamma \sim \Pi\left(P_{r}, P_{g}\right)} \mathbb{E}_{(x, x^\prime) \sim \gamma}[\|x-x^\prime\|]
+% W\left(p_{r}, p_{g}\right)=\frac{1}{K} \sup _{\|f\|_{L} \leq K} \mathbb{E}_{x \sim p_{r}}[f(x)]-\mathbb{E}_{x \sim p_{g}}[f(x)]
+
+%     \end{aligned}
+% \end{equation}
+
+%FIXME explain proeprly
+% Where $\gamma \sim \Pi\left(P_{r}, P_{g}\right)$ is the collecetion of all possible joint distributions of $p_r$ and $p_g$. Adn for all the combinations the distance between the real sample$x$ and the generated sample $x^\prime$ can be calculated.   
+
+The fundemental goal of \acp{gan} is to minimize the distribution between the real and the generated distribution. This could be measured used either of \ac{kld}, \ac{jsd}, \ac{emd} or Wasserstein distance, the main difference being their impact on the convergence of these distributions. The interesting feature of Wasserstein distance is that it is continuous and differentiable. Using this distance the critic can train till optimality while having realiable gradient throughout the training. Hence the critic in \ac{wgan} does not have the saturation and vanishing gradient problems that exist in standard \acp{gan}. Due to continous and clean gradients, the training is significantly stable and less sentive to hyperparameters and model architecture. With \ac{wgan} the mode collapse problem is also significantly reduced. When it comes to practice, the most important problem that hinders training \acp{gan} is that there is no correlation of the quality of the genrated data say, images and the loss function. However, \ac{wgan} try to converge the distributions while lowering the generation loss and considerable relation between the loss and the quality of generations can be observed.
+
+
+
 
 % TODO -- add the theory of all concepts VAEs NSFRM etc
 \subsection{Hybrids}
@@ -143,7 +164,7 @@ from the learned features representations from \acp{gan}, we can use it as the s
 many ways to improe gans \cite{openaigan2wgan}
 
 
-\lipsum[1-4] %FIXME
+%FIXME
 
 
 
