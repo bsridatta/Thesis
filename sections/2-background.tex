@@ -34,7 +34,7 @@ The idea of an autoencoder dates back to the '80s proposed as a method for pre-t
     \label{fig:vae_arch}
 \end{figure}
 
-To put it formally, we have a hidden variable $z$ which generates $x$. Since we only have $x$ and would want to learn $z$ i.e $p(z | x)$. But computing this posterior distribution is hard as computing $p(x)$ eqn \ref{eqn:pofx} is usually itractable \cite{kingma2013autoencoding}.
+To put it formally, we have a hidden variable $z$ which generates $x$. Since we only have $x$ and would want to learn $z$ i.e $p(z | x)$. But computing this posterior distribution is hard as computing $p(x)$ Eq. \ref{eqn:pofx} is usually itractable \cite{kingma2013autoencoding}.
 
 \begin{equation}\label{eqn:pofx}
     \begin{gathered}[b]
@@ -51,7 +51,7 @@ Hence, we try to approximate the posterior distribution by another distribution 
     \end{gathered}
 \end{equation}
 
-The first term is the above equation makes sure the reconstruction of the data sample $x$, while the second term tries to keep the learned distribution $q(z|x)$ close to the true prior $p(z)$. Hence the loss term to \textit{minimize} while training the \ac{vae} is $\mathcal{L}_{\mathrm{VAE}}$ eqn \ref{eqn:vae_loss}.
+The first term is the above equation makes sure the reconstruction of the data sample $x$, while the second term tries to keep the learned distribution $q(z|x)$ close to the true prior $p(z)$. Hence the loss term to \textit{minimize} while training the \ac{vae} is $\mathcal{L}_{\mathrm{VAE}}$ Eq. \ref{eqn:vae_loss}.
 
 \begin{equation} \label{eqn:vae_loss}
     \begin{gathered}[b]
@@ -80,7 +80,7 @@ Hence the learned latent space of a \ac{vae} is continuous while that of a stand
 
 \subsection{Beta Variational Autoencoder}
 
-A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As discussed the \ac{kld} term encourages the network to learn a distribution rather than a single value. If the variance of the distribution is not high, then it is again similar to an autoencoder. The more enforcement from \ac{kld}, the diverse the distribution. The \ac{vae} is forced to disentangle the representations, i.e the lesser is the correlation between each dimension in the latent space. Such disentangled representations are very useful for generative models. More importantly, it improves the interpretability of the latent space and can be leveraged to generalize to different downstream tasks. This emphasis on the latent space distributions can be achieved by disentangled variational autoencoders or \ac{bvae}, where $\beta$ is the weight coefficient of the \ac{kld} term in the \ac{vae} loss function eqn[\ref{eqn:vae_loss}]. So, the loss for the \ac{bvae} is $\mathcal{L}_{\mathrm{VAE}}$ [eqn \ref{eqn:bvae_loss}]. The higher the beta the stronger the constrain on the disentanglement. This constraint will negatively affect the representation capability of the \ac{vae}.
+A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As discussed the \ac{kld} term encourages the network to learn a distribution rather than a single value. If the variance of the distribution is not high, then it is again similar to an autoencoder. The more enforcement from \ac{kld}, the diverse the distribution. The \ac{vae} is forced to disentangle the representations, i.e the lesser is the correlation between each dimension in the latent space. Such disentangled representations are very useful for generative models. More importantly, it improves the interpretability of the latent space and can be leveraged to generalize to different downstream tasks. This emphasis on the latent space distributions can be achieved by disentangled variational autoencoders or \ac{bvae}, where $\beta$ is the weight coefficient of the \ac{kld} term in the \ac{vae} loss function Eq.\ref{eqn:vae_loss}. So, the loss for the \ac{bvae} is $\mathcal{L}_{\mathrm{VAE}}$ Eq. \ref{eqn:bvae_loss}. The higher the beta the stronger the constrain on the disentanglement. This constraint will negatively affect the representation capability of the \ac{vae}.
 
 \begin{equation} \label{eqn:bvae_loss}
     \begin{gathered}[b]
@@ -89,7 +89,7 @@ A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As d
 \end{equation}
 
 \subsection{Generative Adversarial Networks}
-\ac{gan} is an \ac{ann} that is used for generative tasks to make the prediction \textit{realistic}. A \ac{gan} is a combination of 2 networks namely, the generator $G$ and the discriminator $D$. The generator learns to map a random sample or say, noise $Z$ drawn from a latent distribution with density $p(z)$ to a higher dimensional data distribution with density $p(g)$. Where the discriminator takes the output of the generator and tries to differentiate real data samples $x$ from the fakes which do not belong to the real distribution $p(r)$  as illustrated in the fig[\ref{fig:gan_arch}].
+\ac{gan} is an \ac{ann} that is used for generative tasks to make the prediction \textit{realistic}. A \ac{gan} is a combination of 2 networks namely, the generator $G$ and the discriminator $D$. The generator learns to map a random sample or say, noise $Z$ drawn from a latent distribution with density $p_{z}$ to a higher dimensional data distribution with density $p_{g}$. Where the discriminator takes the output of the generator and tries to differentiate real data samples $x$ from the fakes which do not belong to the real distribution $p_{r}$  as illustrated in the fig[\ref{fig:gan_arch}].
 
 \begin{figure}[!h]
     \centering
@@ -98,29 +98,56 @@ A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As d
     \label{fig:gan_arch}
 \end{figure}
 
-The goal of the generator is to produce samples, $G(z)$ that fool the discriminator into believing them as real samples. While the goal of the discriminator is to distinguish between the samples produced by the generator and the real samples by predicting reals as 1 and 0 for fakes. This inverse goals of the two networks can be viewed as a game of tug of war or a 2 player minimax game. The result of the game is that the generator would ideally learn to produce realistic data samples by sampling noise from latent space. We effectively train $G$ to minimize $\log(1-D(G({z})))$ and $D$ to maximize $\log(D(x))$ making the loss function as $\mathcal{L}_{\mathrm{GAN}}$ [eqn \ref{eqn:gan_loss}].
+The goal of the generator is to produce samples, $G(z)$ that fool the discriminator into believing them as real samples. While the goal of the discriminator is to distinguish between the samples produced by the generator and the real samples by predicting reals as 1 and 0 for fakes. This inverse goals of the two networks can be viewed as a game of tug of war or a 2 player minimax game. The result of the game is that the generator would ideally learn to produce realistic data samples by sampling from prior $p_{g}(z)$. We effectively train $G$ to minimize $\log(1-D(G({z})))$ and $D$ to maximize $\log(D(x))$ making the loss function as $\mathcal{L}_{\mathrm{GAN}}$ Eq. \ref{eqn:gan_loss}.
 
 \begin{equation} \label{eqn:gan_loss}
     \begin{gathered}[b]
-        {L}_{\mathrm{GAN}}=\mathbb{E}_{{x} \sim p({r})}[\log D({x})]+\mathbb{E}_{{z} \sim p({z})}[\log (1-D(G({z})))]
+        {L}_{\mathrm{GAN}}=\mathbb{E}_{{x} \sim p_{r}(x)}[\log D({x})]+\mathbb{E}_{{z} \sim p_{z}(z)}[\log (1-D(G({z})))]
     \end{gathered}
 \end{equation}
 
-However, when training \acp{gan}, practice is very different from theory. The training of the discriminator and generator is done iteratively and sequentially. But training the discriminator network to the optimal solution and then training the generator and repeating this loop is computationally challenging and would lead to overfitting the models on the finite dataset. To avoid this, the discriminator is trained for $k$ mini-batch iterations before training the generator for one iteration. This is to keep the discriminator close to optimality while slowly training the generator \cite{goodfellow2014generative}. One of the other major problems is that the generated samples are drastically different from the real samples as the generator has not yet learned to produce good samples. As the generator outputs samples close to noise, the discriminator easily distinguishes these samples from the real samples with high confidence. This saturates the loss term $\log (1-D(G(z)))$ very quick and leads to vanishing gradients. Hence in practice, we train the generator $G$ to maximize $\log D(G(z))$ instead of minimizing $\log (1-D(G(z)))$ preventing the gradients from vanishing.
+However, when training \acp{gan}, practice is very different from theory. The training of the discriminator and generator is done iteratively and sequentially. But training the discriminator network to the optimal solution and then training the generator and repeating this loop is computationally challenging and would lead to overfitting the models on the finite dataset. To avoid this, the discriminator is trained for $k$ mini-batch iterations before training the generator for one iteration. This is to keep the discriminator close to optimality while slowly training the generator \cite{goodfellow2014generative}. The problem that arises here is that the generated samples are drastically different from the real samples as the generator has not yet learned to produce good samples. As the generator outputs samples close to noise, the discriminator easily distinguishes these samples from the real samples with high confidence. This saturates the loss term $\log (1-D(G(z)))$ very quick and leads to the problem of \textit{Vanishing Gradients}. Hence in practice, we train the generator $G$ to maximize $\log D(G(z))$ instead of minimizing $\log (1-D(G(z)))$ preventing the gradients from vanishing.
 
-Stabilizing this minimax game is very challenging as it requires carefully tuned hyperparameters to maintain an equilibrium between the two players.
+\begin{equation} \label{eqn:dg_of_x}
+    \begin{aligned}[b]
+        D_{G}^*(x) = &\frac{p_{r}(x)}{p_{r}(x)+p_{g}(x)} \\
+        =&\frac{1}{2} 
+    \end{aligned}
+\end{equation}
 
-% FIXME mention mode collapse 
+At global optimality $p_{g}=p_{r}$ and for a given generator $G$, the discriminator at optimality is $D_{G}^*(x)$ Eq. \ref{eqn:dg_of_x}. Hence the virtual cost $C(G)$ \cite{goodfellow2014generative} when $p_{g}=p_{r}$ is:
+
+\begin{equation} \label{eqn:c_of_g}
+\begin{aligned}
+    C(G)& = \max _{D} V(G, D) \\
+    &=\mathbb{E}_{x \sim p_{r}}\left[\log D_{G}^{*}(x)\right]+\mathbb{E}_{z \sim p_{z}}\left[\log \left(1-D_{G}^{*}(G(z))\right)\right] \\
+    &=\mathbb{E}_{x \sim p_{r}}\left[\log D_{G}^{*}(x)\right]+\mathbb{E}_{x \sim p_{g}}\left[\log \left(1-D_{G}^{*}(x)\right)\right] \\
+    &=\mathbb{E}_{x \sim p_{r}}\left[\log \frac{p_{r}(x)}{P_{r}(x)+p_{g}(x)}\right]+\mathbb{E}_{x \sim p_{g}}\left[\log \frac{p_{g}(x)}{p_{r}(x)+p_{g}(x)}\right]\\
+    &=-\log (4)+ D_{\mathrm{KL}}\left(p_{r} \| \frac{p_{r}+p_{g}}{2}\right)+D_{\mathrm{KL}}\left(p_{g} \| \frac{p_{r}+p_{g}}{2}\right)\\
+    &=-\log(4) + 2 \cdot  \mathrm{JSD}(p_{r} \| p_{g})
+\end{aligned}
+\end{equation}
+
+The \ac{JSD} It is hard to stabilize the \ac{gan}'s minimax game \cite{martin2017principled}. It requires carefully tuned hyperparameters to maintain an equilibrium between the two players. Failing to find the proper balance betweem the networks leads to the problem of \textit{Non-Convergence} where the training oscillates and never converge. When the generator is not strong enough and learns to produce samples that fool the discriminator, it eventually would restrict itself to only learn to produce such samples. This problem is refered to as \textit{Mode Collapse} \cite{commonganprobs}.
+
+
 
 \subsection{WGAN}
-\acp{wgan} is a variant of \acp{gan} where the second network is not a discriminator that predicts binary labels
+\acp{wgan} is a variant of \acp{gan} where the second network is not a discriminator that predicts binary labels of 1 and 0 for real or fake, but is a critic   that scores the samples on how real they look.
 
 % TODO -- add the theory of all concepts VAEs NSFRM etc
 \subsection{Hybrids}
+% TODO 
+from the learned features representations from \acp{gan}, we can use it as the similarity metric without requiring labels for element-wise similarity metric, cite first v gan paper \cite{autoencoding_beyond_pixels}.
 
-from the learned features representations from gans, we can use it as the similarity metric without requiring labels for element-wise similarity metric, cite first v gan paper \cite{autoencoding_beyond_pixels}
+many ways to improe gans \cite{openaigan2wgan}
+
 
 \lipsum[1-4] %FIXME
+
+
+
+
 
 % FIXME -- polish related works
 \section{Research Area Introduction}
@@ -129,7 +156,7 @@ from the learned features representations from gans, we can use it as the simila
 In this section, the details of various related works and the state-of-the-art in 3D Human Pose Estimation are presented along with some works in the sibling task of hand pose estimation.
 
 \subsection{Pose from images}
-Numerous works try to estimate 3D human poses from z2D \ac{rgb} images or 2D joint confidence heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo}. Most of these methods follow a cascading approach, where an explicit intermediate representation of 2D pose or 2D heatmaps is used.
+Numerous works try to estimate 3D human poses from 2D \ac{rgb} images or 2D joint confidence heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo}. Most of these methods follow a cascading approach, where an explicit intermediate representation of 2D pose or 2D heatmaps is used.
 
 For example, \cite{CameraDistanceAware} proposes a general framework with 3 networks. Human detection Network, RootNet, PoseNet. Where the human detection network predicts the region the human is in an image. The RootNet localizes the human's root in the global 3D world. And, the PoseNet predicts the 3D pose of a single person relative to the root. Where the root is a fixed reference point of the human body say, pelvis.
 
