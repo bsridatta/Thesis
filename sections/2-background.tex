@@ -110,28 +110,28 @@ However, when training \acp{gan}, practice is very different from theory. The tr
 
 \begin{equation} \label{eqn:dg_of_x}
     \begin{aligned}[b]
-        D_{G}^*(x) = &\frac{p_{r}(x)}{p_{r}(x)+p_{g}(x)} \\
-        =&\frac{1}{2} 
+        D_{G}^*(x) = & \frac{p_{r}(x)}{p_{r}(x)+p_{g}(x)} \\
+        =            & \frac{1}{2}
     \end{aligned}
 \end{equation}
 
 At global optimality $p_{g}=p_{r}$ and for a given generator $G$, the discriminator at optimality is $D_{G}^*(x)$ Eq. \ref{eqn:dg_of_x}. Hence the virtual cost $C(G)$ \cite{goodfellow2014generative} when $p_{g}=p_{r}$ is:
 
 \begin{equation} \label{eqn:c_of_g}
-\begin{aligned}
-    C(G)& = \max _{D} V(G, D) \\
-    &=\mathbb{E}_{x \sim p_{r}}\left[\log D_{G}^{*}(x)\right]+\mathbb{E}_{z \sim p_{z}}\left[\log \left(1-D_{G}^{*}(G(z))\right)\right] \\
-    &=\mathbb{E}_{x \sim p_{r}}\left[\log D_{G}^{*}(x)\right]+\mathbb{E}_{x \sim p_{g}}\left[\log \left(1-D_{G}^{*}(x)\right)\right] \\
-    &=\mathbb{E}_{x \sim p_{r}}\left[\log \frac{p_{r}(x)}{P_{r}(x)+p_{g}(x)}\right]+\mathbb{E}_{x \sim p_{g}}\left[\log \frac{p_{g}(x)}{p_{r}(x)+p_{g}(x)}\right]\\
-    &=-\log (4)+ D_{\mathrm{KL}}\left(p_{r} \| \frac{p_{r}+p_{g}}{2}\right)+D_{\mathrm{KL}}\left(p_{g} \| \frac{p_{r}+p_{g}}{2}\right)\\
-    &=-\log(4) + 2 \cdot  \mathrm{JSD}(p_{r} \| p_{g})
-\end{aligned}
+    \begin{aligned}
+        C(G) & = \max _{D} V(G, D)                                                                                                                                          \\
+             & =\mathbb{E}_{x \sim p_{r}}\left[\log D_{G}^{*}(x)\right]+\mathbb{E}_{z \sim p_{z}}\left[\log \left(1-D_{G}^{*}(G(z))\right)\right]                           \\
+             & =\mathbb{E}_{x \sim p_{r}}\left[\log D_{G}^{*}(x)\right]+\mathbb{E}_{x \sim p_{g}}\left[\log \left(1-D_{G}^{*}(x)\right)\right]                              \\
+             & =\mathbb{E}_{x \sim p_{r}}\left[\log \frac{p_{r}(x)}{P_{r}(x)+p_{g}(x)}\right]+\mathbb{E}_{x \sim p_{g}}\left[\log \frac{p_{g}(x)}{p_{r}(x)+p_{g}(x)}\right] \\
+             & =-\log (4)+ D_{\mathrm{KL}}\left(p_{r} \| \frac{p_{r}+p_{g}}{2}\right)+D_{\mathrm{KL}}\left(p_{g} \| \frac{p_{r}+p_{g}}{2}\right)                            \\
+             & =-\log(4) + 2 \cdot  \mathrm{JSD}(p_{r} \| p_{g})
+    \end{aligned}
 \end{equation}
 
 The \ac{JSD} between two distributions is always non-negative and will be equal to zero only when both the distributions are eqaual \cite{js_divergence}. As we derived in Eq. \ref{eqn:c_of_g} above, the best value of $C$ i.e $-\log 4$ is possible only when $p_{g}=p_{r}$. It is hard to stabilize the \ac{gan}'s minimax game \cite{martin2017principled}. It requires carefully tuned hyperparameters to maintain an equilibrium between the two players. Failing to find the proper balance betweem the networks leads to the problem of \textit{Non-Convergence}, where the training oscillates and never converge. When the generator is not strong enough and learns to produce samples that fool the discriminator, it eventually would restrict itself to only learn to produce such samples. This problem is refered to as \textit{Mode Collapse} \cite{commonganprobs}. There are many hacks as well as principled approachs that are formualated to handle these problems with considerable success \cite{openaigan2wgan}.
 
 \subsection{WGAN}
-\acp{wgan} is a variant of \acp{gan}, where the second network is a critic that scores the samples on how real they look rather than a discriminator that predicts binary labels of 1 and 0 for real or fake. \ac{wgan} use 1-Wasserstein distance \cite{wasserstein_metric_2020} or \ac{emd} instead of the \ac{jsd} used in the standard discrimantor based \ac{gan}. Since the Wasserstein distance is non-evaluative, a modified version Eq. \ref{eqn:wasserstein_loss} of it is proposed as the loss function in \cite{soumith2017wasserstein}. Where $f$ being the critic network parmetrized by $w$.
+\acp{wgan} is a variant of \acp{gan}, where the second network is a critic that scores the samples on how real they look rather than a discriminator that predicts binary labels of 1 and 0 for real or fake. \ac{wgan} use 1-Wasserstein distance \cite{wasserstein_metric_2020} or \ac{emd} instead of the \ac{jsd} used in the standard discrimantor based \ac{gan}. Since the Wasserstein distance is non-evaluative, a modified version Eq. \ref{eqn:wasserstein_loss} of it is proposed as the loss function in \cite{soumith2017wasserstein}. Where $f$ being the critic network parmetrized by $w$ while clipping the weights to satisfy Lipschitz constraint.
 
 \begin{equation} \label{eqn:wasserstein_loss}
     \begin{aligned}[b]
@@ -151,14 +151,15 @@ The \ac{JSD} between two distributions is always non-negative and will be equal 
 %FIXME explain proeprly
 % Where $\gamma \sim \Pi\left(P_{r}, P_{g}\right)$ is the collecetion of all possible joint distributions of $p_r$ and $p_g$. Adn for all the combinations the distance between the real sample$x$ and the generated sample $x^\prime$ can be calculated.   
 
-The fundemental goal of \acp{gan} is to minimize the distribution between the real and the generated distribution. This could be measured used either of \ac{kld}, \ac{jsd}, \ac{emd} or Wasserstein distance, the main difference being their impact on the convergence of these distributions. The interesting feature of Wasserstein distance is that it is continuous and differentiable. Using this distance the critic can train till optimality while having realiable gradient throughout the training. Hence the critic in \ac{wgan} does not have the saturation and vanishing gradient problems that exist in standard \acp{gan}. Due to continous and clean gradients, the training is significantly stable and less sentive to hyperparameters and model architecture. With \ac{wgan} the mode collapse problem is also significantly reduced. When it comes to practice, the most important problem that hinders training \acp{gan} is that there is no correlation of the quality of the genrated data say, images and the loss function. However, \ac{wgan} try to converge the distributions while lowering the generation loss and considerable relation between the loss and the quality of generations can be observed.
-
-
+The fundemental goal of \acp{gan} is to minimize the distribution between the real and the generated distribution. This could be measured used either of \ac{kld}, \ac{jsd}, \ac{emd} or Wasserstein distance, the main difference being their impact on the convergence of these distributions. The interesting feature of Wasserstein distance is that it is continuous and differentiable. Using this distance the critic can train till optimality while having realiable gradient throughout the training. Hence the critic in \ac{wgan} does not have the saturation and vanishing gradient problems that exist in standard \acp{gan}. Due to continous and clean gradients, the training is significantly stable and less sentive to hyperparameters and model architecture. With \ac{wgan} the mode collapse problem is also significantly reduced. When it comes to practice, the most important problem that hinders training \acp{gan} is that there is no correlation of the quality of the genrated data say, images and the loss function. However, \ac{wgan} try to converge the distributions while lowering the generation loss and considerable relation between the loss and the quality of generations can be observed. \ac{wgangp} \cite{wgangp} is an improved \ac{wgan} that uses gradient penalty to enforce Lipschitz constraint.
 
 
 % TODO -- add the theory of all concepts VAEs NSFRM etc
-\subsection{Hybrids}
+\subsection{Hybrids - VAEGAN}
 % TODO 
+While the \acp{vae} learn the latent space of the data very efficiently, the generative capabilities are limited in comparision to \acp{gan}. In the case of iamge generations, \acp{vae} usually generate blurry images. While well trained \ac{gan} learn to generate photorealistic images. Though the task of the discriminator in \acp{gan} is to only learn what is real and what is fake, it implicitly learns rich similarity metric in order do so \cite{autoencoding_beyond_pixels}. The idea of a \ac{vae}-\ac{gan} is to exploit this ability of \acp{gan} as a learning metric for \acp{vae} and the abilty of \acp{VAE} to learn dense latent representation of the data. Taking the example of images again, element=wise errors are very poor similarity metric as small deviation in a high level feature, like eyebrow or head rotation would lead to high error as the pixel dispacement propogates through hge parts of the image. These shifts in reality are plausible and realistic, probably indistingusable for the human eye. Using the discriminator as a similar metric would address this problem as the error would be low for realistic deviations of features comapred to unrealistic shifts say, the noise being upside down.
+
+
 from the learned features representations from \acp{gan}, we can use it as the similarity metric without requiring labels for element-wise similarity metric, cite first v gan paper \cite{autoencoding_beyond_pixels}.
 
 many ways to improe gans \cite{openaigan2wgan}
