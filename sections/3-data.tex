@@ -11,7 +11,7 @@ This chapter discusses the datasets used in the thesis, as well as the processin
 \end{figure}
 
 \section{Human3.6M}
-Human3.6M is a large scale indoor dataset with 3.6 million human poses collected with 4 cameras at different angles using a highly accurate maker-based \ac{mocap} system. The dataset constitutes 15 diverse motion and actions such as eating, sitting, walking in various everyday scenarios such as, a hand in the pocket, talking over the phone, walking a dog etc. These actions are performed by 11 professional actors wearing a variety of realistic clothing. The datasets provides synchronised 2D and 3D data including full-body scans as shown in figure[\ref{fig:h36_modality}]. It also includes mixed-reality test data created using animated human models to cover huge variations of background, clothing, illumination, occlusion and camera angles.
+Human3.6M is a large scale indoor dataset with 3.6 million human poses collected with 4 cameras at different angles using a highly accurate maker-based \ac{mocap} system. The dataset constitutes 15 diverse motion and actions such as eating, sitting, walking in various everyday scenarios such as a hand in the pocket, talking over the phone, walking a dog, etc. These actions are performed by 11 professional actors wearing a variety of realistic clothing. The datasets provides synchronised 2D and 3D data including full-body scans as shown in figure[\ref{fig:h36_modality}]. It also includes mixed-reality test data created using animated human models to cover huge variations of background, clothing, illumination, occlusion, and camera angles.
 
 % TODO -- Add things related to 3D projection, depth ambiguity, rigid body alignment
 % \section{3D Geometry}
@@ -20,7 +20,7 @@ Human3.6M is a large scale indoor dataset with 3.6 million human poses collected
 % \subsection{Camera projection}
 \subsection{Depth Ambiguity and Camera Modeling}
 
-The projection of the poses in the thesis is using a simple pinhole camera model as illustrated in fig.\ref{fig:pinhole}. A unit camera model is assumed for the dataset and the poses are predicted around the origin and translated to a fix image plane. Thus the error in projection is not significant. 
+The projection of the poses in the thesis is using a simple pinhole camera model as illustrated in fig.\ref{fig:pinhole}. A unit camera model is assumed for the dataset and the poses are predicted around the origin and translated to a fixed image plane. Thus the error in projection is not significant. 
 
 \begin{figure}[!h]
     \centering
@@ -33,7 +33,7 @@ One of the main problems discussed in \ref{section:Related Work} is depth ambigu
 
 
 
-%FIXME protocol 2 or both protocls + scaling explanation
+%FIXME protocol 2 or both protocols + scaling explanation
 
 
 \begin{figure}[!h]
@@ -62,7 +62,7 @@ One of the main problems discussed in \ref{section:Related Work} is depth ambigu
 
 \section{Processing}
 
-The methods explored by this thesis would require only images, 2D and 3D human pose from the dataset. The following are the pre-processing steps for the 2D and 3D poses.
+The methods explored by this thesis would require only images, 2D, and 3D human pose from the dataset. The following are the pre-processing steps for the 2D and 3D poses.
 
 
 \begin{figure}[!h]
@@ -73,7 +73,7 @@ The methods explored by this thesis would require only images, 2D and 3D human p
 \end{figure}
 
 
-The 3D pose in the dataset that are obtained from the marker-based \ac{mocap} are in a global reference frame. These poses using the camera parameters, are transformed into the camera coordinate frame. For the task of predicting 3D pose from either images or 2D pose, it is unrealistic to directly estimate all the joints of the pose in a global frame. So the first step of processing would be to zero the pose w.r.t the root joint say, Pelvis. As the root is always zero, we remove it so we do not have to learn the constant joint. Removing Pelvis, 16 out of the 17 joints or keypoints remain. The 3D pose is then normalized with the mean and standard deviation of the entire training and validation poses respectively.
+The 3D pose in the dataset that is obtained from the marker-based \ac{mocap} is in a global reference frame. These poses using the camera parameters are transformed into the camera coordinate frame. For the task of predicting 3D pose from either images or 2D pose, it is unrealistic to directly estimate all the joints of the pose in a global frame. So the first step of processing would be to zero the pose w.r.t the root joint say, Pelvis. As the root is always zero, we remove it so we do not have to learn the constant joint. Removing Pelvis, 16 out of the 17 joints or keypoints remain. The 3D pose is further scaled in down so that the distance between the root and the head is 1. This results in numerical stability during training.
 
 \begin{figure}[h]
     \centering
@@ -82,11 +82,10 @@ The 3D pose in the dataset that are obtained from the marker-based \ac{mocap} ar
     \label{fig:h36_poses}
 \end{figure}
 
-The 2D pose which is obtained from the 3D pose, is also in the camera coordinate frame. The 2D pose is not zeroed as the cameras used to capture the data are not orthogonal but are perspective cameras. Zeroing the root of the 2D would eliminate the perspective information that could be important to estimate the 3D pose. The experiments to test the importance of that information is yet to be done. The root of the 2D pose is however removed to remain consistent with the 3D pose. Similar to the 3D, the 2D pose is also normalized. An image sample from the dataset with its corresponding 2D and 3D pose before normalization are illustrated in the figure[\ref{fig:h36_poses}].
+The 2D pose which is obtained from the 3D pose, is also in the camera coordinate frame. The 2D pose is also zeroed and scaled so that the distance between the root and head is 1/c units. Where c is a constant distance at which image place is fixed. As a unit camera or camera with unit focal length is assumed the projection of unit 3D pose onto a plane at a fixed distance 1/c units. The root of the 2D pose is however removed to remain consistent with the 3D pose. An image sample from the dataset with its corresponding 2D and 3D pose is illustrated in the figure[\ref{fig:h36_poses}].
 
 % TODO update - experiments are yet to be done
 % TODO link MPJPE to its explanation in other chapter or sections
 
-The estimated poses from the networks that are trained on normalized poses are denormalized to the original scale using the same mean and standard deviation. This postprocessing step is required for getting the distance between prediction and ground truth keypoints in understandable units like millimeters. It is also necessary to denormalize for visualizing the poses, as poses normalized over all the keypoints appear heavily skewed and distorted.
-
+The estimated poses from the networks that are trained on downscaled poses are upscaled to the original size using for valuation. This postprocessing step is required for getting the distance between prediction and ground truth keypoints in true units of millimeters.
 
