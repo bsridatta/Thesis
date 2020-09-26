@@ -8,7 +8,7 @@
 		"files.autoSave": "afterDelay",
 		"files.autoSaveDelay": 300000,
 		"latexCompile.mainFile": "/home/datta/lab/Thesis/Main.tex",
-		"workbench.colorTheme": "GitHub Dark"
+		"workbench.colorTheme": "Visual Studio Dark"
 	},
 	"latex-workshop.synctex.path": "/usr/bin/synctex",
 	"latex-workshop.latex.tools": [

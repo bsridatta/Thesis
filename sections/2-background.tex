@@ -13,7 +13,7 @@ Autoencoders are a variant of \acp{ann}, which are designed to learn an identity
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=0.4]{figures/ae_arch.png}
+    \includegraphics[scale=0.4]{figures/arch/ae_arch.png}
     \caption{Illustration of autoencoder architecture.}
     \label{fig:ae_arch}
 \end{figure}
@@ -29,7 +29,7 @@ The idea of an autoencoder dates back to the '80s proposed as a method for pre-t
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=0.2]{figures/vae_arch.png}
+    \includegraphics[scale=0.2]{figures/arch/vae_arch.png}
     \caption{Illustration of Variational Autoencoder architecture.}
     \label{fig:vae_arch}
 \end{figure}
@@ -93,7 +93,7 @@ A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As d
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=0.4]{figures/gan_arch.png}
+    \includegraphics[scale=0.4]{figures/arch/gan_arch.png}
     \caption{Illustration of GAN architecture. G is the generator network and D is the discriminator network.}
     \label{fig:gan_arch}
 \end{figure}
@@ -128,10 +128,10 @@ At global optimality $p_{g}=p_{r}$ and for a given generator $G$, the discrimina
     \end{aligned}
 \end{equation}
 
-The \ac{JSD} between two distributions is always non-negative and will be equal to zero only when both the distributions are eqaual \cite{js_divergence}. As we derived in Eq. \ref{eqn:c_of_g} above, the best value of $C$ i.e $-\log 4$ is possible only when $p_{g}=p_{r}$. It is hard to stabilize the \ac{gan}'s minimax game \cite{martin2017principled}. It requires carefully tuned hyperparameters to maintain an equilibrium between the two players. Failing to find the proper balance betweem the networks leads to the problem of \textit{Non-Convergence}, where the training oscillates and never converge. When the generator is not strong enough and learns to produce samples that fool the discriminator, it eventually would restrict itself to only learn to produce such samples. This problem is refered to as \textit{Mode Collapse} \cite{commonganprobs}. There are many hacks as well as principled approachs that are formualated to handle these problems with considerable success \cite{openaigan2wgan}.
+The \ac{JSD} between two distributions is always non-negative and will be equal to zero only when both the distributions are equal \cite{js_divergence}. As we derived in Eq. \ref{eqn:c_of_g} above, the best value of $C$ i.e $-\log 4$ is possible only when $p_{g}=p_{r}$. It is hard to stabilize the \ac{gan}'s minimax game \cite{martin2017principled}. It requires carefully tuned hyperparameters to maintain an equilibrium between the two players. Failing to find the proper balance between the networks leads to the problem of \textit{Non-Convergence}, where the training oscillates and never converge. When the generator is not strong enough and learns to produce samples that fool the discriminator, it eventually would restrict itself to only learn to produce such samples. This problem is referred to as \textit{Mode Collapse} \cite{commonganprobs}. There are many hacks as well as principled approaches that are formulated to handle these problems with considerable success \cite{openaigan2wgan}.
 
 \subsection{WGAN}
-\acp{wgan} is a variant of \acp{gan}, where the second network is a critic that scores the samples on how real they look rather than a discriminator that predicts binary labels of 1 and 0 for real or fake. \ac{wgan} use 1-Wasserstein distance \cite{wasserstein_metric_2020} or \ac{emd} instead of the \ac{jsd} used in the standard discrimantor based \ac{gan}. Since the Wasserstein distance is non-evaluative, a modified version Eq. \ref{eqn:wasserstein_loss} of it is proposed as the loss function in \cite{soumith2017wasserstein}. Where $f$ being the critic network parmetrized by $w$ while clipping the weights to satisfy Lipschitz constraint.
+\acp{wgan} is a variant of \acp{gan}, where the second network is a critic that scores the samples on how real they look rather than a discriminator that predicts binary labels of 1 and 0 for real or fake. \ac{wgan} use 1-Wasserstein distance \cite{wasserstein_metric_2020} or \ac{emd} instead of the \ac{jsd} used in the standard discriminator based \ac{gan}. Since the Wasserstein distance is non-evaluative, a modified version Eq. \ref{eqn:wasserstein_loss} of it is proposed as the loss function in \cite{soumith2017wasserstein}. Where $f$ being the critic network parametrized by $w$ while clipping the weights to satisfy Lipschitz constraint.
 
 \begin{equation} \label{eqn:wasserstein_loss}
     \begin{aligned}[b]
@@ -151,19 +151,45 @@ The \ac{JSD} between two distributions is always non-negative and will be equal 
 %FIXME explain proeprly
 % Where $\gamma \sim \Pi\left(P_{r}, P_{g}\right)$ is the collecetion of all possible joint distributions of $p_r$ and $p_g$. Adn for all the combinations the distance between the real sample$x$ and the generated sample $x^\prime$ can be calculated.   
 
-The fundemental goal of \acp{gan} is to minimize the distribution between the real and the generated distribution. This could be measured used either of \ac{kld}, \ac{jsd}, \ac{emd} or Wasserstein distance, the main difference being their impact on the convergence of these distributions. The interesting feature of Wasserstein distance is that it is continuous and differentiable. Using this distance the critic can train till optimality while having realiable gradient throughout the training. Hence the critic in \ac{wgan} does not have the saturation and vanishing gradient problems that exist in standard \acp{gan}. Due to continous and clean gradients, the training is significantly stable and less sentive to hyperparameters and model architecture. With \ac{wgan} the mode collapse problem is also significantly reduced. When it comes to practice, the most important problem that hinders training \acp{gan} is that there is no correlation of the quality of the genrated data say, images and the loss function. However, \ac{wgan} try to converge the distributions while lowering the generation loss and considerable relation between the loss and the quality of generations can be observed. \ac{wgangp} \cite{wgangp} is an improved \ac{wgan} that uses gradient penalty to enforce Lipschitz constraint.
+The fundamental goal of \acp{gan} is to minimize the distribution between the real and the generated distribution. This could be measured used either of \ac{kld}, \ac{jsd}, \ac{emd} or Wasserstein distance, the main difference being their impact on the convergence of these distributions. The interesting feature of the Wasserstein distance is that it is continuous and differentiable. Using this distance the critic can train till optimality while having a reliable gradient throughout the training. Hence the critic in \ac{wgan} does not have the saturation and vanishing gradient problems that exist in standard \acp{gan}. Due to continuous and clean gradients, the training is significantly stable and less sensitive to hyperparameters and model architecture. With \ac{wgan} the mode collapse problem is also significantly reduced. When it comes to practice, the most important problem that hinders training \acp{gan} is that there is no correlation of the quality of the generated data say, images and the loss function. However, \ac{wgan} try to converge the distributions while lowering the generation loss and considerable relation between the loss and the quality of generations can be observed. \ac{wgangp} \cite{wgangp} is an improved \ac{wgan} that uses gradient penalty to enforce Lipschitz constraint.
 
 
 % TODO -- add the theory of all concepts VAEs NSFRM etc
 \subsection{Hybrids - VAEGAN}
 % TODO 
-While the \acp{vae} learn the latent space of the data very efficiently, the generative capabilities are limited in comparision to \acp{gan}. In the case of iamge generations, \acp{vae} usually generate blurry images. While well trained \ac{gan} learn to generate photorealistic images. Though the task of the discriminator in \acp{gan} is to only learn what is real and what is fake, it implicitly learns rich similarity metric in order do so \cite{autoencoding_beyond_pixels}. The idea of a \ac{vae}-\ac{gan} is to exploit this ability of \acp{gan} as a learning metric for \acp{vae} and the abilty of \acp{VAE} to learn dense latent representation of the data. Taking the example of images again, element=wise errors are very poor similarity metric as small deviation in a high level feature, like eyebrow or head rotation would lead to high error as the pixel dispacement propogates through hge parts of the image. These shifts in reality are plausible and realistic, probably indistingusable for the human eye. Using the discriminator as a similar metric would address this problem as the error would be low for realistic deviations of features comapred to unrealistic shifts say, the noise being upside down.
+While the \acp{vae} learn the latent space of the data very efficiently, the generative capabilities are limited in comparison to \acp{gan}. In the case of image generations, \acp{vae} usually generate blurry images. While well trained \ac{gan} learn to generate photorealistic images. Though the task of the discriminator in \acp{gan} is to only learn what is real and what is fake, it implicitly learns rich a similarity metric in order do so \cite{autoencoding_beyond_pixels}. The idea of a \ac{vae}-\ac{gan} is to exploit this ability of \acp{gan} as a learning metric for \acp{vae} and the ability of \acp{vae} to learn dense latent representation of the data. 
 
+Taking the example of images again, element-wise errors are very poor similarity metric as a small deviation in a high-level feature, like eyebrow or head rotation would lead to high error as the pixel displacement propagates through huge parts of the image. These shifts, in reality, are plausible and realistic, probably indistinguishable for the human eye. Using the discriminator as a similar metric would address this problem as the error would be low for realistic deviations of features compared to unrealistic shifts say, the noise being upside down. This can be achieved by replacing the element-wise loss of the \ac{vae} Eq. \ref{eqn:vae_loss} with the hidden representation $D_{l}(x)$ of an intermediate layer $l$ in the discriminator that would correspond to the hidden similarity metric. The Gaussian distribution for $D_{l}(x)$ is :
 
-from the learned features representations from \acp{gan}, we can use it as the similarity metric without requiring labels for element-wise similarity metric, cite first v gan paper \cite{autoencoding_beyond_pixels}.
+% TODO use operator anem for D, G and functions
+\begin{equation} \label{eqn:gan_similarity}
+    \begin{aligned}[b]
+        p\left(D_{l}(x) | z\right)=\mathcal{N}\left(D_{l}(x) | D_{l}(\tilde{x}), I\right)
+    \end{aligned}
+\end{equation}
 
-many ways to improe gans \cite{openaigan2wgan}
+Where, $\tilde{x}$ is the generated sample from the \ac{vae}'s decoder $p$. $D_{l}(tilde{x})$ is the mean of the Gaussian distribution and $I$ is the identity covariance. Replacing this as the similarity metric in \ref{eqn:vae_loss}, we get the new $\mathcal{L}_{\text {recon}}$ :
 
+\begin{equation} \label{eqn:vaegan_recon}
+    \begin{gathered}[b]
+        \mathcal{L}_{\text {recon}}=-\mathbb{E}_{q(z | x)} \log p\left(D_{l}(x) | z\right)
+    \end{gathered}
+\end{equation}
+
+$\mathcal{L}_{\text {recon}}$ which uses the $l^{th}$ layer of the discriminator is only the metric for the \ac{vae}, the \ac{vae}-\ac{gan} is trained on a triplet loss \ref{eqn:vaegan_loss} with $\mathcal{L}_{\text GAN}$ from \ref{eqn:gan_loss} as a \textit{style error}. Here the generator model is the same as the decoder of the \ac{vae} as it maps from $z$ to $x$ just like $G$.
+
+\begin{equation} \label{eqn:vaegan_loss}
+    \begin{gathered}[b]
+        \mathcal{L}_{\mathrm{VAE}}= \mathcal{L}_{\text {recon}} +\mathcal{L}_{\text {prior }} + \mathcal{L}_{\text {GAN}}
+    \end{gathered}
+\end{equation}
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[scale=0.35]{figures/arch/vae_gan_loss_graph.png}
+    \caption{Illustration of the data flow and the loss of \ac{vae}-\ac{gan}. Image Source \cite{autoencoding_beyond_pixels}}
+    \label{fig:vaegan_loss_graph}
+\end{figure}
 
 %FIXME
 

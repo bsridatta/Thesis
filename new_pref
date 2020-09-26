@@ -1,0 +1,185 @@
+{
+    /////////////////         VSCODE            ///////////////////////////
+    "workbench.sideBar.location": "left",
+    "workbench.activityBar.visible": true,
+    // "workbench.colorTheme": "Eva Light Bold",
+    "files.autoSave": "afterDelay",
+    "window.zoomLevel": 0,
+    /////////////////         PYTHON          ///////////////////////
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "python.showStartPage": false,
+    "python.linting.pylintArgs": [
+        "--max-line-length",
+        "100",
+        "--aggressive"
+    ],
+    "python.formatting.autopep8Args": [
+        "--max-line-length",
+        "100"
+    ],
+    //////////////////         TERMINAL       ////////////////////////
+    "editor.fontFamily": "'Menlo-for-Powerline', Menlo-for-Powerline, 'Droid Sans Mono', 'monospace', 'Droid Sans Fallback', 'MesloLGM Nerd Font', Droid Sans Mono for Powerline, 'Droid Sans Mono for Powerline'",
+    "terminal.integrated.fontFamily": "Droid Sans Mono for Powerline",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "terminal.integrated.inheritEnv": false,
+    // "terminal.integrated.shell.osx": "/bin/zsh",
+    ///////////////////        LEETCODE         /////////////////////////
+    "leetcode.workspaceFolder": "/home/datta/.lc",
+    "leetcode.defaultLanguage": "python3",
+    "leetcode.hint.configWebviewMarkdown": false,
+    "leetcode.hint.commentDescription": false,
+    "leetcode.hint.commandShortcut": false,
+    "C_Cpp.updateChannel": "Insiders",
+    ////////////////////         IPYNB        //////////////////////
+    "python.dataScience.sendSelectionToInteractiveWindow": false,
+    "python.dataScience.askForKernelRestart": false,
+    "python.dataScience.runStartupCommands": [
+        "%config IPCompleter.use_jedi = False"
+    ],
+    /////////////////////       LATEX        /////////////////////
+    // "latex-workshop.latex.outDir": "./output/",
+    "latex-workshop.synctex.path": "/usr/bin/synctex",
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "-outdir=%OUTDIR%",
+                "-aux-directory=out",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-aux-directory=out",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "%DOCFILE%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-aux-directory=out",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "biber",
+            "command": "biber",
+            "args": [
+                "%DOCFILE%"
+            ]
+        },
+        {
+            "name": "makeglossaries",
+            "command": "makeglossaries",
+            "args": [
+                "%DOCFILE%"
+            ]
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "xelatex ➞ biber ➞ xelatex",
+            "tools": [
+                "xelatex",
+                "biber",
+                "xelatex",
+                "xelatex"
+            ]
+        },
+    ],
+    "latex-workshop.latex.autoClean.run": "onBuilt",
+    "latex-workshop.latex.clean.fileTypes": [
+        "*/*.aux",
+        "*.aux",
+        "*.bbl",
+        "*.bcf",
+        "*.toc",
+        "*.log",
+        "*.blg",
+        "*.out",
+        "*.xml"
+    ],
+    // "latex-workshop.latex.watch.files.ignore": [
+    // default entries:
+    // "/sections/*"
+    // ],
+    // "latex-workshop.docker.enabled": true,
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "latex-workshop.synctex.afterBuild.enabled": true,
+    "latex-workshop.view.pdf.viewer": "tab",
+    ///////////////////        Grammarly         ///////////////////////    
+    "grammarly.userWords": [
+        "PoseNet",
+        "keypoints",
+        "labelling",
+        "learnt",
+        "poselifter",
+        "repnet"
+    ],
+    "grammarly.severity": {
+        "Fragment": 4 // Sets Fragment category to Warning.
+    },
+    "python.dataScience.alwaysTrustNotebooks": true,
+    "todo-tree.highlights.defaultHighlight": {
+        "icon": "pulse",
+        "iconColour": "yellow",
+        "type": "text",
+        "opacity": 80,
+    },
+    "todo-tree.highlights.customHighlight": {
+        "FIXME": {
+            "foreground": "white",
+            "background": "#E25822",
+            "iconColour": "#E25822",
+            "gutterIcon": true
+        },
+        "TODO": {
+            "icon": "zap",
+            "foreground": "white",
+            "background": "#00e673",
+            "iconColour": "#00e673",
+            "gutterIcon": true,
+        },
+        "CITE": {
+            "icon": "clock",
+            "foreground": "white",
+            "background": "#00e673",
+            "iconColour": "#00e673",
+            "gutterIcon": true,
+        },
+    },
+    "todo-tree.regex.regex": "((//|#|<!--|;|%|/\\*)\\s*($TAGS)|^\\s*- \\[ \\])",
+    "todo-tree.filtering.excludeGlobs": [
+        "**.py"
+    ],
+    "workbench.colorTheme": "Visual Studio Dark",
+    "workbench.statusBar.visible": true
+}
