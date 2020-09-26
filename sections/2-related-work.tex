@@ -1,14 +1,16 @@
 % FIXME -- polish related works
 
+% \section{Research Area Introduction}
 \section{Research Area Introduction}
+
 \label{sec:Research area introduction}
 
 %FIXME useless next lines
-In this section, the details of various appraoches and the state-of-the-art in 3D \ac{hpe} are presented along with some works in the sibling task of hand pose estimation. The aim of this section is to give an overview of how the problem of 3D \ac{hpe} is tackled in the literature.
+In this section, the details of various approaches and the \ac{sota} in 3D \ac{hpe} are presented along with some works in the sibling task of hand pose estimation. The aim of this section is to give an overview of how the problem of 3D \ac{hpe} is tackled in the literature.
 
 \subsection{Pose from images}
 
-Numerous works try to estimate 3D human poses from 2D \ac{rgb} images or 2D joint confidence heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo}. Most of these methods follow a cascading approach, where an explicit intermediate representation of 2D pose or 2D heatmaps is used.
+Numerous works try to estimate 3D human poses from 2D \ac{rgb} images or 2D joint confidence heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo, ordinalranking}. Most of these methods follow a cascading approach, where an explicit intermediate representation of 2D pose or 2D heatmaps is used.
 
 For example, \cite{CameraDistanceAware} proposes a general framework with 3 networks. Human detection Network, RootNet, PoseNet. Where the human
 detection network predicts the region the human is in an image. The RootNet localizes the human's root in the global 3D world. And, the PoseNet
@@ -162,10 +164,20 @@ cascading approaches. Making it more efficient and fast for both training
 and inference without compromising the modularity offered by cascading
 approaches.
 
-\section{Related Work}
+%TODO add exemplar methods
+
+\section{Related Work - A closer look}
 \label{section:Related Work}
 
-In this section, works that are directly related to the thesis are discussed in more detail.
+In this section, works that are directly related to the thesis are discussed in more detail. Some are the best examples of their kind and have already been discussed thoroughly. The basic idea of the thesis is to learn 3D \ac{hpe} just from 2D pose data without using 3D ground truth in any shape or form. Thus developing a method that can exploit the huge amounts of 2D pose data that can be generated using state of the art 2D pose networks on diverse images from the real world. The following approaches uses weakly supervised or unsupervised approaches to accomplish the same. These serve as the inspiration for many of the choices taken in this thesis and also help understand the possibilities of reducing the need for explicit 3D supervision.
 
+% FIXME better cite instead of just using numbers
+To the best of knowledge acquired during the period of the thesis, \cite{can3dpose, amazon1, unsupervisedAdversarial, c3dpo} are the main approaches that do not use 3D supervision in any way. While \cite{repnet, weaklymultiple} are among the main appraoches the use 3D supervision to train the discriminator alone. The approaches that are not mentioned are either the approaches the above mentioned are built up or have been missed during the literature study.
 
+\cite{unsupervisedAdversarial, can3dpose, amazon1} can be viewed as a series of approaches that are built on one another in the same order. They take 2D poses as the input and learn to predict the depth offset for each joint to reconstruct 3D. Out of the three Ching et al. \cite{amazon1}, using the plane invariance, geometric self-supervision and adversarial learning as discussed in \ref{sec:Research area introduction}, achieves the \ac{sota} results compared to fully supervised methods and also present ways to use domain adaptation network, temporal consistancy to further integrate more datasets and improve the performance. Thus directly address the hudles of scaling the 3D \ac{hpe} network to the real world. However, they also ackwoldge the fact that most of the prediction made by \ac{sota} 2D \ac{hpe} model on real world images had missing joints. Since the proposed approaches only predict the depth of every joint, the error from the 2D input pose is directly propogated to the 3D prediction. More importantly, it is not possible to use most of the data that is generated from 2D pose models. Hence it is very crutial to handle the problem of \textit{\textbf{missing joints}} to truly unlock the potential of unsupervised learning. 
 
+Wandt et al. \cite{repnet} also discused in \ref{sec:Research area introduction} proposes an architecture that learns to predict the whole 3D pose, while also learning the camera parameters that are used to project the predict 3D to 2D. The idea behind the camera network is to learn the view angle given pose to generalize to unknown cameras. The pose network learns to converge the predcited 2D reprojections, while using a \ac{gan} trained on \textit{\textbf{3D ground truth labels}} to supervise the predicted 3D pose. Though there is no direct error propogation from 2D input to 3D, it is important to note the problem of missing joints is not yet addressed. 
+
+However, there another fundemental problem still persists. As mentioned in \ref{sec:background}, 2D-to-3D pose lifting is an ill-posed-inversed problem due to \textit{\textbf{depth ambiguity}} as there are multiple plausible 3D poses that gives the same 2D projection. Addressing this problem, Chen Li et al. \cite{multiplehypo} proposes a varaitional inference model inspired by the architecuture of Wandt et al. \cite{repnet} that takes 2D pose along with a \textit{latent code} to produce 3D pose. The predicted 3D pose varies according to the latent code while maintaining the same 2D reprojection. This varaitional inference of 3D pose addresses both the problems of depth ambiguity and missing joints. 
+
+The above approach has been further improved by Chen Li et al. in \cite{weaklymultiple} to leverage adversarial training using \ac{gan} trained using 3D ground truth. Though there is no direct supervision on 3D pose, 3D data is still required to train this network. It is important to note that in the case where large amount of 3D ground truth poses are available, they can be easily exploited to generate 2D poses of large volume and it is not practical to get 3D poses in the wild to scale the models. In this thesis we try to address all the forementioned problems.
