@@ -155,6 +155,7 @@ The fundamental goal of \acp{gan} is to minimize the distribution between the re
 
 
 \subsection{Hybrids - VAEGAN}
+\label{subsec:vaeganhybrid}
 While the \acp{vae} learn the latent space of the data very efficiently, the generative capabilities are limited in comparison to \acp{gan}. In the case of image generations, \acp{vae} usually generate blurry images. While well trained \ac{gan} learn to generate photorealistic images. Though the task of the discriminator in \acp{gan} is to only learn what is real and what is fake, it implicitly learns rich a similarity metric in order do so \cite{autoencoding_beyond_pixels}. The idea of a \ac{vae}-\ac{gan}, illustrated in fig. \ref{fig:vae_gan_arch}, is to exploit this ability of \acp{gan} as a learning metric for \acp{vae} and the ability of \acp{vae} to learn dense latent representation of the data.
 
 \begin{figure}[!h]
