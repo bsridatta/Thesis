@@ -1,14 +1,13 @@
 \chapter{Theoretical Background}
 \label{chap:background}
 
-% \thispagestyle{fancy}
 This chapter provides the theory essential to understand the major components of the thesis. Prior knowledge of Artificial Neural Networks \cite{theory_ann_wiki} and fundamental concepts of Deep Learning \cite{theory_dl} is assumed.
 
 \section{Preliminary Concepts}
 \label{sec:Preliminary}
 
 \subsection{Autoencoder}
-Autoencoders are a variant of \acp{ann}, which are designed to learn an identity function that generates the input data sample back. The network has a bottleneck($z$), dividing the network into two parts, an encoder and a decoder as illustrated in fig[\ref{fig:ae_arch}]. The first network learns to compress the high dimensional input data to a low dimensional intermediate representation, \textit{latent representation}, at the bottleneck. While the second network learns to reconstruct the data from the latent distribution. Thus learning to efficiently compress the data.
+Autoencoders are a variant of \acp{ann}, which are designed to learn an identity function that generates the input data sample back. The network has a bottleneck($z$), dividing the network into two parts, an encoder and a decoder as illustrated in Fig \ref{fig:ae_arch}. The first network learns to compress the high dimensional input data to a low dimensional intermediate representation, \textit{latent representation}, at the bottleneck. While the second network learns to reconstruct the data from the latent distribution. Thus learning to efficiently compress the data.
 
 \begin{figure}[!h]
     \centering
@@ -25,7 +24,7 @@ The idea of an autoencoder dates back to the '80s proposed as a method for pre-t
 % FIXME spell check
 \subsection{Variational Autoencoders}
 \label{subsec:vae}
-\acp{vae}, unlike standard autoencoders, learn to encode a data sample $x$ as a probabilistic distribution rather than a deterministic value for the latent attribute \cite{jeremy_jordan_2018}. The encoder $q$ produces the probabilistic distribution by predicting two vectors that represent the mean $\mu$ and variance $\sigma$ of distribution for each of the latent attributes of $x$. And the decoder $p$ takes a random sample $z$ from this distribution to recover the sample as illustrated in fig[\ref{fig:vae_arch}].
+\acp{vae}, unlike standard autoencoders, learn to encode a data sample $x$ as a probabilistic distribution rather than a deterministic value for the latent attribute \cite{jeremy_jordan_2018}. The encoder $q$ produces the probabilistic distribution by predicting two vectors that represent the mean $\mu$ and variance $\sigma$ of distribution for each of the latent attributes of $x$. And the decoder $p$ takes a random sample $z$ from this distribution to recover the sample as illustrated in Fig \ref{fig:vae_arch}.
 
 \begin{figure}[!h]
     \centering
@@ -59,7 +58,7 @@ The first term is the above equation makes sure the reconstruction of the data s
     \end{gathered}
 \end{equation}
 
-However, the reconstruction error in the loss requires sampling $z$, which is a stochastic process and it is not possible to perform backpropagation. To address this problem, the \textbf{\textit{reparametrization trick}} is used. Where $\epsilon$ is randomly sampled from a unit gaussian distribution $\mathcal{N}(0,1)$ and is used to scale the variance $\sigma$ of the latent distribution represented by the encoder $q_{\theta}(z|x)$. The sum of the mean $\mu$ and the scaled variance $\sigma \odot \epsilon$ gives $z$, which is now differentiable while being stochastic as illustrated in the fig[\ref{fig:reparametrization_trick}].
+However, the reconstruction error in the loss requires sampling $z$, which is a stochastic process and it is not possible to perform backpropagation. To address this problem, the \textbf{\textit{reparametrization trick}} is used. Where $\epsilon$ is randomly sampled from a unit gaussian distribution $\mathcal{N}(0,1)$ and is used to scale the variance $\sigma$ of the latent distribution represented by the encoder $q_{\theta}(z|x)$. The sum of the mean $\mu$ and the scaled variance $\sigma \odot \epsilon$ gives $z$, which is now differentiable while being stochastic as illustrated in the Fig \ref{fig:reparametrization_trick}.
 
 \begin{figure}[!h]
     \centering
@@ -69,7 +68,7 @@ However, the reconstruction error in the loss requires sampling $z$, which is a 
     \label{fig:reparametrization_trick}
 \end{figure}
 
-Hence the learned latent space of a \ac{vae} is continuous while that of a standard autoencoder is discrete and clustered. As the decoder of the \ac{vae} is trained to generate data from this continuous space, it can generate realistic data by randomly sampling from this infinitely large latent space as illustrated in the fig[\ref{fig:vae_latent_attribute}]. This also enables smooth interpolation of data produced from one point in the latent space to another. In addition to that, we can also perform arithmetics in vector space, similar to the popular example from Natural Language Processing, $King - Man + Women = Queen$ but on much higher dimensional embedding space.
+Hence the learned latent space of a \ac{vae} is continuous while that of a standard autoencoder is discrete and clustered. As the decoder of the \ac{vae} is trained to generate data from this continuous space, it can generate realistic data by randomly sampling from this infinitely large latent space as illustrated in the Fig \ref{fig:vae_latent_attribute}. This also enables smooth interpolation of data produced from one point in the latent space to another. In addition to that, we can also perform arithmetics in vector space, similar to the popular example from Natural Language Processing, $King - Man + Women = Queen$ but on much higher dimensional embedding space.
 
 \begin{figure}[!h]
     \centering
@@ -89,7 +88,7 @@ A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As d
 \end{equation}
 
 \subsection{Generative Adversarial Networks}
-\ac{gan} is an \ac{ann} that is used for generative tasks to make the prediction \textit{realistic}. A \ac{gan} is a combination of 2 networks namely, the generator $G$ and the discriminator $D$. The generator learns to map a random sample or say, noise $Z$ drawn from a latent distribution with density $p_{z}$ to a higher dimensional data distribution with density $p_{g}$. Where the discriminator takes the output of the generator and tries to differentiate real data samples $x$ from the fakes which do not belong to the real distribution $p_{r}$  as illustrated in the fig[\ref{fig:gan_arch}].
+\ac{gan} is an \ac{ann} that is used for generative tasks to make the prediction \textit{realistic}. A \ac{gan} is a combination of 2 networks namely, the generator $G$ and the discriminator $D$. The generator learns to map a random sample or say, noise $Z$ drawn from a latent distribution with density $p_{z}$ to a higher dimensional data distribution with density $p_{g}$. Where the discriminator takes the output of the generator and tries to differentiate real data samples $x$ from the fakes which do not belong to the real distribution $p_{r}$  as illustrated in the Fig \ref{fig:gan_arch}.
 
 \begin{figure}[!h]
     \centering
@@ -164,8 +163,7 @@ While the \acp{vae} learn the latent space of the data very efficiently, the gen
     \caption{Illustration of the \ac{vae}-\ac{gan} architecture}
     \label{fig:vae_gan_arch}
 \end{figure}
-
-
+0
 Taking the example of images again, the element-wise error is a very poor similarity metric as a small deviation in a high-level feature, like eyebrow or head rotation would lead to high error as the pixel displacement propagates through huge parts of the image. These shifts, in reality, are plausible and realistic, probably indistinguishable for the human eye. Using the discriminator as a similar metric would address this problem as the error would be low for realistic deviations of features compared to unrealistic shifts say, the noise being upside down. This can be achieved by replacing the element-wise loss of the \ac{vae} Eq. \ref{eqn:vae_loss} with the hidden representation $D_{l}(x)$ of an intermediate layer $l$ in the discriminator that would correspond to the hidden similarity metric. The Gaussian distribution for $D_{l}(x)$ is :
 
 % TODO use operator name for D, G, and functions
