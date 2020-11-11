@@ -15,7 +15,7 @@ The different poses during the training are presented in fig. \ref{fig:sample_pr
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=0.4]{figures/sample_pred.png}
+    \includegraphics[scale=0.4]{figures/results/sample_pred.png}
     \caption{Visualization of the inputs and outputs of the model}
     \label{fig:sample_pred}
 \end{figure}
@@ -26,7 +26,7 @@ The discriminator is trained for 3 iterations for one iteration of the \ac{vae}.
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=0.2]{figures/bad_samples.png}
+    \includegraphics[scale=0.2]{figures/results/bad_samples.png}
     \caption{(a) Prediction on hard poses with hih ambiguity. (b) Poses that can be improved with changes to data processing.}
     \label{fig:bad_samples}
 \end{figure}
@@ -35,7 +35,7 @@ Despite the \ac{mpjpe} being $\sim$ 68, the decoder generates many accurate 3D p
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=0.2]{figures/mpjpe_trend.png}
+    \includegraphics[scale=0.2]{figures/results/mpjpe_trend.png}
     \caption{MPJPE and PJPE trends during the training respectively}
     \label{fig:mpjpe_trends}
 \end{figure}
@@ -48,7 +48,7 @@ The visualization of 2D pose embedding in latent space after dimensionality redu
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{figures/umap.png}
+    \includegraphics[width=\textwidth]{figures/results/umap.png}
     \caption{UMAP Visualization of samples in latent space. The actions do not always directly related to the pose due to overlaps from one action to another. Better viewed in color and 200\% zoom}
     \label{fig:latentspace}
 \end{figure}

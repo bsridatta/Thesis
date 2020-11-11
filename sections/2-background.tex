@@ -12,7 +12,7 @@ Autoencoders are a variant of \acp{ann}, which are designed to learn an identity
 \begin{figure}[!h]
     \centering
     \includegraphics[scale=0.2]{figures/arch/ae_arch.png}
-    \caption{Illustration of autoencoder architecture.}
+    \caption{Illustration of autoencoder architecture. Image source \cite{deepimageprior}}
     \label{fig:ae_arch}
 \end{figure}
 
@@ -27,7 +27,7 @@ The idea of an autoencoder dates back to the '80s proposed as a method for pre-t
 \begin{figure}[!h]
     \centering
     \includegraphics[scale=0.2]{figures/arch/vae_arch.png}
-    \caption{Illustration of Variational Autoencoder architecture. Image source \cite{deepimageprior}}
+    \caption{Illustration of Variational Autoencoder architecture.}
     \label{fig:vae_arch}
 \end{figure}
 
@@ -60,8 +60,8 @@ However, the reconstruction error in the loss requires sampling $z$, which is a 
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=0.5]{figures/reparametrization_trick.png}
-    \includegraphics[scale=0.5]{figures/rep_trick.png}
+    \includegraphics[scale=0.5]{figures/background/reparametrization_trick.png}
+    \includegraphics[scale=0.5]{figures/background/reparametrization_trick_backprop.png}
     \caption{Comparising the data flow with and without reparametrization trick followed by the backprop calculation. Image source \cite{jeremy_jordan_2018}}
     \label{fig:reparametrization_trick}
 \end{figure}
@@ -70,7 +70,7 @@ Hence the learned latent space of a \ac{vae} is continuous, while that of a stan
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=0.4]{figures/vae_latent_attribute.png}
+    \includegraphics[scale=0.4]{figures/background/vae_latent_attribute.png}
     \caption{Probablistic distribution of latent attributes. Image source \cite{jeremy_jordan_2018}}
     \label{fig:vae_latent_attribute}
 \end{figure}
@@ -125,7 +125,7 @@ At global optimality $p_{g}=p_{r}$, and for a given generator $G$, the discrimin
     \end{aligned}
 \end{equation}
 
-The \ac{JSD} between two distributions is always non-negative and will be equal to zero only when both the distributions are equal \cite{js_divergence}. As we derived in Eqn. \ref{eqn:c_of_g} above, the best value of $C$ i.e $-\log 4$ is possible only when $p_{g}=p_{r}$. It is hard to stabilize the \ac{gan}'s minimax game \cite{martin2017principled}. It requires carefully tuned hyperparameters to maintain an equilibrium between the two players. Failing to find the proper balance between the networks leads to the problem of \textit{Non-Convergence}, where the training oscillates and never converge. When the generator is not strong enough and learns to produce samples that fool the discriminator, it eventually would restrict itself to only learn to produce such samples. This problem is referred to as \textit{Mode Collapse} \cite{commonganprobs}. There are many hacks as well as principled approaches that are formulated to handle these problems with considerable success \cite{openaigan2wgan}.
+The \ac{jsd} between two distributions is always non-negative and will be equal to zero only when both the distributions are equal \cite{js_divergence}. As we derived in Eqn. \ref{eqn:c_of_g} above, the best value of $C$ i.e $-\log 4$ is possible only when $p_{g}=p_{r}$. It is hard to stabilize the \ac{gan}'s minimax game \cite{martin2017principled}. It requires carefully tuned hyperparameters to maintain an equilibrium between the two players. Failing to find the proper balance between the networks leads to the problem of \textit{Non-Convergence}, where the training oscillates and never converge. When the generator is not strong enough and learns to produce samples that fool the discriminator, it eventually would restrict itself to only learn to produce such samples. This problem is referred to as \textit{Mode Collapse} \cite{commonganprobs}. There are many hacks as well as principled approaches that are formulated to handle these problems with considerable success \cite{openaigan2wgan}.
 
 \subsection{WGAN}
 \acp{wgan} is a variant of \acp{gan}, where the second network is a critic that scores the samples on how real they look rather than a discriminator that only predicts binary labels of 1 and 0 for real or fake. \ac{wgan} use 1-Wasserstein distance \cite{wasserstein_metric_2020} or \ac{emd} instead of the \ac{jsd} used in the standard discriminator based \ac{gan}. Since the Wasserstein distance is non-evaluative, a modified version Eqn. \ref{eqn:wasserstein_loss} of it is proposed as the loss function in \cite{soumith2017wasserstein}. Where $f$ being the critic network parameterized by $w$ while clipping the weights to satisfy Lipschitz constraint.
@@ -214,4 +214,4 @@ In the standard \ac{gan} training, samples from the prior $p(z)$ are passed to t
     \end{gathered}
 \end{equation}
 
-%FIXME LGAN is wrong
+%FIXME WGAN is wrong
