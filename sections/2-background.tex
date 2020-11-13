@@ -162,7 +162,7 @@ While the \acp{vae} learn the latent space of the data very efficiently, the gen
 \end{figure}
 
 Taking the example of images again, the element-wise error is a very poor similarity metric as a small deviation in a high-level feature, like eyebrow or head rotation would lead to high error as the pixel displacement propagates through huge parts of the image. These shifts, in reality, are plausible and realistic, probably indistinguishable for the human eye. Using the discriminator as a similar metric would address this problem as the error would be low for realistic deviations of features compared to unrealistic shifts say, the noise being upside down. This can be achieved by replacing the element-wise loss of the \ac{vae} Eqn. \ref{eqn:vae_loss} with the hidden representation $D_{l}(x)$ of an intermediate layer $l$ in the discriminator that would correspond to the hidden similarity metric. The Gaussian distribution for $D_{l}(x)$ is :
-
+    
 % TODO use operator name for D, G, and functions
 \begin{equation} \label{eqn:gan_similarity}
     \begin{aligned}[b]

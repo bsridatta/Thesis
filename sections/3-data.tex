@@ -65,13 +65,45 @@ One of the main problems discussed in \ref{section:Related Work} is depth ambigu
 The methods explored by this thesis would require only images, 2D, and 3D human pose from the dataset. The following are the pre-processing steps for the 2D and 3D poses.
 
 
-\begin{figure}[!h]
+% \begin{figure}[!h]
+%     \centering
+%     \includegraphics[scale=0.8]{figures/background/Procrustes_superimposition.png}
+%     \caption{Illustration of Procrustes Alignment. Image Source \cite{Procrustes}}
+%     \label{fig:procrustes}
+% \end{figure}
+
+\begin{figure}
     \centering
-    \includegraphics[scale=0.8]{figures/background/Procrustes_superimposition.png}
-    \caption{Illustration of Procrustes Alignment. Image Source \cite{Procrustes}}
+    \begin{subfigure}[b]{0.2\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/h36_viz/proc_raw.png}
+        \caption{$y=x$}
+        \label{fig:y equals x}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.2\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/h36_viz/proc_scale.png}
+        \caption{$y=3sinx$}
+        \label{fig:three sin x}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.2\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/h36_viz/proc_pos.png}
+        \caption{$y=5/x$}
+        \label{fig:five over x}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.2\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/h36_viz/proc_rot.png}
+        \caption{$y=5/x$}
+        \label{fig:five over x}
+    \end{subfigure}
+    \caption{Three simple graphs}
     \label{fig:procrustes}
 \end{figure}
-
 
 The 3D pose in the dataset that is obtained from the marker-based \ac{mocap} is in a global reference frame. These poses using the camera parameters are transformed into the camera coordinate frame. For the task of predicting 3D pose from either images or 2D pose, it is unrealistic to directly estimate all the joints of the pose in a global frame. So the first step of processing would be to zero the pose w.r.t the root joint say, Pelvis. As the root is always zero, we remove it so we do not have to learn the constant joint. Removing Pelvis, 16 out of the 17 joints or keypoints remain. The 3D pose is further scaled in down so that the distance between the root and the head is 1. This results in numerical stability during training.
 
