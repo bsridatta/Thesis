@@ -19,7 +19,7 @@ Human3.6M is a large scale indoor dataset with 3.6 million human poses collected
 
 % \subsection{Camera projection}
 \section{Depth Ambiguity and Camera Modeling}
-
+\label{depth_ambiguity_camera_modeling}
 The projection of the poses in the thesis is using a simple pinhole camera model as illustrated in fig.\ref{fig:pinhole}. A unit camera model is assumed for the dataset and the poses are predicted around the origin and translated to a fixed image plane. Thus the error in projection is not significant. 
 
 \begin{figure}[!h]
@@ -38,10 +38,21 @@ One of the main problems discussed in \ref{section:Related Work} is depth ambigu
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[scale=0.4]{figures/background/depthambi.png}
-    \caption{Illustration of depth ambiguity. (a) shows 2 of the infinite possible poses that result in the same 2D reprojection. Where (b) shows the same phenomenon for different focal legths
+    \begin{subfigure}[b]{0.6\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/background/depthambi.png}
+        
+    \end{subfigure}
+
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/h36_viz/multiple3d_per_2d.pdf}
+
+    \end{subfigure}
+
+    \caption{shows 2 of the infinite possible poses that result in the same 2D reprojection. Where (b) shows the same phenomenon for different focal legths
     Image Source \cite{poselifter}}
-    \label{fig:depthambi}
+    \label{fig:depth_ambiguity_cases}
 \end{figure}
 
 
