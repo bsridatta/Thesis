@@ -13,7 +13,7 @@ The results presented are after training the model for $\sim$ 1400 epochs on app
 
 The different poses during the training are presented in fig. \ref{fig:sample_pred}. The poses in pink are the ground truth while the ones in blue are the predictions. The poses refer to ground truth 2D, reconstruction 2D, reconstruction novel view, reconstruction 3D, and combined reconstruction and ground truth 3D after alignment. The same order is followed for the other visualization. 
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=0.4]{figures/results/sample_pred.png}
     \caption{Visualization of the inputs and outputs of the model}
@@ -24,7 +24,7 @@ One of the challenging parts is finding the optimal weights for each of the term
 
 The discriminator is trained for 3 iterations for one iteration of the \ac{vae}. The training is noise and the networks need to training for several hundreds of epochs before they tend to converge. The experiment which the results are from is trained over 1400 epochs but very slow improvements in the results are observed. At 1400 epochs the \ac{mpjpe} is $\sim$ 68 mm. This is far less than the current state of the art \cite{amazon1} with $\sim$ 40 mm. The results are believed to improve using \acp{wgan} as they offer better convergence. 
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=0.2]{figures/results/bad_samples.png}
     \caption{(a) Prediction on hard poses with hih ambiguity. (b) Poses that can be improved with changes to data processing.}
@@ -33,7 +33,7 @@ The discriminator is trained for 3 iterations for one iteration of the \ac{vae}.
 
 Despite the \ac{mpjpe} being $\sim$ 68, the decoder generates many accurate 3D poses that are almost indistinguishable for the human eye. The high number of outliers and lower performance on hard poses worsens the overall performance of the model. The graph on the left depicted in fig \ref{fig:mpjpe_trends} shows the slow and gradual decrease in \ac{mpjpe}. And the graph on the right shows the histogram of the \ac{pjpe} of each sample over time. This shows the model is unable to certain poses while it improves gradually on the rest. 
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=0.2]{figures/results/mpjpe_trend.png}
     \caption{MPJPE and PJPE trends during the training respectively}

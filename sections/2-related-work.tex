@@ -9,7 +9,7 @@ Numerous works try to estimate 3D human poses from 2D RGB images or 2D joint con
 
 For example, \cite{CameraDistanceAware} proposes a general framework with 3 networks as depicted in Fig \ref{fig:CameraDistanceAware}. Human detection Network, RootNet, PoseNet. Where the human detection network predicts the region the human is in an image. The RootNet localizes the human's root in the global 3D world. And, the PoseNet predicts the 3D pose of a single person relative to the root. Where the root is a fixed reference point of the human body say, pelvis.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{figures/background/cascading_arch.pdf}
     \caption{Pipeline of an absolute 3D human pose estimation network following a cascading approach \cite{CameraDistanceAware}, showing different neural networks such as DetectNet, RootNet and PoseNet that trained on specific subtasks to estiamte absolute 3D human pose.}
@@ -22,7 +22,7 @@ The advantage of such top-down frameworks is the possibility to divide the task 
 
 In contrast to the estimating pose from an image, Pose Lifting works such as \cite{poselifter,  amazon1, repnet, c3dpo, unsupervisedAdversarial}, focus on estimating 3D poses from 2D poses alone while assuming 2D poses from the \ac{sota} methods in 2D \ac{hpe}. This category follows the idealogy of cascading based approaches but restricts the study and discussion purely to lifting 2D to 3D pose. These methods include simple linear models as first described in \cite{MartinezHRL17} with a series of fully connected linear, batch normalization, dropout layers with residual connections  as illustrated in Fig \ref{fig:lifting_arch} to regress 3D pose effectively. These simple networks have enough capability to capture the features of the data as the input and output data are much smaller in dimensions as compared to RGB images.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{figures/background/lifting_arch.pdf}
     \caption{Architecture of the first deep learning based lifting appraoch proposed by Martinez \textit{et al.} \cite{MartinezHRL17}}
@@ -42,10 +42,10 @@ More deep learning based approaches such as \cite{weaklymultiple,multiplehypo,or
 
 Another interesting approach from Sharma \textit{et al.} \cite{ordinalranking}, presents a conditional \acl{vae} which takes a random sample from a normal distinguish as an input and 2D pose as a condition and outputs different 3D pose for different random samples given the same 2D pose. This approach also handles missing joints and provides variational inference. A evaluation technique is also proposed to rank each of the multiple hypotheses by scoring the poses based on joint-ordinal depth relations learnt from the images or by oracle score that access 3D ground truth to comptute the closest match as illustrated in Fig \ref{fig:ordinal_arch}.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{figures/background/ordinal_arch.pdf}
-    \caption{Illustration of modular framework that uses a Conditional \ac{vae} to estiamte multiple hypothesis for a given 2D pose as condition. The ordinal scoring learnt from joint-depth ordinal relations and the score obtained from the oracle that learns scores higher to poses closest to the ground truth pose are used rank to each of the predicted 3D pose.}
+    \caption{Illustration of modular framework from \cite{ordinalranking} that uses a Conditional \ac{vae} to estiamte multiple hypothesis for a given 2D pose as condition. The ordinal scoring learnt from joint-depth ordinal relations and the score obtained from the oracle that learns scores higher to poses closest to the ground truth pose are used rank to each of the predicted 3D pose.}
     \label{fig:ordinal_arch}
 \end{figure}
 
@@ -55,7 +55,7 @@ Recent work from Chen Li \textit{et al.} \cite{weaklymultiple} which is an impro
 \label{subsec:non_supervised_learning}
 The standard way to train 3D/2D \ac{hpe} is by minimizing the distance between the predicted 3D/2D pose and its corresponding 3D ground truth. The area of 2D \ac{hpe} is well established and matured with reliable systems deployed in the real world. This was made possible with the high volume of images from diverse settings and the reasonable ease of manual labeling of 2D poses. On the other hand, labeling 3D pose manually is not practical. Though single-person datasets such as Human3.6M \cite{H3.6}, Human Eva \cite{HumanEva} and, multi-person datasets such as CMU Panoptic \cite{cmuPanoptic} provide 3D pose ground truth, they are obtained using \ac{mocap} systems Fig[\ref{fig:h36_mocap}] which are only limited to indoors or cannot be directly adapted to outdoor environments where the majority of the use cases exist. It is also worth mentioning JTA (Joint Track Auto) dataset \cite{JTA} that is made using the GTA(Grand Theft Auto) game engine which is technically scalable with its own limitations. The datasets from simulations come with the difficulty of domain adaptation to be transferable to the real world.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[width=30mm]{figures/h36/h36_mocap.png}
     \caption{Image from Human3.6 Dataset \cite{H3.6} of subject wearing \ac{mocap} markers}
@@ -64,7 +64,7 @@ The standard way to train 3D/2D \ac{hpe} is by minimizing the distance between t
 
 To overcome this bottleneck, \cite{unsupervisedAdversarial} proposes unsupervised training of a generative adversarial network by projecting the predicted 3D pose back to 2D and minimizing its distance with the input 2D pose. And further training a discriminator to distinguish the real 2D pose from the projected poses as illustrated in Fig \ref{fig:adverserial_arch}. Thus removing the need for any explicit 3D annotations besides 2D pose that are either manually labeled or obtained using 2D \ac{hpe} models. RepNet \cite{repnet} trains an adversarial network without 2D-3D correspondences in a weakly supervised manner. Moreover, it also does not require camera parameters to project the 3D pose but learns to predict them. Thus enabling better generalization to more diverse data with unknown cameras and poses.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{figures/background/adverserial_arch.pdf}
     \caption{Architecture of a simple unsupervised adversarial learning architecture proposed by \cite{unsupervisedAdversarial}. The network takes 2D coordinates ($x$, $y$) of each joint in the pose and predicts the corresponding $z$-component. The 3D pose achieved by combining the input $x$, $y$ with the predicted $z$, is the randomly rotated along the $y$-axis to retrieve a novel view of the 3D pose. This pose is the projected to $xy$-plane, which would be much differnet from the input 2D pose. This projected 2D pose should be similar to the real 2D poses in the dataset if the predicted 3D represents true human pose. Their similarity to real 2D poses is reinforced by a discriminator. The whole trianing produce is carried out without the need for 3D pose in any shape or form.}
@@ -78,7 +78,7 @@ To test the maximum capability of Pose Lifting networks, \cite{amazon1} proposes
 
 Another interesting approach is training \ac{vae}s using multiple modalities like images, poses, depth maps \cite{CrossingNets, crossmodal, MMVAE,HandDisentangled}. \ac{mvae}s learn representation from different modalities in the same latent space. True multimodal learning needs to fulfill 4 criteria as follows: i) \textit{Latent Factorization} - Implicit factorization of latent space into private, shared subspaces based on modality as illustrated in the figure[\ref{fig:criteria}]. ii) \textit{Coherent Joint Generation} - Coherence in generations of different modalities from the same latent value with respect to the shared aspects of the latent. iii) \textit{Coherent Cross Generation} - Generation of one modality conditioned on data from different modality while preserving the similarity between them. iv) \textit{Synergy} - Enhancement in generation quality of one modality as a result of learning representations of different modalities.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=0.5]{figures/background/criteria.png}
     \caption{Criteria for Multimodal Generation \cite{MMVAE}}
@@ -98,7 +98,7 @@ To the best of knowledge acquired during the period of the thesis, \cite{can3dpo
 
 Wandt \textit{et al.} \cite{repnet} also mentioned in \ref{sec:Research area introduction} proposes an architecture that learns to predict the whole 3D pose, while also learning the camera parameters that are used to project the predict 3D to 2D. The idea behind the camera parameter network is to learn the view angle given pose to generalize to unknown cameras. The pose network learns to converge the predicted 2D reprojections, while using a \ac{gan} trained on \textit{\textbf{3D ground truth labels}} to supervise the predicted 3D pose. Though there is no direct error propagation from 2D input to 3D, it is important to note the problem of missing joints is not yet addressed. However, there another fundamental problem of \textit{\textbf{depth ambiguity}} persists. 
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{figures/background/multi_arch.pdf}
     \caption{Illustraion of the weakly supervised multiple hypothesis generation architecture proposed by \cite{weaklymultiple}}

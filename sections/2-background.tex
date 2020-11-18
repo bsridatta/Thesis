@@ -9,7 +9,7 @@ This chapter provides the theory essential to understand the major components of
 \subsection{Autoencoder}
 Autoencoders are a variant of \acp{ann}, which are designed to learn an identity function that generates the input data sample back. The network has a bottleneck($z$), dividing the network into two parts, an encoder and a decoder as illustrated in Fig \ref{fig:ae_arch}. The first network learns to compress the high dimensional input data to a low dimensional intermediate representation, \textit{latent representation}, at the bottleneck. While the second network learns to reconstruct the data from the latent distribution. Thus learning to efficiently compress the data.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=0.2]{figures/arch/ae_arch.png}
     \caption{Illustration of autoencoder architecture. Image source \cite{deepimageprior}}
@@ -24,7 +24,7 @@ The idea of an autoencoder dates back to the '80s proposed as a method for pre-t
 \label{subsec:vae}
 \acp{vae}, unlike standard autoencoders, learn to encode a data sample $x$ as a probabilistic distribution rather than a deterministic value for the latent attribute \cite{jeremy_jordan_2018}. The encoder $q$ produces the probabilistic distribution by predicting two vectors that represent the mean $\mu$ and variance $\sigma$ of distribution for each of the latent attributes of $x$. And the decoder $p$ takes a random sample $z$ from this distribution to recover the sample as illustrated in Fig \ref{fig:vae_arch}.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=0.2]{figures/arch/vae_arch.png}
     \caption{Illustration of Variational Autoencoder architecture.}
@@ -58,7 +58,7 @@ The first term in the above equation makes sure the reconstruction is close to t
 
 However, the reconstruction error in the loss requires sampling $z$, which is a stochastic process and it is not possible to perform backpropagation. To address this problem, the \textbf{\textit{reparametrization trick}} is used. Where $\epsilon$ is randomly sampled from a unit gaussian distribution $\mathcal{N}(0,1)$ and is used to scale the variance $\sigma$ of the latent distribution represented by the encoder $q_{\theta}(z|x)$. Where $\theta$ is the parameters of the encoder. The sum of the mean $\mu$ and the scaled variance $\sigma \odot \epsilon$ gives $z$, which is now differentiable while being stochastic as illustrated in the Fig \ref{fig:reparametrization_trick}.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=0.5]{figures/background/reparametrization_trick.png}
     \includegraphics[scale=0.5]{figures/background/reparametrization_trick_backprop.png}
@@ -68,7 +68,7 @@ However, the reconstruction error in the loss requires sampling $z$, which is a 
 
 Hence the learned latent space of a \ac{vae} is continuous, while that of a standard autoencoder is discrete and clustered. As the decoder of the \ac{vae} is trained to generate data from this continuous space, it can generate realistic data by randomly sampling from this infinitely large latent space as illustrated in the Fig \ref{fig:vae_latent_attribute}. This also enables smooth interpolation of data produced from one point in the latent space to another. In addition to that, we can also perform arithmetics in vector space, similar to the popular example from Natural Language Processing, $King - Man + Women = Queen$ but on much higher dimensional embedding space.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=0.4]{figures/background/vae_latent_attribute.png}
     \caption{Probablistic distribution of latent attributes. Image source \cite{jeremy_jordan_2018}}
@@ -88,7 +88,7 @@ A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As d
 \subsection{Generative Adversarial Networks}
 \ac{gan} is an \ac{ann} that is used for generative tasks, to make the prediction \textit{realistic}. A \ac{gan} is a combination of 2 networks namely, the generator $G$ and the discriminator $D$. The generator learns to map a random sample or say, noise $Z$ drawn from a latent distribution with density $p_{z}$ to a higher dimensional data distribution with density $p_{g}$. Where as the discriminator takes the output of the generator and tries to differentiate real data samples $x$ from the fakes which do not belong to the real distribution $p_{r}$  as illustrated in the Fig \ref{fig:gan_arch}.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=0.2]{figures/arch/gan_arch.png}
     \caption{Illustration of GAN architecture. G is the generator network and D is the discriminator network.}
@@ -154,7 +154,7 @@ The fundamental goal of \acp{gan} is to minimize the distribution between the re
 \label{subsec:vaeganhybrid}
 While the \acp{vae} learn the latent space of the data very efficiently, the generative capabilities are limited in comparison to \acp{gan}. In the case of image generations, \acp{vae} usually generate blurry images. While well trained \ac{gan} learn to generate photorealistic images. Though the task of the discriminator in \acp{gan} is to only learn what is real and what is fake, it implicitly learns rich a similarity metric in order do so \cite{autoencoding_beyond_pixels}. The idea of a \ac{vae}-\ac{gan}, illustrated in fig. \ref{fig:vae_gan_arch}, is to exploit this ability of \acp{gan} as a learning metric for \acp{vae} and the ability of \acp{vae} to learn dense latent representation of the data.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=0.15]{figures/arch/vae_gan_arch.png}
     \caption{Illustration of the \ac{vae}-\ac{gan} architecture}
@@ -188,7 +188,7 @@ $\mathcal{L}_{\text {recon}}^{D_{l}}$ which uses the $l^{th}$ layer of the discr
 
 Training \ac{vae} is hard but training \ac{gan} is harder. It is very important to consider that the training of the \ac{vae} and the \ac{gan} takes place simultaneously. While doing so it is required to \textit{limit the error propagation} of the triplet loss to the entire model. The discriminator should not learn to minimize $\mathcal{L}_{\text {recon}}^{D_{l}}$, if it does, the discriminator collapses. Better results are observed by restricting the error signal to reach the encoder $q$ as illustrated in the fig. \ref{fig:vaegan_loss_graph}. 
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[scale=0.25]{figures/arch/vae_gan_loss_graph.png}
     \caption{Illustration of the data flow and the loss of \ac{vae}-\ac{gan}, where $\mathcal{L}_{\text {recon}}^{D_{l}}$ = $\mathcal{L}_{\text {llike}}^{Dis_{l}}$ \\

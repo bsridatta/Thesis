@@ -14,7 +14,7 @@ In this section, the components of the proposed network and the design motivatio
 \subsection{VAE} 
 Similar to the \ac{vae}-\ac{gan} described in \ref{subsec:vaeganhybrid}, the proposed architecture consists of an encoder, decoder and a discriminator. The encoder takes the 2D pose as input and encodes it in a latent space. The decoder samples this encoding using the reparametrization trick and outputs a 3D pose. Following the best practices from \cite{soumith2017wasserstein}, the decoder which is also the generator is made to output 3D poses with values from [-1,1] and Tanh activation is used at the output of the decoder. As described in \ref{chap:data}, the 3D pose is modeled to be of unit length from root to head. However, the lower half of the body could be higher than that. To handle this, the output is multiplied by 2 to cover the true dimensions of the lower half.
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{figures/arch/method_arch.png}
     \caption{Illustration of the architecutre and loss flow in the proposed approach. }
