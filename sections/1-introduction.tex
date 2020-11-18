@@ -7,13 +7,13 @@ With rapid advancements in deep learning facilitated by the developments in comp
 \section{Background}
 \label{sec:background}
 
-There has been a lot of research done in 3D human pose estimation and more advancements have been made in the past few years leveraging the power of deep learning. The current research explores various ways to solve the task using RGB/Depth image channels, 2D poses, 3D poses, multi-view, and sequential images/vidoes. 
+There has been a lot of research done in 3D human pose estimation and more advancements have been made in the past few years leveraging the power of deep learning. The current research explores various ways to solve the task using RGB/Depth image channels, 2D poses, 3D poses, multi-view, and sequential images/videos. 
 
 Most of them are supervised learning approaches which require 3D ground truth poses that can only be acquired using physical sensors. Supervised learning methods that learn 3D pose from images, follow a complex cascading approach with 2D poses in some form are an intermediate output. And other learning approaches mostly make use of images from multiple views to estimate the 3D pose. 
 
-Assuming 2D poses are obtained from the \ac{sota} models specialized on 2D \ac{hpe} models, some works focus on estimating the 3D pose from these 2D poses instead of images. Such networks are called \textit{lifitng} networks. These lifting networks can be simple without requiring computationaly expensive convolutional layers as it only needs to learn the feauters of 2D poses that are low dimensional compared to images. However since 2D poses are naturally obtained by projecting 3D poses to a plane, it is an inverse problem. Also, there are multiple feasible 3D poses that when projected result in the same 2D pose. Thus making the task of lifting 2D-to-3D, a \textit{ill-posed inverse} problem due to its inherent ambiguity.
+Assuming 2D poses are obtained from the \ac{sota} models specialized on 2D \ac{hpe} models, some works focus on estimating the 3D pose from these 2D poses instead of images. Such networks are called \textit{lifting} networks. These lifting networks can be simple without requiring computationally expensive convolutional layers as it only needs to learn the features of 2D poses that are low dimensional compared to images. However since 2D poses are naturally obtained by projecting 3D poses to a plane, it is an inverse problem. Also, there are multiple feasible 3D poses that when projected result in the same 2D pose. Thus making the task of lifting 2D-to-3D, a \textit{ill-posed inverse} problem due to its inherent ambiguity.
 
-Non-supervised (Weakly/Self/Unsupervised) learning regimes, that are less dependent on 3D pose ground truth, have also gained traction in recent years. Weakly supervised approaches use 3D ground truth indirectly by genreating more 2D poses from more views or, for training a discriminator network of a \ac{gan}. While unsupervised learning (self-supervised) approaches do not use 3D ground truth poses in any shape or form. Many of the deep learning techniques that have already improved the results in other computer vision tasks are yet to be explored in 3D \ac{hpe}. 
+Non-supervised (Weakly/Self/Unsupervised) learning regimes, that are less dependent on 3D pose ground truth, have also gained traction in recent years. Weakly supervised approaches use 3D ground truth indirectly by generating more 2D poses from more views or, for training a discriminator network of a \ac{gan}. While unsupervised learning (self-supervised) approaches do not use 3D ground truth poses in any shape or form. Many of the deep learning techniques that have already improved the results in other computer vision tasks are yet to be explored in 3D \ac{hpe}. 
 
 \section{Problem}
 \label{sec:problem}
@@ -23,7 +23,7 @@ How can we learn a strong visual representation of the data to tackle the task o
 \label{sec:goal}
 The main aim of the thesis is to investigate unsupervised learning approaches and 2D-to-3D lifting methods that could help tackle the challenges in scaling 3D \ac{hpe} to the real-world.
 
-Improvements in the aspects of ease of training procedure i.e requiring less data or less labor-intense labeling, inference speed, and most importantly accuracy is important and will directly impact its super tasks such as, action and gesture recognition, motion prediction and intention, behaviour prediction.
+Improvements in the aspects of ease of training procedure i.e requiring less data or less labor-intense labeling, inference speed, and most importantly accuracy is important and will directly impact its super tasks such as, action and gesture recognition, motion prediction and intention, behavior prediction.
 
 \section{Benefits, Ethics and Sustainability}
 Human Pose Estimation plays a very important role to enable autonomous vehicles and robots to safely interact with humans. It also plays a vital role in developing higher dimensional communication platforms with \ac{ar/vr}. It is crucial for surveillance systems to ensure public safety. However such important technologies are only as good as the intentions of its users. Mass surveillance of citizens by their governments is a matter of debate.
@@ -32,17 +32,17 @@ Human Pose Estimation plays a very important role to enable autonomous vehicles 
 \label{sec:methodology}
 The problem of 3D \ac{hpe} has 3 aspects to be addressed and explored.
 
-\paragraph{The neural network:} The architecture and the kind of neural network to be used. 3D poses can be predicted using regular linear neural network, or using various other architectures like autoencoders. These models can use linear, convolutional, and graph layers to learn features. This thesis focuses on investigating the merit in using architectures like \acp{vae} to solve the 3D \ac{hpe} within the context of levaraging probabilistic inference models, as a deterministic approach for an inherently ill-posed problem is not ideal.
+\paragraph{The neural network:} The architecture and the kind of neural network to be used. 3D poses can be predicted using regular linear neural network, or using various other architectures like autoencoders. These models can use linear, convolutional, and graph layers to learn features. This thesis focuses on investigating the merit in using architectures like \acp{vae} to solve the 3D \ac{hpe} within the context of leveraging probabilistic inference models, as a deterministic approach for an inherently ill-posed problem is not ideal.
 
 \paragraph{The learning task:} The model could either learn to directly predict the 3D coordinates of the keypoints, or learn structural parameters that could model a 3D pose. The thesis only explores the former task.
 
-\paragraph{The learning technique (or the cost):} The model can be either trained by directly comparing the predicted 3D pose and the ground truth 3D pose thus requiring 3D annotations, or by projecting the prediction back to 2D to compare with the input (requires only 2D annotations that could be acquire from \ac{sota} in 2D \ac{hpe}) and use a different technique to ensure the correctness of pose in 3D. Adversarial training and self-supervision techniques have also given promising results in the last couple of years. The method proposed in the thesis is designed to learn 3D from 2D poses alone in an unsupervised-advesarial learning fashion after the capabilities of the method under supervised settings being verified.
+\paragraph{The learning technique (or the cost):} The model can be either trained by directly comparing the predicted 3D pose and the ground truth 3D pose thus requiring 3D annotations, or by projecting the prediction back to 2D to compare with the input (requires only 2D annotations that could be acquire from \ac{sota} in 2D \ac{hpe}) and use a different technique to ensure the correctness of pose in 3D. Adversarial training and self-supervision techniques have also given promising results in the last couple of years. The method proposed in the thesis is designed to learn 3D from 2D poses alone in an unsupervised-adversarial learning fashion after the capabilities of the method under supervised settings being verified.
 
 The prime motivation behind the design choices is to address the challenges in scaling up 3D \ac{hpe} to real-world.
 
 \section{Stakeholders}
 \label{sec:stakeholders}
-Daimler’s ‘Environment Perception for Autonomous Driving’ R\&D team in Stuttgart, Germany, conducts cutting-edge research in the field of Computer vision and Deep Learning to improve the State-Of-The-Art and to make Autonomous Driving a reality. This thesis is part of the team’s on-going research in understanding human state, motion, and behaviour, which would help autonomous cars better perceive, understand and interact with humans. Daimler/Mercedes-Benz autonomous cars try to understand humans both, inside and outside the car and \ac{hpe} is a critical element to accomplish this task.
+Daimler’s ‘Environment Perception for Autonomous Driving’ R\&D team in Stuttgart, Germany, conducts cutting-edge research in the field of Computer vision and Deep Learning to improve the State-Of-The-Art and to make Autonomous Driving a reality. This thesis is part of the team’s on-going research in understanding human state, motion, and behavior, which would help autonomous cars better perceive, understand and interact with humans. Daimler/Mercedes-Benz autonomous cars try to understand humans both, inside and outside the car and \ac{hpe} is a critical element to accomplish this task.
 
 The question is also of interest to the research area of Human State/Action Recognition in specific and also to areas of computer graphics to model humans in 3D space. Hence it is beneficial to various areas that try to understand and interact with humans. The scientific communities in the areas of Autonomous Driving, \ac{ar/vr}, Motion Capture, Computer Graphics, and Human-Robot interaction could be interested in the contributions of this thesis.
 
@@ -52,11 +52,11 @@ This thesis focuses only on 3D pose estimation and not the intermediate 2D pose.
 
 \section{Outline}
 \label{sec:outline}
-The theoritical knowledge required to understand the details of the thesis is presented next in chapter \ref{chap:background}, Theoritical Background. This entails the explaination of some prelimilary concepts \ref{sec:Preliminary}, research area introduction \ref{sec:Research area introduction}, where the vast literature related to \ac{hpe} is summarised, and the highlights of all the works \ref{sec:Related Work} that are closely related to the thesis.
+The theoretical knowledge required to understand the details of the thesis is presented next in chapter \ref{chap:background}, Theoretical Background. This entails the explanation of some preliminary concepts \ref{sec:Preliminary}, research area introduction \ref{sec:Research area introduction}, where the vast literature related to \ac{hpe} is summarized, and the highlights of all the works \ref{sec:Related Work} that are closely related to the thesis.
 
 The background is followed by chapter \ref{chap:data}, Data,  providing details of the datasets used along with some visualizations. This chapter also explains the 3D projective geometry concepts required to understand the pre and post-processing steps the data undergoes.
 
-The method, chapter \ref{chap:method}, describes the proposed apporach in detail. This covers the components of the proposed architecture, the motivativation behind the choices, the training and validation procedure and other details that help reproduction.
+The method, chapter \ref{chap:method}, describes the proposed approach in detail. This covers the components of the proposed architecture, the motivation behind the choices, the training and validation procedure and other details that help reproduction.
 
 The results are analysed and discussed in chapter \ref{chap:results} and conclusions are presented in chapter \ref{chap:conclusions}.
 

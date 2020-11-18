@@ -1,7 +1,7 @@
 \chapter{Data}
 \label{chap:data}
 
-This chapter discusses the datasets used in the thesis, as well as the pre and post processing steps that are performed in order to facilitate the training and validation of the proposed method. In addition to this, a couple of concepts that motivate the choices or that are directly used in the process of the data are explained with the help of illustrations. 
+This chapter discusses the datasets used in the thesis, as well as the pre and post-processing steps that are performed in order to facilitate the training and validation of the proposed method. In addition to this, a couple of concepts that motivate the choices or that are directly used in the process of the data are explained with the help of illustrations. 
 
 The main dataset used in the thesis is \textit{Human3.6M}: Large Scale Datasets and Predictive Methods for 3D Human Sensing in Natural Environments \cite{H3.6}. Most of the related works benchmark their methods on Human3.6M and it also is freely accessible to academics on request. For further evaluation of model performance in the wild, outdoor datasets that do not have 3D ground truth such as \textit{3DPW}: 3D Poses in the Wild \cite{3dpw} would be used.
 
@@ -13,9 +13,9 @@ The main dataset used in the thesis is \textit{Human3.6M}: Large Scale Datasets 
 \end{figure}
 
 \section{Human3.6M}
-Human3.6M is a large scale indoor dataset with 3.6 million human poses collected with 4 cameras at different angles using a highly accurate maker-based \ac{mocap} system. The dataset constitutes 15 diverse motion and actions in various everyday scenarios namely, Directions, Discussion, Eating, Greeting, Phoning, Photo, Posing, Purchases, Sitting, SittingDown, Smoking, Waiting, WalkDog, Walking, and WalkTogether. These actions are performed by 11 professional actors wearing a variety of realistic clothing. The datasets provides synchronised 2D and 3D data including full-body scans as shown in Fig \ref{fig:h36_modality}. It also includes mixed-reality test data created using animated human models to cover huge variations of background, clothing, illumination, occlusion, and camera angles.
+Human3.6M is a large scale indoor dataset with 3.6 million human poses collected with 4 cameras at different angles using a highly accurate maker-based \ac{mocap} system. The dataset constitutes 15 diverse motion and actions in various everyday scenarios namely, Directions, Discussion, Eating, Greeting, Phoning, Photo, Posing, Purchases, Sitting, Sitting Down, Smoking, Waiting, WalkDog, Walking, and WalkTogether. These actions are performed by 11 professional actors wearing a variety of realistic clothing. The datasets provides synchronized 2D and 3D data including full-body scans as shown in Fig \ref{fig:h36_modality}. It also includes mixed-reality test data created using animated human models to cover huge variations of background, clothing, illumination, occlusion, and camera angles.
 
-The data of interest is mainly the 2D pose for training, 3D poses for evaluation and images for qualitative analysis as it is sometimes challenging even for the human eye to estimate 3D pose just from 2D skeleton. Both the poses are composed of 17 joints or keypoint annotations namely, Pelvis (also referred to as Root), Torso, Neck, Nose, Head, right and left - Hip, Knee, Ankle, Shoulder, Elbow, Wrist. An image sample from the dataset with its corresponding 2D and 3D pose is illustrated in the Fig \ref{fig:h36_sample}. 
+The data of interest is mainly the 2D pose for training, 3D poses for evaluation and images for qualitative analysis as it is sometimes challenging even for the human eye to estimate 3D pose just from the 2D skeleton. Both the poses are composed of 17 joints or keypoint annotations namely, Pelvis (also referred to as Root), Torso, Neck, Nose, Head, right and left - Hip, Knee, Ankle, Shoulder, Elbow, Wrist. An image sample from the dataset with its corresponding 2D and 3D pose is illustrated in the Fig \ref{fig:h36_sample}. 
 
 \begin{figure}
     \centering
@@ -37,12 +37,12 @@ The data of interest is mainly the 2D pose for training, 3D poses for evaluation
         \caption{}
     \end{subfigure}
 
-    \caption{(a) RGB image from one of the 4 cameras. (b) Corresponding 2D pose obtained from the 3D pose to the right with joint labels. (c) Corresponding 3D pose, rotated for better view of the spatial distribution of the joints}
+    \caption{(a) RGB image from one of the 4 cameras. (b) Corresponding 2D pose obtained from the 3D pose to the right with joint labels. (c) Corresponding 3D pose, rotated for a better view of the spatial distribution of the joints}
 
     \label{fig:h36_sample}
 \end{figure}
 
-As illustrated in Fig \ref{fig:h36_data_collection}, the data is collected from a indoor environment with multiple cameras and \ac{mocap} sensors. The oqqbtained coordinates of 3D pose from \ac{mocap} data are global and is relative to a fixed origin the recording room. In addition to the global 3D pose, camera relative, i.e local 3D pose is also obtained using the cameras location with respect to the global origin. The global poses are useful for methods that try to exploit the multiview information and local poses that are relative to camera can be used for absolute pose estimation. The 2D pose from each view is obtained by projection the 3D pose using the parameters of the respective camera. This 2D pose is relative to that particular camera and is with respect to the full scale image that captures the entire scene in the camera's field of view. Along with the RGB images, global and local 3D pose and 2D pose, other metadata is available. This metadata includes intrinsic and extrinsic paramters of each camera, an identifier for each of the sample of a particular action sequence, bounding box coordinates of the human in the full scale image, subject, action, subaction and camera ids for each sample. 
+As illustrated in Fig \ref{fig:h36_data_collection}, the data is collected from a indoor environment with multiple cameras and \ac{mocap} sensors. The obtained coordinates of the 3D pose from \ac{mocap} data are global and is relative to a fixed origin the recording room. In addition to the global 3D pose, camera relative, i.e local 3D pose is also obtained using the camera's location with respect to the global origin. The global poses are useful for methods that try to exploit the multiview information and local poses that are relative to the camera can be used for absolute pose estimation. The 2D pose from each view is obtained by projection the 3D pose using the parameters of the respective camera. This 2D pose is relative to that particular camera and is with respect to the full-scale image that captures the entire scene in the camera's field of view. Along with the RGB images, global and local 3D pose and 2D pose, other metadata is available. This metadata includes intrinsic and extrinsic parameters of each camera, an identifier for each of the samples of a particular action sequence, bounding box coordinates of the human in the full-scale image, subject, action, subaction and camera ids for each sample. 
 
 \begin{figure}[h]
     \centering
@@ -58,7 +58,7 @@ The projection of the poses in the thesis is using a simple pinhole camera model
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.4]{figures/background/pinhole.png}
+    \includegraphics[scale=0.2]{figures/background/pinhole.png}
     \caption{Pinhole Camera Model. Image Source \cite{pinhole}}
     \label{fig:pinhole}
 \end{figure}
@@ -74,7 +74,7 @@ One of the main problems discussed in \ref{section:Related Work} is depth ambigu
 
 
 
-%FIXME protocol 2 or both protocols + scaling explanation
+% prtocol 2 or both protocols + scaling explanation
 
 
 \begin{figure}[h]

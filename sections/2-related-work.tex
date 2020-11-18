@@ -5,14 +5,14 @@ In this section, the details of various approaches and the \ac{sota} in 3D \ac{h
 
 \subsection{Cascading Approach}
 
-Numerous works try to estimate 3D human poses from 2D RGB images or 2D joint confidence heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo, ordinalranking}. Most of these methods follow a cascading approach, where an explicit intermediate representation of 2D heatmaps or 2D poses are predicted. This typically involves training a convolutional neural network to find humans in the image or just extract features that correspond to the joints. These features are forwared to another neural network that learns to estimate the corresponding 3D pose, usually by predicting the depth offsets of the 2D joint or sometimes by predicting the shape and the view parameters of the 3D pose.
+Numerous works try to estimate 3D human poses from 2D RGB images or 2D joint confidence heatmaps \cite{CameraDistanceAware, poselifter, DistillNRSfM, occlusionVideo, ordinalranking}. Most of these methods follow a cascading approach, where an explicit intermediate representation of 2D heatmaps or 2D poses are predicted. This typically involves training a convolutional neural network to find humans in the image or just extract features that correspond to the joints. These features are forwarded to another neural network that learns to estimate the corresponding 3D pose, usually by predicting the depth offsets of the 2D joint or sometimes by predicting the shape and the view parameters of the 3D pose.
 
 For example, \cite{CameraDistanceAware} proposes a general framework with 3 networks as depicted in Fig \ref{fig:CameraDistanceAware}. Human detection Network, RootNet, PoseNet. Where the human detection network predicts the region the human is in an image. The RootNet localizes the human's root in the global 3D world. And, the PoseNet predicts the 3D pose of a single person relative to the root. Where the root is a fixed reference point of the human body say, pelvis.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{figures/background/cascading_arch.pdf}
-    \caption{Pipeline of an absolute 3D human pose estimation network following a cascading approach \cite{CameraDistanceAware}, showing different neural networks such as DetectNet, RootNet and PoseNet that trained on specific subtasks to estiamte absolute 3D human pose.}
+    \caption{Pipeline of an absolute 3D human pose estimation network following a cascading approach \cite{CameraDistanceAware}, showing different neural networks such as DetectNet, RootNet and PoseNet that trained on specific subtasks to estimate absolute 3D human pose.}
     \label{fig:CameraDistanceAware}
 \end{figure}
 

@@ -16,7 +16,7 @@ Autoencoders are a variant of \acp{ann}, which are designed to learn an identity
     \label{fig:ae_arch}
 \end{figure}
 
-To put it in other words, in the process of learning to reconstruct the data, the encoder learns to filter the most important features of the given data distribution, so as it preserves the complete properties within the limits of the bottleneck. While the decoder learns comparitivly general properties of the distribution which are used along with the compact latent representation from the encoder to fully recover the data distribution. The network is trained to minimize the similarity between the reconstruction and the original data sample. This similarity can be determined by metrics such as \ac{mse}, \ac{l1} or Cross-Entropy loss.
+To put it in other words, in the process of learning to reconstruct the data, the encoder learns to filter the most important features of the given data distribution, so as it preserves the complete properties within the limits of the bottleneck. While the decoder learns comparatively general properties of the distribution which are used along with the compact latent representation from the encoder to fully recover the data distribution. The network is trained to minimize the similarity between the reconstruction and the original data sample. This similarity can be determined by metrics such as \ac{mse}, \ac{l1} or Cross-Entropy loss.
 
 The idea of an autoencoder dates back to the '80s proposed as a method for pre-training and feature learning \cite{ballard1987modular, rumelhart1985learning}, learned dimensionality reduction \cite{hinton_dimentionality}. In recent years, autoencoders are most popularly used as generative networks leveraging their ability to learn feature representations in an unsupervised way. Another interesting variant of autoencoders is the denoising autoencoder \cite{vincent2008extracting}, where the input is a noised data and the decoder generates original data without noise. This variant is further evolved to accomplish the tasks of image denoising, watermark removal, inpainting, super-resolution, colorization, de-colorization, and compression \cite{zhang2016colorful, imagedenoisingpaper,deepimageprior}. 
 
@@ -31,7 +31,7 @@ The idea of an autoencoder dates back to the '80s proposed as a method for pre-t
     \label{fig:vae_arch}
 \end{figure}
 
-To put it formally, we have a hidden variable $z$ which generates $x$. Since we only have $x$ and would want to learn $z$ i.e $p(z | x)$. But computing this posterior distribution is hard as computing $p(x)$ Eqn. \ref{eqn:pofx} is usually itractable \cite{kingma2013autoencoding}.
+To put it formally, we have a hidden variable $z$ which generates $x$. Since we only have $x$ and would want to learn $z$ i.e $p(z | x)$. But computing this posterior distribution is hard as computing $p(x)$ Eqn. \ref{eqn:pofx} is usually intractable \cite{kingma2013autoencoding}.
 
 \begin{equation}\label{eqn:pofx}
     \begin{gathered}[b]
@@ -40,7 +40,7 @@ To put it formally, we have a hidden variable $z$ which generates $x$. Since we 
     \end{gathered}
 \end{equation}
 
-Hence, we try to approximate the posterior distribution by another distribution $q(z|x)$ (the encoder) using variational inference. Variational inference uses optimzation to find a distribution that minimizes the \ac{kld} to the posterior distribution, $\min D_{\mathrm{KL}}(q(z| x) \| p(z| x))$ while trying to keep the learnt distribution close to the true prior distribution $p(z)$ \cite{variational_inference}. The prior $p(z)$ is usually assumed to be a unit gaussian distribution. The above can also be achieved by maximizing:
+Hence, we try to approximate the posterior distribution by another distribution $q(z|x)$ (the encoder) using variational inference. Variational inference uses optimization to find a distribution that minimizes the \ac{kld} to the posterior distribution, $\min D_{\mathrm{KL}}(q(z| x) \| p(z| x))$ while trying to keep the learnt distribution close to the true prior distribution $p(z)$ \cite{variational_inference}. The prior $p(z)$ is usually assumed to be a unit gaussian distribution. The above can also be achieved by maximizing:
 
 \begin{equation} \label{eqn:minKLd}
     \begin{gathered}[b]
@@ -62,7 +62,7 @@ However, the reconstruction error in the loss requires sampling $z$, which is a 
     \centering
     \includegraphics[scale=0.5]{figures/background/reparametrization_trick.png}
     \includegraphics[scale=0.5]{figures/background/reparametrization_trick_backprop.png}
-    \caption{Comparising the data flow with and without reparametrization trick followed by the backprop calculation. Image source \cite{jeremy_jordan_2018}}
+    \caption{Comparing the data flow with and without reparametrization trick followed by the backprop calculation. Image source \cite{jeremy_jordan_2018}}
     \label{fig:reparametrization_trick}
 \end{figure}
 
@@ -71,7 +71,7 @@ Hence the learned latent space of a \ac{vae} is continuous, while that of a stan
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.4]{figures/background/vae_latent_attribute.png}
-    \caption{Probablistic distribution of latent attributes. Image source \cite{jeremy_jordan_2018}}
+    \caption{Probabilistic distribution of latent attributes. Image source \cite{jeremy_jordan_2018}}
     \label{fig:vae_latent_attribute}
 \end{figure}
 
@@ -146,7 +146,7 @@ The \ac{jsd} between two distributions is always non-negative and will be equal 
 % \end{equation}
 
 %FIXME explain proeprly
-% Where $\gamma \sim \Pi\left(P_{r}, P_{g}\right)$ is the collecetion of all possible joint distributions of $p_r$ and $p_g$. Adn for all the combinations the distance between the real sample$x$ and the generated sample $x^\prime$ can be calculated.   
+% Where $\gamma \sim \Pi\left(P_{r}, P_{g}\right)$ is the collection of all possible joint distributions of $p_r$ and $p_g$. Adn for all the combinations the distance between the real sample$x$ and the generated sample $x^\prime$ can be calculated.   
 
 The fundamental goal of \acp{gan} is to minimize the distribution between the real and the generated distribution. This could be measured used either of \ac{kld}, \ac{jsd}, \ac{emd}, or Wasserstein distance, the main difference being their impact on the convergence of these distributions. The interesting feature of the Wasserstein distance is that it is continuous and differentiable. Using this distance, the critic can train till optimality while having a reliable gradient throughout the training procedure. Hence the critic in \ac{wgan} does not have the saturation and vanishing gradient problems that exist in standard \acp{gan}. Due to continuous and clean gradients, the training is significantly stable and less sensitive to hyperparameters and model architecture. With \ac{wgan} the mode collapse problem is also significantly reduced. When it comes to practice, the most important problem that hinders training \acp{gan} is that there is no correlation of the quality of the generated data say, images, and the loss function. However, \ac{wgan} tries to converge the distributions while lowering the generation loss. And considerable relation between the loss and the quality of generations can be observed. \ac{wgangp} \cite{wgangp} is an improved \ac{wgan} that uses gradient penalty to enforce Lipschitz constraint.
 
@@ -196,7 +196,7 @@ Training \ac{vae} is hard but training \ac{gan} is harder. It is very important 
     \label{fig:vaegan_loss_graph}
 \end{figure}
 
-As discussed in \ref{subsec:bvae}, \ac{vae} as a whole has two objectives - minimize the $\mathcal{L}_{\text {recon}}$ and the $\mathcal{L}_{\text {prior}}$ and a weighing factor $\beta$ is used to maintain a trade-off betweent he qualilty of the reconstrution and the extent of disentanglement. Similarly, when it comes to \ac{vae}-\ac{gan}, the decoder alone has two objectives. One is to generate samples minimizing the $\mathcal{L}_{\text {recon}}^{D_{l}}$ and the other is to make sure that the generated samples can fool the discriminator. And the trade off is regulated by using $\gamma$ to weigh $\mathcal{L}_{\text {recon}}^{D_{l}}$ and $\mathcal{L}_{\text {\ac{gan}}}$ as in Eqn. \ref{eqn:vaegan_gamma}.
+As discussed in \ref{subsec:bvae}, \ac{vae} as a whole has two objectives - minimize the $\mathcal{L}_{\text {recon}}$ and the $\mathcal{L}_{\text {prior}}$ and a weighing factor $\beta$ is used to maintain a trade-off between the quality of the reconstruction and the extent of disentanglement. Similarly, when it comes to \ac{vae}-\ac{gan}, the decoder alone has two objectives. One is to generate samples minimizing the $\mathcal{L}_{\text {recon}}^{D_{l}}$ and the other is to make sure that the generated samples can fool the discriminator. And the trade off is regulated by using $\gamma$ to weigh $\mathcal{L}_{\text {recon}}^{D_{l}}$ and $\mathcal{L}_{\text {\ac{gan}}}$ as in Eqn. \ref{eqn:vaegan_gamma}.
  
 \begin{equation} \label{eqn:vaegan_gamma}
     \begin{gathered}[b]
