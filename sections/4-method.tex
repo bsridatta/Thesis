@@ -1,6 +1,30 @@
 \chapter{Method}
 \label{chap:method}
 
+% \begin{center}
+%     \begin{tabular}{  c c c }
+%             Linear-1              &&  [-1, 1024]  &&      33,792\\
+%        BatchNorm1d-2              &&  [-1, 1024]  &&       2,048\\
+%               Mish-3              &&  [-1, 1024]  &&           0\\
+%            Dropout-4              &&  [-1, 1024]  &&           0\\
+%             Linear-5              &&  [-1, 1024]  &&   1,048,576\\
+%        BatchNorm1d-6              &&  [-1, 1024]  &&       2,048\\
+%               Mish-7              &&  [-1, 1024]  &&           0\\
+%            Dropout-8              &&  [-1, 1024]  &&           0\\
+%               LBAD-9              &&  [-1, 1024]  &&           0\\
+%            Linear-10              &&  [-1, 1024]  &&   1,048,576\\
+%       BatchNorm1d-11              &&  [-1, 1024]  &&       2,048\\
+%              Mish-12              &&  [-1, 1024]  &&           0\\
+%           Dropout-13              &&  [-1, 1024]  &&           0\\
+%              LBAD-14              &&  [-1, 1024]  &&           0\\
+%            Linear-15                &&  [-1, 51]  &&      52,275\\
+%            Linear-16                &&  [-1, 51]  &&      52,275
+
+% \end{tabular}
+% \end{center}
+
+% Layer (type)               Output Shape         Param #
+
 % \thispagestyle{fancy}
 % FIXME -- change from cross model to vae-gan
 
@@ -35,3 +59,12 @@ The training scheme is similar to the standard \ac{vae} and \ac{vae}-\ac{gan} in
 
 \section{Evaluation Metrics} % FIXME
 3D \ac{hpe} and Human3.6M in particular is mainly evaluated by \ac{mpjpe} metric. MPJPE as it abbreviates is the mean of the position estimate for all the joints of a pose. Where per-joint position estimate is nothing but the euclidian distance (usually measured in mm) between the predicted joint to its ground truth.
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{figures/h36_viz/novel_view_contraint.pdf}
+    \caption{Illustration of the architecutre and loss flow in the proposed approach. }
+    \label{fig:novel_view_constraint}
+\end{figure}
+
