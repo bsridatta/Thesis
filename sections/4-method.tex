@@ -7,24 +7,38 @@
 This chapter presents the details and the motivation behind the design choice of the neural network such as the architecture, loss function, optimizers along with the training and evaluation procedure.
 
 \section{Architecture}
-To predict root relative 3D pose solely using 2D poses, a hybrid network using \ac{vae} and \ac{gan} as discussed in \ref{subsec:vaeganhybrid} is employed. Each of the components are explained below.
+To predict root-relative 3D pose solely using 2D poses, a hybrid network using \ac{vae} and \ac{gan} as discussed in \ref{subsec:vaeganhybrid} is employed. In contrast to the \ac{vae}-\ac{gan} hybrid introduced in \cite{autoencoding_beyond_pixels} where only the decoder acts as the generator, both the encoder and the decoder are considered as the generator in the proposed approach. In other words the encoder is also updated to maximize the probability of fooling the discriminator. The overall architecture is illustrated in the Fig \ref{fig:method_arch}. The following is the design and working of each of the components of the proposed \ac{vae}-{gan}.
 
-\subsection{Generator - VAE}
-In contrast to the \ac{vae}-\ac{gan} hybrid introduced in \cite{autoencoding_beyond_pixels} where only the decoder acts as the generator, both the encoder and the decoder are considered as the generator. In other words the encoder is also updated 
+\subsection{Encoder}
 
-The encoder takes the 2D pose as input and encodes it in a latent space. The decoder samples this encoding using the reparametrization trick and outputs a 3D pose. Following the best practices from \cite{soumith2017wasserstein}, the decoder which is also the generator is made to output 3D poses with values from [-1,1] and Tanh activation is used at the output of the decoder. As described in \ref{chap:data}, the 3D pose is modeled to be of unit length from root to head. However, the lower half of the body could be higher than that. To handle this, the output is multiplied by 2 to cover the true dimensions of the lower half.
+Adding to the explanation of \ac{vae} in \ref{subsec:vae}, the role of the encoder is to take a 2D pose as input and estimate its latent representation in the form of mean and standard deviation. The encoder consists of an upsampling layer that scales the $2 \cdot j$ dimensional input to match the number of hidden neurons of the encoding module. Where $j$ is the number of joints, here 16. The encoding module is made of $n$ residual block composed of 2 \ac{fc} layers following the related works, to allow comparison. Where $n$ is usually 1 or 2, 2 is chosen for most of the experiments. The enoding block is followed by 2 \ac{fc} layers that downsample the hidden representation to match the latent space dimension. The output of the two downsampling layers represents the mean and standard deviation of the embedding in the latent space. However in practice, the encoder is designed to predict log-variance instead of the standard deviation to have a better distribution of values and gradient. 
 
-% -1 to 1 ...scale to meet the head as 1. logvar instreadof var...
+\subsection{Decoder}
+
+The decoder takes the 2D pose embedding $z$ derived from the mean and log-variance predicted by the encoder and estimates the corresponding 3D pose. The reparametrization trick is used to make the process differentiable and induce variance. This is done by scaling the standard deviation obtained from the log-variance with a random sample from a unit gaussian distribution $\mathcal{N}(0,1)$. The sum of the scaled standard deviation and the mean gives the sample $z$. Similar to the encoder, the decoder consists of an upsampling layer that scales the sample $z$ of the latent space dimensions to match the number of hidden neurons in the decoding module. The decoding module is identical to the encoding module and consists of $n$ residual blocks composed of 2 \ac{fc} layers. This decoding module is followed by a \ac{fc} layer to downsample the neurons to predict 3D pose of dimension $3 \cdot j$. 
+
+Since the 3D is projected to 2D to form the reconstruction loss, the distance between the head and the pelvis joint should approximately be of unit length as explained in \ref{processing}. To achieve this, a Tanh activation function is used to obtain the predicted 3D pose (all joints) in the range [-1, 1]. However, the length of the lower half of the pose can be longer that the upper half and usually is the case. Hence the predicted 3D pose is scaled by a factor of 1.3, the ratio of the mean length of the upper and lower halves, to enforce the length of the upper half to ~1 unit and get the best 2D re-projection.
+
+
+
+
+Following the best practices from \cite{soumith2017wasserstein}, the decoder (and the encoder) which acts as the generator for the \ac{gan} is made to output 3D poses with values from [-1,1]. 
+%FIXME blunder in the implementation?
+All the layers use \ac{relu} activation unless specified otherwise. The decoder mimics the encoder with an upsampling layer, a decoding module, and a downsampling layer to output 3D pose of dimension .
+
+% -1 to 1 ...scale to meet the head as 1. 
+% initalization activation optimier
+% at activation mention that the scaling of -1
+
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{figures/arch/method_arch.png}
-    \caption{Illustration of the neural architecture of the proposed method. The network components in blue, encode the 2D pose to a latent representation in terms of mean $\mu$ and variance $\sigma$ of the distribution. While the components in pink, sample $z$ from this latent space and decode the corresponding 3D pose. The 3D pose is projected directly to 2D space for a contrained optimization using input 2D pose in the camera view and randomly rotated and projected for unconstrained optimization using the discriminator $D$ in a novel angle. The data that contributes to the loss function in orange, are mapped with a dotted line.  
+    \caption{Illustration of the neural architecture of the proposed method. The network components in blue, encode the 2D pose to a latent representation in terms of mean $\mu$ and standard deviation $\sigma$ of the distribution. While the components in pink, sample $z$ from this latent space and decode the corresponding 3D pose. The 3D pose is projected directly to 2D space for a contrained optimization using input 2D pose in the camera view and randomly rotated and projected for unconstrained optimization using the discriminator $D$ in a novel angle. The data that contributes to the loss function in orange, are mapped with a dotted line.  
     }
     \label{fig:method_arch}
 \end{figure}
 
-The encoder consists of an upsampling layer that makes the $2 \cdot j$ dimensional input to match the number of hidden neurons of the encoding module. Where $j$ is the number of joints, here 16. The encoding module is made of $n$ residual block composed of 2 \ac{fc} layers following the related works, to allow comparison. Where $n$ is usually 1 or 2. The enoding block is followed by 2 \ac{fc} layers that downsample the hidden representation to match the latent space dimension. The output of the two downsampling layers represents the mean and variance of the embedding in the latent space. All the layers use \ac{relu} activation unless specified otherwise. The decoder mimics the encoder with an upsampling layer, a decoding module, and a downsampling layer to output 3D pose of dimension $3 \cdot j$.
 
 \subsection{Discriminator}%FIXME -- \subsection{Image \ac{vae}}
 The discriminator following the related works also mimics the generator and takes 2D poses as input and predicts binary labels of real or false. The sigmoid activation function is used at the output layer of the discriminator.

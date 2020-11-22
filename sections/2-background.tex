@@ -22,7 +22,7 @@ The idea of an autoencoder dates back to the '80s proposed as a method for pre-t
 
 \subsection{Variational Autoencoders}
 \label{subsec:vae}
-\acp{vae}, unlike standard autoencoders, learn to encode a data sample $x$ as a probabilistic distribution rather than a deterministic value for the latent attribute \cite{jeremy_jordan_2018}. The encoder $q$ produces the probabilistic distribution by predicting two vectors that represent the mean $\mu$ and variance $\sigma$ of distribution for each of the latent attributes of $x$. And the decoder $p$ takes a random sample $z$ from this distribution to recover the sample as illustrated in Fig \ref{fig:vae_arch}.
+\acp{vae}, unlike standard autoencoders, learn to encode a data sample $x$ as a probabilistic distribution rather than a deterministic value for the latent attribute \cite{jeremy_jordan_2018}. The encoder $q$ produces the probabilistic distribution by predicting two vectors that represent the mean $\mu$ and standard deviation $\sigma$ of distribution for each of the latent attributes of $x$. And the decoder $p$ takes a random sample $z$ from this distribution to recover the sample as illustrated in Fig \ref{fig:vae_arch}.
 
 \begin{figure}[h]
     \centering
@@ -56,7 +56,7 @@ The first term in the above equation makes sure the reconstruction is close to t
     \end{gathered}
 \end{equation}
 
-However, the reconstruction error in the loss requires sampling $z$, which is a stochastic process and it is not possible to perform backpropagation. To address this problem, the \textbf{\textit{reparametrization trick}} is used. Where $\epsilon$ is randomly sampled from a unit gaussian distribution $\mathcal{N}(0,1)$ and is used to scale the variance $\sigma$ of the latent distribution represented by the encoder $q_{\theta}(z|x)$. Where $\theta$ is the parameters of the encoder. The sum of the mean $\mu$ and the scaled variance $\sigma \odot \epsilon$ gives $z$, which is now differentiable while being stochastic as illustrated in the Fig \ref{fig:reparametrization_trick}.
+However, the reconstruction error in the loss requires sampling $z$, which is a stochastic process and it is not possible to perform backpropagation. To address this problem, the \textbf{\textit{reparametrization trick}} is used. Where $\epsilon$ is randomly sampled from a unit gaussian distribution $\mathcal{N}(0,1)$ and is used to scale the standard deviation $\sigma$ of the latent distribution represented by the encoder $q_{\theta}(z|x)$. Where $\theta$ is the parameters of the encoder. The sum of the mean $\mu$ and the scaled standard deviation $\sigma \odot \epsilon$ gives $z$, which is now differentiable while being stochastic as illustrated in the Fig \ref{fig:reparametrization_trick}.
 
 \begin{figure}[h]
     \centering
