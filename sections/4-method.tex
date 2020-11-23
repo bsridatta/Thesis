@@ -19,6 +19,14 @@ The decoder takes the 2D pose embedding $z$ derived from the mean and log-varian
 
 Since the 3D is projected to 2D to form the reconstruction loss, the distance between the head and the pelvis joint should approximately be of unit length as explained in \ref{processing}. To achieve this, a Tanh activation function is used to obtain the predicted 3D pose (all joints) in the range [-1, 1]. However, the length of the lower half of the pose can be longer that the upper half and usually is the case. Hence the predicted 3D pose is scaled by a factor of 1.3, the ratio of the mean length of the upper and lower halves, to enforce the length of the upper half to ~1 unit and get the best 2D re-projection.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{figures/arch/method_arch.png}
+    \caption{Illustration of the neural architecture of the proposed method. The network components in blue, encode the 2D pose to a latent representation in terms of mean $\mu$ and standard deviation $\sigma$ of the distribution. While the components in pink, sample $z$ from this latent space and decode the corresponding 3D pose. The 3D pose is projected directly to 2D space for a constrained optimization using input 2D pose in the camera view and randomly rotated and projected for unconstrained optimization using the discriminator $D$ in a novel angle. The data that contributes to the loss function in orange, are mapped with a dotted line.  
+    }
+    \label{fig:method_arch}
+\end{figure}
+
 
 
 
@@ -29,16 +37,6 @@ All the layers use \ac{relu} activation unless specified otherwise. The decoder 
 % -1 to 1 ...scale to meet the head as 1. 
 % initalization activation optimier
 % at activation mention that the scaling of -1
-
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{figures/arch/method_arch.png}
-    \caption{Illustration of the neural architecture of the proposed method. The network components in blue, encode the 2D pose to a latent representation in terms of mean $\mu$ and standard deviation $\sigma$ of the distribution. While the components in pink, sample $z$ from this latent space and decode the corresponding 3D pose. The 3D pose is projected directly to 2D space for a contrained optimization using input 2D pose in the camera view and randomly rotated and projected for unconstrained optimization using the discriminator $D$ in a novel angle. The data that contributes to the loss function in orange, are mapped with a dotted line.  
-    }
-    \label{fig:method_arch}
-\end{figure}
-
 
 \subsection{Discriminator}%FIXME -- \subsection{Image \ac{vae}}
 The discriminator following the related works also mimics the generator and takes 2D poses as input and predicts binary labels of real or false. The sigmoid activation function is used at the output layer of the discriminator.
