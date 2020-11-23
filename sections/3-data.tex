@@ -53,9 +53,9 @@ As illustrated in Fig \ref{fig:h36_data_collection}, the data is collected from 
 \end{figure}
 
 \section{Camera projection}
-\label{camera_projection}
+\label{sec:camera_projection}
 
-The projection of the poses in the thesis is using a simple pinhole camera model as illustrated in Fig \ref{fig:pinhole}. The image of an object, here a person depicted as 3D pose, is formed on the other side of the camera, or the lens at a distance of $f$. Where $f$ is the focal length of the camera. This image that is formed on the true image plane behind the camera is upside down. For better understanding and comparision the image plane as been translated before the camera and since its before the pinhole, it is not inverted. Assume the two lines passing though from the head and root joints of both the 3D pose and 2D image to the camera make an angle of $\theta$. Also assume the distance between the 3D pose and the camera as $c$, and the height of the pose i.e, distance between the head and the root joint as $k$. Considering the similar traingles formed by the two rays and the line joining the head and root of pose in image and world frame, the ratio of heights to their distance from the camera should be the same. Hence the height of the 2D pose is $k f/c$. This relationship is used in the following sections on data preprocessing. The ground truth 2D as explained earlier is obtained by similar projects taking the camera intrinsic and extrinsic parameters into account.
+The projection of the poses in the thesis is using a simple pinhole camera model as illustrated in Fig \ref{fig:pinhole}. The image of an object, here a person depicted as 3D pose, is formed on the other side of the camera, or the lens at a distance of $f$. Where $f$ is the focal length of the camera. This image that is formed on the true image plane behind the camera is upside down. For better understanding and comparision the image plane as been translated before the camera and since its before the pinhole, it is not inverted. Assume the two lines passing though from the head and root joints of both the 3D pose and 2D image to the camera make an angle of $\theta$. Also assume the distance between the 3D pose and the camera as $c$, and the length of the upper half of the pose i.e, distance between the head and the root joint as $k$. Considering the similar traingles formed by the two rays and the line joining the head and root of pose in image and world frame respectively, the ratio of lengths of upper halves to their distance from the camera should be the same. Hence the length of upper half of the 2D pose is $k f/c$. This relationship is used in the following sections on data preprocessing. The ground truth 2D as explained earlier is obtained by similar projects taking the camera intrinsic and extrinsic parameters into account.
 
 \begin{figure}[h]
     \centering
@@ -65,7 +65,7 @@ The projection of the poses in the thesis is using a simple pinhole camera model
 \end{figure}
 
 \section{Depth Ambiguity and Camera Modeling}
-\label{depth_ambiguity_camera_modeling}
+\label{sec:depth_ambiguity_camera_modeling}
 One of the main problems discussed in \ref{sec:Related Work} is the depth ambiguity. The Fig \ref{fig:depth_ambiguity_case1} illustrates a case where a 3D pose gives the same 2D pose when scaled and shifted by the same factor, here 2. The second case shows the same 3D pose giving different projections for different focal length i.e the poses are kept the same while scaling the focal length and distance. Hence it is not possible to predict absolute pose from a single view alone. However, works suchs as \cite{CameraDistanceAware} try to tackle these challenges by learning the scale of human based on the features extracted from images. While works such as \cite{repnet,weaklymultiple} that do not use image features learn the camera parameters that are used to project 3D to 2D for learing 3D pose in a self-supervised manner. 
 
 \begin{figure}[h]
@@ -89,23 +89,25 @@ Assuming the focal length and distance are known constants, there still exists i
 
 
 \section{Processing}
-\label{processing}
+\label{sec:processing}
 The methods explored as part of this thesis, use images, 2D, and 3D human pose from the dataset besides metadata. Where 2D poses are used as training data, 3D poses are only used for evaluation and images are for qualitative analysis. The following describes the modifications done to the raw data for the tasks related to single person detection that are consistantly followed in the field. This is followed by the pre-processing steps done to the data that is specific to the presented work.
 
+\subsection{Standard Pre-processing}
 As discussed in section \ref{sec:h36m}, the 3D pose in the dataset that is obtained from the marker-based \ac{mocap} is in a global reference frame. These poses using the camera parameters are transformed into the camera coordinate frame. For the task of predicting 3D pose from either images or 2D pose, it is unrealistic to directly estimate all the joints of the pose in a global frame. The works that predict absolute 3D pose are presented in Chapter \ref{chap:background} and are fully supervised or exploit multi-view data and is not in the scope of this thesis. Since the focus is on unsupervised estimation and considering the depth ambiguity challenges we confine the scope to estimating pose relative to an origin point. The pelvis joint is generally considered as the origin or the root joint relative to which the coordinates of other joints are described. 
 
 The full-scale images for such tasks are cropped using the bounding box annotations as a guide to obtain images of aspect ratio 1:1. These cropped images are then scaled to 256x256 images. It important to note that the 2D annotations are relative to the full-scale image and hence the projections are no more synchronized to the images. The translation to these 2D pose are later done exclusively for visualizing the data. Since the image data is not utilized in the training or testing procedures, it is not required to maintain consistency with 2D or 3D annotations. 
 
 The 2D and 3D poses are translated such that the root joint, pelvis is at the origin. Since the pelvis is fixed at the origin, we remove it from the pose after translation so that the network is not required to learn a constant. Removing Pelvis, 16 out of the 17 joints or keypoints remain. The poses are generally normalized before feeding them to the neural network. These are the steps were performed and were sufficient for the initial supervised version of the method. Further steps which are inspired from \cite{amazon1}, are performed to make unsupervised adversarial training possible. 
 
-Considering the different cases of depth ambiguity explained in the previous section, a simple unit pinhole camera is assumed for all the data. That is a camera with a unit focal length, whose image plane is at a distance of 1 unit. Hence the 3D pose that forms an image on this image plane is further from the camera as depicted in the pinhole camera model figure \ref{fig:pinhole}. So the estimated 3D poses can not be at the origin, hence they are fixed at a distance $c$ units. $c$ is set to 10 for all the experiments. It is worth clarifying that only 2D poses are present and 3D are predicted by the neural network. Hence the 2D poses should be processed to achieve this. 
+\subsection{Pre-processing for Adversarial training}
+Considering the different cases of depth ambiguity explained in the previous section, a simple unit pinhole camera is assumed for all the data. That is a camera with a unit focal length, whose image plane is at a distance of 1 unit. Hence the 3D pose that forms an image on this image plane is further from the camera as depicted in the pinhole camera model figure \ref{fig:pinhole}. So the estimated 3D poses can not be at the origin, hence they are fixed at a distance $c$ units. It is worth clarifying that only 2D poses are present and 3D are predicted by the neural network. Hence the 2D poses should be processed to achieve this. 
 
-Referring to the pinhole camera figure again \ref{fig:pinhole}, $f$ and $c$ are constants of value 1, 10 respectively. Hence the scale of 3D pose that should be ideally predicted by the model is 10 times that of the 2D pose. The predicted 3D is projected to 2D just by dividing the $x$, $y$ coordinates by the $z$ component as it is a simple pinhole camera. The pose is rotated and project again and passed to a discriminator network following the \ac{vae}-\ac{gan} network explained in Preliminary Concepts section \ref{sec:Preliminary}. For numerical stability we process the 2D pose such that the height of the desired 3D pose is of approximately of unit length. To achieve this the 2D poses are scaled such that the mean distance from the head to the root joint is 1/10 ($k f/c$). 
+Referring to the pinhole camera figure \ref{fig:pinhole} again, the scale of 3D pose that should be ideally predicted by the model is $\frac{c}{f}$ times that of the 2D pose. The predicted 3D is projected to 2D just by dividing the $x$, $y$ coordinates by the $z$ component as it is a simple pinhole camera. The pose is rotated and project again and passed to a discriminator network following the \ac{vae}-\ac{gan} network explained in Preliminary Concepts section \ref{sec:Preliminary}. For numerical stability we process the 2D pose such that the upper half of the desired 3D pose is of approximately of unit length. To achieve this the 2D poses are scaled such that the mean distance from the head to the root joint is $\frac{1}{c}$ ($\frac{k f}{c}$ where $k$ and $f$ are 1 unit each). $c$ is set to 10 for all the experiments following \cite{amazon1}.
 
-Following the above processing procedure, the predicted 3D pose is not to scale with the ground truth 3D poses. Following the related unsupervised works sucha s \cite{amazon1}, we evaluate the 3D pose by aligning the prediction to the ground truth pose using rigid body alignment also referred to as Procrustes alignement as illustrated in Fig \ref{fig:procrustes}. Since the transformation is taken care by the algorithm, no other post-processing procedure is required for the proposed unsupervised method. More details about the evaluation is preseneted in chapter \ref{chap:method}, the Method.
+Following the above processing procedure, the predicted 3D pose is not to scale with the ground truth 3D poses and direct comparision is not feasible. Following the related unsupervised works sucha s \cite{amazon1}, we only evaluate the 3D pose by aligning the prediction to the ground truth pose using rigid body alignment. This is also referred to as Procrustes alignement \cite{Procrustes_wiki} as illustrated in Fig \ref{fig:procrustes}. Since the transformation is taken care by the algorithm, no other post-processing procedure is required for the proposed unsupervised method. More details about the evaluation is preseneted in chapter \ref{chap:method}, the Method.
 
 
-%FIXME \section{Procrustes Alignment} or even a cite a resource
+%FIXME \section{Procrustes Alignment}
 
 \begin{figure}
     \centering
@@ -118,7 +120,7 @@ Following the above processing procedure, the predicted 3D pose is not to scale 
     \begin{subfigure}[b]{0.25\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/h36_viz/proc_scale.png}
-        \caption{Scale to the same size}
+        \caption{Scaled to the same size}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.25\textwidth}

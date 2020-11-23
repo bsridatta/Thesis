@@ -1,45 +1,85 @@
 \chapter{Method}
 \label{chap:method}
 
-% \thispagestyle{fancy}
-% FIXME -- change from cross model to vae-gan
+To predict root-relative 3D pose solely using 2D poses, a hybrid network using \ac{vae} and \ac{gan} as discussed in \ref{subsec:vaeganhybrid} is employed. In contrast to the \ac{vae}-\ac{gan} hybrid proposed by \cite{autoencoding_beyond_pixels}, the \ac{gan} loss gradient is propogated to both the decoder and the encoder. In other words, the \ac{vae} as a whole is considered as the generator network. The overall architecture is illustrated in the Fig \ref{fig:method_arch}. This chapter entails the details and the motivations behind the design choices of the neural network such as the architecture, loss function, optimizers along with the training and evaluation procedures.
 
-This chapter presents the details and the motivation behind the design choice of the neural network such as the architecture, loss function, optimizers along with the training and evaluation procedure.
+\section{Encoder}
+Adding to the explanation of \ac{vae} in \ref{subsec:vae}, the role of the encoder $Q$, is to take a 2D pose $\textbf{x}_i = (x_i, y_i)$ with its root located at the joint and of upper body length of $c$ units as an input. Where $i = 1 ... J$ and $J$ denote the number of joints of the pose. And output its embedding in a $d$ dimensional latent space in the form of mean $\mu$ and standard deviation $\sigma$ of each dimension.
 
-\section{Architecture}
-To predict root-relative 3D pose solely using 2D poses, a hybrid network using \ac{vae} and \ac{gan} as discussed in \ref{subsec:vaeganhybrid} is employed. In contrast to the \ac{vae}-\ac{gan} hybrid introduced in \cite{autoencoding_beyond_pixels} where only the decoder acts as the generator, both the encoder and the decoder are considered as the generator in the proposed approach. In other words the encoder is also updated to maximize the probability of fooling the discriminator. The overall architecture is illustrated in the Fig \ref{fig:method_arch}. The following is the design and working of each of the components of the proposed \ac{vae}-{gan}.
+\begin{equation} \label{eqn:Q_fn}
+    \begin{gathered}[b]
+        Q_{\theta_q}(\textbf{x}) = \mu, \sigma
+    \end{gathered}
+\end{equation}
 
-\subsection{Encoder}
+Where $\theta_q$ denotes the learned parameters of the encoder during training. This encoder is composed of an upsampling layer that scales the $2\!\cdot\!J$ dimensional input to match the number of hidden neurons $h$ of the encoding module. The encoding module $q$ is made of $n$ residual block composed of 2 \ac{fc} layers following the related works, to allow comparison. The encoding block is followed by 2 \ac{fc} layers that downsample the hidden representation of dimension $h$ to match the latent space dimension $d$. The output of the two downsampling layers represents the mean and standard deviation respectively. However in practice, the encoder is designed to predict log-variance instead of the standard deviation to have a better distribution of values and gradient.
 
-Adding to the explanation of \ac{vae} in \ref{subsec:vae}, the role of the encoder is to take a 2D pose as input and estimate its latent representation in the form of mean and standard deviation. The encoder consists of an upsampling layer that scales the $2 \cdot j$ dimensional input to match the number of hidden neurons of the encoding module. Where $j$ is the number of joints, here 16. The encoding module is made of $n$ residual block composed of 2 \ac{fc} layers following the related works, to allow comparison. Where $n$ is usually 1 or 2, 2 is chosen for most of the experiments. The enoding block is followed by 2 \ac{fc} layers that downsample the hidden representation to match the latent space dimension. The output of the two downsampling layers represents the mean and standard deviation of the embedding in the latent space. However in practice, the encoder is designed to predict log-variance instead of the standard deviation to have a better distribution of values and gradient. 
+\section{Decoder}
 
-\subsection{Decoder}
+The decoder $P$ takes the 2D pose embedding $z$ derived from the mean and log-variance predicted by the encoder and estimates the corresponding 3D pose $\textbf{X}_i = (x^\prime_i, y^\prime_i, z^\prime_i)$. Similar to rhe encoder, $i = 1 ... J$ and $J$ denote the number of joints of the pose. The reparametrization trick is used to make the process differentiable and induce variance. This is done by scaling the standard deviation obtained from the log-variance with a random sample $\epsilon$ from a unit gaussian distribution $\mathcal{N}(0,1)$. The sum of the scaled standard deviation and the mean gives the sample $z$.
 
-The decoder takes the 2D pose embedding $z$ derived from the mean and log-variance predicted by the encoder and estimates the corresponding 3D pose. The reparametrization trick is used to make the process differentiable and induce variance. This is done by scaling the standard deviation obtained from the log-variance with a random sample from a unit gaussian distribution $\mathcal{N}(0,1)$. The sum of the scaled standard deviation and the mean gives the sample $z$. Similar to the encoder, the decoder consists of an upsampling layer that scales the sample $z$ of the latent space dimensions to match the number of hidden neurons in the decoding module. The decoding module is identical to the encoding module and consists of $n$ residual blocks composed of 2 \ac{fc} layers. This decoding module is followed by a \ac{fc} layer to downsample the neurons to predict 3D pose of dimension $3 \cdot j$. 
+\begin{equation} \label{eqn:P_fn}
+    \begin{gathered}[b]
+        z = \mu + \sigma \odot \epsilon \\
+        P_{\theta_p}(z) = \textbf{X}
+    \end{gathered}
+\end{equation}
 
-Since the 3D is projected to 2D to form the reconstruction loss, the distance between the head and the pelvis joint should approximately be of unit length as explained in \ref{processing}. To achieve this, a Tanh activation function is used to obtain the predicted 3D pose (all joints) in the range [-1, 1]. However, the length of the lower half of the pose can be longer that the upper half and usually is the case. Hence the predicted 3D pose is scaled by a factor of 1.3, the ratio of the mean length of the upper and lower halves, to enforce the length of the upper half to ~1 unit and get the best 2D re-projection.
+Where $\theta_p$ represents the learned parameters of the decoding network. Similar to the encoder, the decoder consists of an upsampling layer that scales the sample $z$ of dimensionality $d$ to match the number of hidden neurons $d$ in the decoding module. The decoding module is identical to the encoding module and consists of $n$ residual blocks composed of 2 \ac{fc} layers. This decoding module is followed by a \ac{fc} layer to downsample the neurons to predict 3D pose of dimensions $3\!\cdot\!J$. As the goal is to predict root relative pose with root at origin, the output joints are considered to be relative to the origin (0, 0, 0).
+
+Since the predicted 3D pose is to be projected to back to 2D pose to form the reconstruction loss, the distance between the head and the pelvis joint should approximately be of unit length as explained in \ref{sec:processing}. To achieve this, a Tanh activation function is used to obtain the predicted 3D pose (all joints) in the range [-1, 1].
+
+\section{Reprojection}
+Refering to the camera modeling section \ref{sec:camera_projection}, the 3D that corresponds to the pre-processed 2D pose is located at a fixed distance $c$ from the camera. The 3D pose is considered to be predicted relative to the origin for simplicity and symetry and is to be translated $c$ units aways from the camera. Another required adjustment is the scale. The range of coordinates predicted is in the range [-1,1]. But the length of the lower half of the pose can be longer that the upper half and usually is the case. Hence the predicted 3D pose is scaled by a factor of 1.3, which is the ratio of the mean length of the upper and lower halves. This is to ensure the length of the upper half to ~1 unit while covering the true range of the lower half and get the best 2D re-projection.
+
+This scaled 3D pose prediction is directly projected in the same view to get a 2D projection that corresponds to the input 2D pose.  This similarity is used as the reconstruction loss for a contrained optimization of the \ac{vae}.
+
+\begin{equation} \label{eqn:proj_direct}
+    \begin{gathered}[b]
+        \textbf{X}^\prime = \textbf{X}*1.3 + (0,0,c) \\
+        \textbf{y} = PP(\textbf{X}^\prime)
+    \end{gathered}
+\end{equation}
+
+The scaled 3D pose is also randomly rotated by uniformly sampling an azimuth angle from the range [$-\pi, \pi$] and elevation range in the range [$-\pi/9, \pi/9$].  The elevation angle has been followed by other works but is not observed to have any visible impact.
+
+\begin{equation} \label{eqn:proj_rotated}
+    \begin{gathered}[b]
+        \textbf{X}^\prime_{rot} = \textbf{R} * (\textbf{X}*1.3) + (0,0,c) \\
+        \tilde{\textbf{y}} = PP(\textbf{X}^\prime_{rot})
+    \end{gathered}
+\end{equation}
+
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{figures/arch/method_arch.png}
-    \caption{Illustration of the neural architecture of the proposed method. The network components in blue, encode the 2D pose to a latent representation in terms of mean $\mu$ and standard deviation $\sigma$ of the distribution. While the components in pink, sample $z$ from this latent space and decode the corresponding 3D pose. The 3D pose is projected directly to 2D space for a constrained optimization using input 2D pose in the camera view and randomly rotated and projected for unconstrained optimization using the discriminator $D$ in a novel angle. The data that contributes to the loss function in orange, are mapped with a dotted line.  
+    \caption{Illustration of the neural architecture of the proposed method. The network components in blue, encode the 2D pose to a latent representation in terms of mean $\mu$ and standard deviation $\sigma$ of the distribution. While the components in pink, sample $z$ from this latent space and decode the corresponding 3D pose. The 3D pose is projected directly to 2D space for a constrained optimization using input 2D pose in the camera view and randomly rotated and projected for unconstrained optimization using the discriminator $D$ in a novel angle. The data that contributes to the loss function in orange, are mapped with a dotted line.
     }
     \label{fig:method_arch}
 \end{figure}
 
-
-
-
-Following the best practices from \cite{soumith2017wasserstein}, the decoder (and the encoder) which acts as the generator for the \ac{gan} is made to output 3D poses with values from [-1,1]. 
-%FIXME blunder in the implementation?
-All the layers use \ac{relu} activation unless specified otherwise. The decoder mimics the encoder with an upsampling layer, a decoding module, and a downsampling layer to output 3D pose of dimension .
-
+%TODO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Following the best practices from \cite{soumith2017wasserstein}, the decoder (and the encoder) which acts as the generator for the \ac{gan} is made to output 3D poses with values from [-1,1]. 
+% %FIXME blunder in the implementation?
+% All the layers use \ac{relu} activation unless specified otherwise. The decoder mimics the encoder with an upsampling layer, a decoding module, and a downsampling layer to output 3D pose of dimension .
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % -1 to 1 ...scale to meet the head as 1. 
 % initalization activation optimier
 % at activation mention that the scaling of -1
 
-\subsection{Discriminator}%FIXME -- \subsection{Image \ac{vae}}
-The discriminator following the related works also mimics the generator and takes 2D poses as input and predicts binary labels of real or false. The sigmoid activation function is used at the output layer of the discriminator.
+
+\section{Discriminator}
+The scaled 3D pose prediction mentioned above is directly projected for reconstruction loss
+
+following the related works also mimics the generator and takes 2D poses as input and predicts binary labels of real or false. The sigmoid activation function is used at the output layer of the discriminator.
+
+\section{Training}
+%TODO
+add parameters of the netowrks number of layers hidden dimension root at 0 16 joints prediciton 17 joints
+
+The training scheme is similar to the standard \ac{vae} and \ac{vae}-\ac{gan} introduced in \ref{sec:Preliminary}. The discriminator is trained first for a few steps before training the \ac{vae}. First, the \ac{vae} takes the 2D pose as input and predicts the 3D pose. This predicted 3D pose is first reprojected to 2D to train the \ac{vae} and then randomly rotated and reprojected to a novel 2D view. This novel 2D is used as fake samples to train the discriminator. As \ac{vae} learns to improve the reprojected 2D pose, it will eventually be very close to the real samples. Using these as the fake examples will not be very useful as the decoder does the same job. Training the discriminator on a randomly rotated and reprojected 2D novel view would encourage the decoder to generate a pose that not only agrees with the input 2D pose but ensures that the other view of the 3D is also indistinguishable from the variations found in the data by fooling the discriminator. This two-view supervision leads to better 3D pose generations.
+
 
 \subsection{More on Activation functions}
 beta scheduling cycling and o to 1 annealing, weighting the loss components
@@ -52,11 +92,6 @@ beta scheduling cycling and o to 1 annealing, weighting the loss components
 beta scheduling cycling and o to 1 annealing, weighting the loss components
 
 
-\section{Training Scheme}
-The training scheme is similar to the standard \ac{vae} and \ac{vae}-\ac{gan} introduced in \ref{sec:Preliminary}. The discriminator is trained first for a few steps before training the \ac{vae}. First, the \ac{vae} takes the 2D pose as input and predicts the 3D pose. This predicted 3D pose is first reprojected to 2D to train the \ac{vae} and then randomly rotated and reprojected to a novel 2D view. This novel 2D is used as fake samples to train the discriminator. As \ac{vae} learns to improve the reprojected 2D pose, it will eventually be very close to the real samples. Using these as the fake examples will not be very useful as the decoder does the same job. Training the discriminator on a randomly rotated and reprojected 2D novel view would encourage the decoder to generate a pose that not only agrees with the input 2D pose but ensures that the other view of the 3D is also indistinguishable from the variations found in the data by fooling the discriminator. This two-view supervision leads to better 3D pose generations.
-
-% \section{Bag of tricks} % TODO -- add tricks to make it work here or at work? -- it should be here
-% \lipsum[1-10] %FIXME
 
 \section{Evaluation Metrics} % FIXME
 3D \ac{hpe} and Human3.6M in particular is mainly evaluated by \ac{mpjpe} metric. MPJPE as it abbreviates is the mean of the position estimate for all the joints of a pose. Where per-joint position estimate is nothing but the euclidian distance (usually measured in mm) between the predicted joint to its ground truth.
