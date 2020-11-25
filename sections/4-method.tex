@@ -1,10 +1,13 @@
 \chapter{Method}
 \label{chap:method}
 
-To predict root-relative 3D pose solely using 2D poses, a hybrid network using \ac{vae} and \ac{gan} as discussed in \ref{subsec:vaeganhybrid} is employed. In contrast to the \ac{vae}-\ac{gan} hybrid proposed by \cite{autoencoding_beyond_pixels}, the \ac{gan} loss gradient is propogated to both the decoder and the encoder. In other words, the \ac{vae} as a whole is considered as the generator network. The overall architecture is illustrated in the Fig \ref{fig:method_arch}. This chapter entails the details and the motivations behind the design choices of the neural network such as the architecture, loss function, optimizers along with the training and evaluation procedures.
+This chapter entails the details of the neural network such as the architecture, loss/objective function along with the training and evaluation procedures of the proposed method.
 
-\section{Encoder}
-Adding to the explanation of \ac{vae} in \ref{subsec:vae}, the role of the encoder $Q$, is to take a 2D pose $\textbf{x}_i = (x_i, y_i)$ with its root located at the joint and of upper body length of $c$ units as an input. Where $i = 1 ... J$ and $J$ denote the number of joints of the pose. And output its embedding in a $d$ dimensional latent space in the form of mean $\mu$ and standard deviation $\sigma$ of each dimension.
+\section{Architecture}
+To predict root-relative 3D pose solely using 2D poses, a hybrid network using \ac{vae} and \ac{gan} as discussed in \ref{subsec:vaeganhybrid} is employed. In contrast to the \ac{vae}-\ac{gan} hybrid proposed by \cite{autoencoding_beyond_pixels}, the \ac{gan} loss gradient is propogated to both the decoder and the encoder. In other words, the \ac{vae} as a whole is considered as the generator network. The overall architecture is conposed of 3 model Encoder, Decoder and Discriminator as illustrated in the Fig \ref{fig:method_arch}. This section eloborates on each of this model and how they are interconnected. The motivation regarding other components tha make up the neural network such as dropout, activation and optimization functions are discussed later in chapter \ref{chap:experiments}, Experiments.
+
+\subsection{Encoder}
+Adding to the explanation of \ac{vae} in \ref{subsec:vae}, the role of the encoder $Q$, is to take a 2D pose $\textbf{x}_i = (x_i, y_i)$ with its root located at the joint and of upper body length of $c$ units as an input. Where $i = 1 ... J$ and $J$ denote the number of joints of the pose. And output the corresponding embedding in a $d$ dimensional latent space in the form of mean $\mu$ and standard deviation $\sigma$ of each dimension.
 
 \begin{equation} \label{eqn:Q_fn}
     \begin{gathered}[b]
@@ -21,8 +24,7 @@ Where $\theta_q$ denotes the learned parameters of the encoder during training. 
     }
 \end{figure}
 
-\section{Decoder}
-
+\subsection{Decoder}
 The decoder $P$ takes the 2D pose embedding $z$ derived from the mean and log-variance predicted by the encoder and estimates the corresponding 3D pose $\textbf{X}_i = (x^\prime_i, y^\prime_i, z^\prime_i)$. Similar to rhe encoder, $i = 1 ... J$ and $J$ denote the number of joints of the pose. The reparametrization trick is used to make the process differentiable and induce variance. This is done by scaling the standard deviation obtained from the log-variance with a random sample $\epsilon$ from a unit gaussian distribution $\mathcal{N}(0,1)$. The sum of the scaled standard deviation and the mean gives the sample $z$.
 
 \begin{equation} \label{eqn:P_fn}
@@ -34,9 +36,10 @@ The decoder $P$ takes the 2D pose embedding $z$ derived from the mean and log-va
 
 Where $\theta_p$ represents the learned parameters of the decoding network. Similar to the encoder, the decoder consists of an upsampling layer that scales the sample $z$ of dimensionality $d$ to match the number of hidden neurons $d$ in the decoding module. The decoding module is identical to the encoding module and consists of $n$ residual blocks composed of 2 \ac{fc} layers. This decoding module is followed by a \ac{fc} layer to downsample the neurons to predict 3D pose of dimensions $3\!\cdot\!J$. As the goal is to predict root relative pose with root at origin, the output joints are considered to be relative to the origin (0, 0, 0).
 
-Since the predicted 3D pose is to be projected to back to 2D pose to form the reconstruction loss, the distance between the head and the pelvis joint should approximately be of unit length as explained in \ref{sec:processing}. To achieve this, a Tanh activation function is used to obtain the predicted 3D pose (all joints) in the range [-1, 1]. %TODO
+Since the predicted 3D pose is to be projected to back to 2D pose to form the reconstruction loss, the distance between the head and the pelvis joint should approximately be of unit length as explained in \ref{sec:processing}. To achieve this, a Tanh activation function is used at the downsampling/output layer to obtain the predicted 3D pose (all joints) in the range [-1, 1]. %TODO
 
-\section{Reprojection}
+\subsection{Reprojection}
+\label{subsec:reproject}
 Refering to the camera modeling section \ref{sec:camera_projection}, the 3D that corresponds to the pre-processed 2D pose is located at a fixed distance $c$ from the camera. The 3D pose is considered to be predicted relative to the origin for simplicity and symetry and is to be translated $c$ units aways from the camera. Another required adjustment is the scale. The range of coordinates predicted is in the range [-1,1]. But the length of the lower half of the pose can be longer that the upper half and usually is the case. Hence the predicted 3D pose is scaled by a factor of 1.3, which is the ratio of the mean length of the upper and lower halves. This is to enforce that the length of the upper half is ~1 unit, while covering the true range of the lower half and get the best 2D re-projection.
 
 This scaled 3D pose prediction is directly projected from the same point of view to get a 2D projection that corresponds to the input 2D pose. This similarity is used as the reconstruction loss for a contrained optimization of the \ac{vae}.
@@ -66,7 +69,7 @@ Where \textbf{R} referes to the rotation matrix formed using the randomly sample
     }
 \end{figure}
 
-\section{Discriminator}
+\subsection{Discriminator}
 The discriminator takes the novel view 2D pose of the predicted 3D pose $\tilde{\textbf{y}}$ along with the real 2D poses \textbf{x} from the dataset as the input and classifies which 2D pose belongs to which cateogory, real or fake (generated novel view). The real and novel views need not correspond to the same pose, the goal of the discriminator is to learn the general ability to distinguish the 2D poses from the dataset (real) from the predicted poses (fake).
 
 \begin{equation} \label{eqn:proj_rotated}
@@ -75,12 +78,30 @@ The discriminator takes the novel view 2D pose of the predicted 3D pose $\tilde{
     \end{gathered}
 \end{equation}
 
-Where $\theta_d$ refers to the learned parameters of the discriminator and $P(class)$ here denotes the probabilty of the pose's class, with 1 being real and 0 being fake. The discriminator mimicing the encoder and the decoder, upsamples the $2\!\cdot\!J$ dimensional novel 2D pose to $h$ dimensions of the main module. The main module just as other models is composed of $n$ residual blocks. It is important to note that $n$ need not be the same for all the 3 models. The learned features are downsampled to predict the probabilty of the pose being real or fake. The sigmoid activation function is used here as the required values are in the range [0, 1]. %TODO
+Where $\theta_d$ refers to the learned parameters of the discriminator and $P(class)$ here denotes the probabilty of the pose's class, with 1 being real and 0 being fake. The discriminator mimicing the encoder and the decoder, upsamples the $2\!\cdot\!J$ dimensional novel 2D pose to $h$ dimensions of the main module. The main module just as other models is composed of $n$ residual blocks. It is important to note that $n$ need not be the same for all the 3 models. The learned features are downsampled to predict the probabilty of the pose being real or fake. The sigmoid activation function is used at this last layer as the required values are in the range [0, 1]. %TODO
+
+\section{Loss Functions}
+\label{sec:loss_fn}
+The loss functions used in this \ac{vae}-\ac{gan} are similar to the ones explained in \ref{subsec:vaeganhybrid}. The hybrid training proposed in \cite{autoencoding_beyond_pixels} uses the similarity between the prediction and input estimated by the discriminator \textit{replacing} the element-wise loss. While the proposed approach exploits the element-wise loss and the similarity loss by using them on different transformations of the predicition (direct view 2D and novel view 2D). The formulation of each loss function of the hybrid with respect to the human pose data is as follows.
+
+\subsection{Reconstruction Loss}
+Since the goal of the proposed method is to learn 3D pose without requiring any of such training data, the approach uses 2D pose as its own supervisory data. This self-supervision is achieved by reprojecting the 3D pose in the same view to retireve the 2D pose that should ideally be the same as the input 2D pose as discussed in the Reprojection \ref{subsec:reproject} part of the previous section. The objective of the model here is to converge the distance (element-wise) between the predicted 2D pose $\textbf{y}$ and the input 2D pose $\textbf{x}$. L1 loss is used to measure the reconstruction error.
 
 
-\section{Training}
+\begin{equation} \label{loss_recon}
+    \begin{split}  
+        \mathcal{L}_{\text {recon}}  & = L1\_loss(\textbf{x}, \textbf{y}) \\
+        & = \sum_{i=1}^J |\textbf{x}_i - \textbf{y}_i|
+    \end{split}
+\end{equation}
+
+As there is absolute target and metric for learning, this is a contrained optimization and directly corresponds to the error in learning the 3D pose. Hence this is kept low always
+
+
+
 
 %TODO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Following the best practices from \cite{soumith2017wasserstein}, the decoder (and the encoder) which acts as the generator for the \ac{gan} is made to output 3D poses with values from [-1,1]. 
 % %FIXME blunder in the implementation?
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,17 +113,11 @@ Where $\theta_d$ refers to the learned parameters of the discriminator and $P(cl
 The training scheme is similar to the standard \ac{vae} and \ac{vae}-\ac{gan} introduced in \ref{sec:Preliminary}. The discriminator is trained first for a few steps before training the \ac{vae}. First, the \ac{vae} takes the 2D pose as input and predicts the 3D pose. This predicted 3D pose is first reprojected to 2D to train the \ac{vae} and then randomly rotated and reprojected to a novel 2D view. This novel 2D is used as fake samples to train the discriminator. As \ac{vae} learns to improve the reprojected 2D pose, it will eventually be very close to the real samples. Using these as the fake examples will not be very useful as the decoder does the same job. Training the discriminator on a randomly rotated and reprojected 2D novel view would encourage the decoder to generate a pose that not only agrees with the input 2D pose but ensures that the other view of the 3D is also indistinguishable from the variations found in the data by fooling the discriminator. This two-view supervision leads to better 3D pose generations.
 
 
-\subsection{More on Activation functions}
-beta scheduling cycling and o to 1 annealing, weighting the loss components
 
-%FIXME
-\subsection{Loss Functions}
-beta scheduling cycling and o to 1 annealing, weighting the loss components
+%FIXME dropout
 
 \subsection{Optimizers Functions}
 beta scheduling cycling and o to 1 annealing, weighting the loss components
-
-
 
 \section{Evaluation Metrics} % FIXME
 3D \ac{hpe} and Human3.6M in particular is mainly evaluated by \ac{mpjpe} metric. MPJPE as it abbreviates is the mean of the position estimate for all the joints of a pose. Where per-joint position estimate is nothing but the euclidian distance (usually measured in mm) between the predicted joint to its ground truth.
