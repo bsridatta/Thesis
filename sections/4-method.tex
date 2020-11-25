@@ -25,12 +25,12 @@ Where $\theta_q$ denotes the learned parameters of the encoder during training. 
 \end{figure}
 
 \subsection{Decoder}
-The decoder $P$ takes the 2D pose embedding $z$ derived from the mean and log-variance predicted by the encoder and estimates the corresponding 3D pose $\textbf{X}_i = (x^\prime_i, y^\prime_i, z^\prime_i)$. Similar to rhe encoder, $i = 1 ... J$ and $J$ denote the number of joints of the pose. The reparametrization trick is used to make the process differentiable and induce variance. This is done by scaling the standard deviation obtained from the log-variance with a random sample $\epsilon$ from a unit gaussian distribution $\mathcal{N}(0,1)$. The sum of the scaled standard deviation and the mean gives the sample $z$.
+The decoder $P$ takes the 2D pose embedding $z$ derived from the mean and log-variance predicted by the encoder and estimates the corresponding 3D pose $\textbf{Y}_i = (x^\prime_i, y^\prime_i, z^\prime_i)$. Similar to rhe encoder, $i = 1 ... J$ and $J$ denote the number of joints of the pose. The reparametrization trick is used to make the process differentiable and induce variance. This is done by scaling the standard deviation obtained from the log-variance with a random sample $\epsilon$ from a unit gaussian distribution $\mathcal{N}(0,1)$. The sum of the scaled standard deviation and the mean gives the sample $z$.
 
 \begin{equation} \label{eqn:P_fn}
     \begin{gathered}[b]
         z = \mu + \sigma \odot \epsilon \\
-        P_{\theta_p}(z) = \textbf{X}
+        P_{\theta_p}(z) = \textbf{Y}
     \end{gathered}
 \end{equation}
 
@@ -46,8 +46,8 @@ This scaled 3D pose prediction is directly projected from the same point of view
 
 \begin{equation} \label{eqn:proj_direct}
     \begin{gathered}[b]
-        \textbf{X}^\prime = \textbf{X}*1.3 + (0,0,c) \\
-        \textbf{y} = PP(\textbf{X}^\prime)
+        \textbf{Y}^\prime = \textbf{Y}*1.3 + (0,0,c) \\
+        \textbf{y} = PP(\textbf{Y}^\prime)
     \end{gathered}
 \end{equation}
 
@@ -55,12 +55,24 @@ Where PP refers to perspective projection and \textbf{y} denotes the 2D projecti
 
 \begin{equation} \label{eqn:proj_rotated}
     \begin{gathered}[b]
-        \textbf{X}^\prime_{rot} = \textbf{R} * (\textbf{X}*1.3) + (0,0,c) \\
-        \tilde{\textbf{y}} = PP(\textbf{X}^\prime_{rot})
+        \textbf{Y}^\prime_{rot} = \textbf{R} * (\textbf{Y}*1.3) + (0,0,c) \\
+        \tilde{\textbf{y}} = PP(\textbf{Y}^\prime_{rot})
     \end{gathered}
 \end{equation}
 
-Where \textbf{R} referes to the rotation matrix formed using the randomly sampled angles. $\tilde{\textbf{y}}$ referes to novel view of the 3D pose.
+Where \textbf{R} referes to the rotation matrix formed using the randomly sampled angles. $\tilde{\textbf{y}}$ refers to novel view of the 3D pose.
+
+\subsection{Discriminator}
+The discriminator takes the novel view 2D pose of the predicted 3D pose $\tilde{\textbf{y}}$ along with the real 2D poses \textbf{x} from the dataset as the input and classifies which 2D pose belongs to which cateogory, real or fake (generated novel view). The real and novel views need not correspond to the same pose, the goal of the discriminator is to learn the general ability to distinguish the 2D poses from the dataset (real) from the predicted poses (fake).
+
+\begin{equation} \label{eqn:proj_rotated}
+    \begin{gathered}[b]
+        D_{\theta_d}(\tilde{\textbf{y}} \cup \textbf{x}) = \left\lbrace p_{class}^i | i \in {1, .. n(\tilde{\textbf{y}} \cup \textbf{x})}\right\rbrace \\
+        where, 0\leq p_{class} \leq 1
+    \end{gathered}
+\end{equation}
+
+Where $\theta_d$ refers to the learned parameters of the discriminator and $p_{class}$ here denotes the probabilty of the pose's class, with 1 being real and 0 being fake. The discriminator mimicing the encoder and the decoder, upsamples the $2\!\cdot\!J$ dimensional novel 2D pose to $h$ dimensions of the main module. The main module just as other models is composed of $n$ residual blocks. It is important to note that $n$ need not be the same for all the 3 models. The learned features are downsampled to predict the probabilty of the pose being real or fake. The sigmoid activation function is used at this last layer as the required values are in the range [0, 1]. %TODO
 
 \begin{figure}[h] \label{fig:method_arch}
     \centering
@@ -69,35 +81,63 @@ Where \textbf{R} referes to the rotation matrix formed using the randomly sample
     }
 \end{figure}
 
-\subsection{Discriminator}
-The discriminator takes the novel view 2D pose of the predicted 3D pose $\tilde{\textbf{y}}$ along with the real 2D poses \textbf{x} from the dataset as the input and classifies which 2D pose belongs to which cateogory, real or fake (generated novel view). The real and novel views need not correspond to the same pose, the goal of the discriminator is to learn the general ability to distinguish the 2D poses from the dataset (real) from the predicted poses (fake).
-
-\begin{equation} \label{eqn:proj_rotated}
-    \begin{gathered}[b]
-        D_{\theta_d}(\tilde{\textbf{y}}, \textbf{x}) = P(0\leq class \leq 1)
-    \end{gathered}
-\end{equation}
-
-Where $\theta_d$ refers to the learned parameters of the discriminator and $P(class)$ here denotes the probabilty of the pose's class, with 1 being real and 0 being fake. The discriminator mimicing the encoder and the decoder, upsamples the $2\!\cdot\!J$ dimensional novel 2D pose to $h$ dimensions of the main module. The main module just as other models is composed of $n$ residual blocks. It is important to note that $n$ need not be the same for all the 3 models. The learned features are downsampled to predict the probabilty of the pose being real or fake. The sigmoid activation function is used at this last layer as the required values are in the range [0, 1]. %TODO
-
 \section{Loss Functions}
 \label{sec:loss_fn}
 The loss functions used in this \ac{vae}-\ac{gan} are similar to the ones explained in \ref{subsec:vaeganhybrid}. The hybrid training proposed in \cite{autoencoding_beyond_pixels} uses the similarity between the prediction and input estimated by the discriminator \textit{replacing} the element-wise loss. While the proposed approach exploits the element-wise loss and the similarity loss by using them on different transformations of the predicition (direct view 2D and novel view 2D). The formulation of each loss function of the hybrid with respect to the human pose data is as follows.
 
 \subsection{Reconstruction Loss}
-Since the goal of the proposed method is to learn 3D pose without requiring any of such training data, the approach uses 2D pose as its own supervisory data. This self-supervision is achieved by reprojecting the 3D pose in the same view to retireve the 2D pose that should ideally be the same as the input 2D pose as discussed in the Reprojection \ref{subsec:reproject} part of the previous section. The objective of the model here is to converge the distance (element-wise) between the predicted 2D pose $\textbf{y}$ and the input 2D pose $\textbf{x}$. L1 loss is used to measure the reconstruction error.
-
+Since the goal of the proposed method is to learn 3D pose without requiring any of such training data, the approach uses 2D pose as its own supervisory data. This self-supervision is achieved by reprojecting the 3D pose in the same view to retireve the 2D pose that should ideally be the same as the input 2D pose as discussed in the Reprojection \ref{subsec:reproject} part of the previous section. The objective of the model here is to converge the distance (element-wise) between the predicted 2D pose $\textbf{y}$ and the input 2D pose $\textbf{x}$. L1 loss is used to measure the element-wise reconstruction error.
 
 \begin{equation} \label{loss_recon}
-    \begin{split}  
+    \begin{split}
         \mathcal{L}_{\text {recon}}  & = L1\_loss(\textbf{x}, \textbf{y}) \\
         & = \sum_{i=1}^J |\textbf{x}_i - \textbf{y}_i|
     \end{split}
 \end{equation}
 
-As there is absolute target and metric for learning, this is a contrained optimization and directly corresponds to the error in learning the 3D pose. Hence this is kept low always
+The training the hybrid network with 3 different losses is not very stable. For the reconstruction loss, there is absolute target and metric for learning. So this is a contrained optimization and directly corresponds to the error of the 3D pose. Hence it is desired to give give high priority and keep this loss relatively stable and low. All the 3 loss terms are weighted to be summed to one final object term that is used to update the network. The weight coeffiecient $\lambda_{recon}$ is kept constant and relatively higher than the other two that are introduced next.
 
+\subsection{Latent Prior Loss}
 
+The proposed hybrid though named \ac{vae}-\ac{gan}, actually uses a \ac{bvae}, it is not highlighted as the only differnece is having a varible coeffcient rather than fixing it to 1. Refering to the explanation of the \ac{bvae} in \ref{subsec:bvae}, the higher the weight of the \ac{kld} term the better is the disentaglement or clustering of the mebeddings are in the latent space. There is no magic $\beta$ that gives the best recosntruction and representation. This is a trade-off and the value is chosen based on the requirements. Though both are the priorities of this work, more importance is given to the reconstruction as it is quantitative. It is important to note that the weight coefficient $\lambda_{KLD}$ to balance the loss terms is separated for the $\beta$ term to have better control when experiment with different scheduling stategies for the $\beta$ term. Cyclic beta techique similar to \cite{cyclicbeta} is used to handle the vanishing \ac{KLD} problem, where $\beta$ is increased from 0 to true value every $b$ epochs and observed to improve training.
+
+\begin{equation} \label{loss_kld}
+    \begin{split}
+        \mathcal{L}_{\text {prior}} = \mathcal{L}_{\text {KLD}} &= -0.5 * \sum (1 + log(\sigma^2) - \mu^2 - \sigma^2) \\
+        &= -0.5 * \sum (1 + logvar - \mu^2 - e^{logvar})
+    \end{split}
+\end{equation}
+
+The $logvar$ term here is the output of one of the downsampling layers of the encoder in practice. The terms denoted in the equation are per sample and in practice the losses are averaged and normalized based on the dimensionality. The normalization is included in their $\lambda$ coeffcients.
+
+\subsection{Discriminator Loss}
+
+The discriminator takes both the samples from the real dataset \textbf{x} and predicted novel 2D poses $\tilde{\textbf{y}}$ and classifies the samples. For making such training data the values of 1s and 0s are given as the labels for the real and generated 2D poses respectively. As the labels are self generatated the discriminator training is self-supervised as well. In constrast to the reconstruction error, the error in discriminator's classification is not expected to be minimized even though the models are learning to minimize this mertic. Rather, the role it plays is to help the generator produce 3D poses that give more realistic 2D novel views. That is, 2D projections from random views of the 3D pose that are indistinguishable from the 2D pose from the real dataset. Fig \ref{fig:novel_view_constraint} illustrates the differences in the novel views of realistic and unrealistic 3D poses that this adverserial training aims to resolve. Hence this error is used to optimize both the discriminator and generator models that actually produce the 3D poses.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{figures/h36_viz/novel_view_contraint.pdf}
+    \caption{Illustration of the differences in accurate or realistic 3D pose predicitions from inaccurate predicitions. Modified image from \cite{can3dpose}}
+    \label{fig:novel_view_constraint}
+\end{figure}
+
+The real and the fake 2D poses need not be related in anyway. Infact, in practice the loss terms of the real and fake data is computed and used to update the models separatly, as suggested in \cite{soumith2017wasserstein, goodfellow2014generative}. As the goal of the discriminator is to just predict the correct label of the 2D pose, the \ac{bce} loss function is used. 
+
+\begin{equation} \label{loss_bce}
+    \begin{split}
+        \mathcal{L}_{\text {Disc.}} & = BCE\_loss(y, \hat{y}) \\
+        & = -1 * (\hat{y} \cdot \log y + (1 - \hat{y}) \cdot \log (1 - y)) \\
+        & Where, \:\: y \in (\tilde{\textbf{y}} \cup \textbf{x}) \;\; and \;\; \hat{y} \in (0s, 1s)
+    \end{split}
+\end{equation}
+
+$\tilde{\textbf{y}}$ here is the transformed output of the decoder. That means to minimize this loss the decoder model is to be updated along with the discriminator. However as discussed earlier we consider the encoder to be part of the generator. Hence all the models use this metric to update their weights. Again inconstrast to the reconstruction loss, the discriminator loss does not give direct signal to correct the 3D pose and thus updating the models to minimize this loss is an unconstrained optimization and is not stable. Hence the weight coefficent $\lambda_{disc.}$ is not as high as that of the reconstruction loss. As this is a min-max game where the generator tries to fool the discriminator while the discriminator tries to guess which same is from the generator, all the models cannot be updated at the same time. The training scheme to enable the models to learn and improve the generated 3D pose is discussed in the next section.
+
+%TODO more in practice here?
+
+\section{Training Scheme}
+
+The training scheme is similar to the standard \ac{vae} and \ac{vae}-\ac{gan} introduced in \ref{sec:Preliminary}. The discriminator is trained first for a few steps before training the \ac{vae}. First, the \ac{vae} takes the 2D pose as input and predicts the 3D pose. This predicted 3D pose is first reprojected to 2D to train the \ac{vae} and then randomly rotated and reprojected to a novel 2D view. This novel 2D is used as fake samples to train the discriminator. As \ac{vae} learns to improve the reprojected 2D pose, it will eventually be very close to the real samples. Using these as the fake examples will not be very useful as the decoder does the same job. Training the discriminator on a randomly rotated and reprojected 2D novel view would encourage the decoder to generate a pose that not only agrees with the input 2D pose but ensures that the other view of the 3D is also indistinguishable from the variations found in the data by fooling the discriminator. This two-view supervision leads to better 3D pose generations.
 
 
 %TODO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -110,25 +150,16 @@ As there is absolute target and metric for learning, this is a contrained optimi
 %TODO
 % add parameters of the netowrks number of layers hidden dimension root at 0 16 joints prediciton 17 joints
 
-The training scheme is similar to the standard \ac{vae} and \ac{vae}-\ac{gan} introduced in \ref{sec:Preliminary}. The discriminator is trained first for a few steps before training the \ac{vae}. First, the \ac{vae} takes the 2D pose as input and predicts the 3D pose. This predicted 3D pose is first reprojected to 2D to train the \ac{vae} and then randomly rotated and reprojected to a novel 2D view. This novel 2D is used as fake samples to train the discriminator. As \ac{vae} learns to improve the reprojected 2D pose, it will eventually be very close to the real samples. Using these as the fake examples will not be very useful as the decoder does the same job. Training the discriminator on a randomly rotated and reprojected 2D novel view would encourage the decoder to generate a pose that not only agrees with the input 2D pose but ensures that the other view of the 3D is also indistinguishable from the variations found in the data by fooling the discriminator. This two-view supervision leads to better 3D pose generations.
-
-
 
 %FIXME dropout
 
 \subsection{Optimizers Functions}
-beta scheduling cycling and o to 1 annealing, weighting the loss components
+beta scheduling cycling and o to 1 annealing, weighting the loss components 
 
 \section{Evaluation Metrics} % FIXME
 3D \ac{hpe} and Human3.6M in particular is mainly evaluated by \ac{mpjpe} metric. MPJPE as it abbreviates is the mean of the position estimate for all the joints of a pose. Where per-joint position estimate is nothing but the euclidian distance (usually measured in mm) between the predicted joint to its ground truth.
 
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{figures/h36_viz/novel_view_contraint.pdf}
-    \caption{Illustration of the architecutre and loss flow in the proposed approach.}
-    \label{fig:novel_view_constraint}
-\end{figure}
 
 % \section{more details the model prints?} % FIXME
 %TODO add all models in apendix
