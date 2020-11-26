@@ -17,11 +17,12 @@ Adding to the explanation of \ac{vae} in \ref{subsec:vae}, the role of the encod
 
 Where $\theta_q$ denotes the learned parameters of the encoder during training. This encoder is composed of an upsampling layer that scales the $2\!\cdot\!J$ dimensional input to match the number of hidden neurons $h$ of the encoding module. The encoding module $q$ is made of $n$ residual block composed of 2 \ac{fc} layers following the related works, to allow comparison. The encoding block is followed by 2 \ac{fc} (linear) layers that downsample the hidden representation of dimension $h$ to match the latent space dimension $d$. The output of the two downsampling layers represents the mean and standard deviation respectively. However in practice, the encoder is designed to predict log-variance instead of the standard deviation to have a better distribution of values and gradient. The layers of the encoder, decoder and the discriminator models are kept similar for simplicity and as done by the related works. The residual blocks used in all the 3 models are identical and is illustrated in the Fig \ref{fig:residual_block}.
 
-\begin{figure}[h] \label{fig:residual_block}
+\begin{figure}[h] 
     \centering
     \includegraphics[width=0.45\textwidth]{figures/arch/res_block.png}
     \caption{Illustration of the residual block made of 2 Linear layers of the same input and output dimensionality. These blocks are repeated $n$ times based on the configuration of the model.
     }
+    \label{fig:residual_block}
 \end{figure}
 
 \subsection{Decoder}
@@ -74,11 +75,12 @@ The discriminator takes the novel view 2D pose of the predicted 3D pose $\tilde{
 
 Where $\theta_d$ refers to the learned parameters of the discriminator and $p_{class}$ here denotes the probabilty of the pose's class, with 1 being real and 0 being fake. The discriminator mimicing the encoder and the decoder, upsamples the $2\!\cdot\!J$ dimensional novel 2D pose to $h$ dimensions of the main module. The main module just as other models is composed of $n$ residual blocks. It is important to note that $n$ need not be the same for all the 3 models. The learned features are downsampled to predict the probabilty of the pose being real or fake. The sigmoid activation function is used at this last layer as the required values are in the range [0, 1]. %TODO
 
-\begin{figure}[h] \label{fig:method_arch}
+\begin{figure}[h] 
     \centering
     \includegraphics[width=\textwidth]{figures/arch/method_arch.png}
     \caption{Illustration of the neural architecture of the proposed method. The network components in blue, encode the 2D pose to a latent representation in terms of mean $\mu$ and standard deviation $\sigma$ of the distribution. While the components in pink, sample $z$ from this latent space and decode the corresponding 3D pose. The 3D pose is projected directly to 2D space for a constrained optimization using input 2D pose in the camera view and randomly rotated and projected for unconstrained optimization using the discriminator $D$ in a novel angle. The data that contributes to the loss function in orange, are mapped with a dotted line.
     }
+    \label{fig:method_arch}
 \end{figure}
 
 \section{Loss Functions}
@@ -99,7 +101,7 @@ The training the hybrid network with 3 different losses is not very stable. For 
 
 \subsection{Latent Prior Loss}
 
-The proposed hybrid though named \ac{vae}-\ac{gan}, actually uses a \ac{bvae}, it is not highlighted as the only differnece is having a varible coeffcient rather than fixing it to 1. Refering to the explanation of the \ac{bvae} in \ref{subsec:bvae}, the higher the weight of the \ac{kld} term the better is the disentaglement or clustering of the mebeddings are in the latent space. There is no magic $\beta$ that gives the best recosntruction and representation. This is a trade-off and the value is chosen based on the requirements. Though both are the priorities of this work, more importance is given to the reconstruction as it is quantitative. It is important to note that the weight coefficient $\lambda_{KLD}$ to balance the loss terms is separated for the $\beta$ term to have better control when experiment with different scheduling stategies for the $\beta$ term. Cyclic beta techique similar to \cite{cyclicbeta} is used to handle the vanishing \ac{KLD} problem, where $\beta$ is increased from 0 to true value every $b$ epochs and observed to improve training.
+The proposed hybrid though named \ac{vae}-\ac{gan}, actually uses a \ac{bvae}, it is not highlighted as the only differnece is having a varible coeffcient rather than fixing it to 1. Refering to the explanation of the \ac{bvae} in \ref{subsec:bvae}, the higher the weight of the \ac{kld} term the better is the disentaglement or clustering of the mebeddings are in the latent space. There is no magic $\beta$ that gives the best recosntruction and representation. This is a trade-off and the value is chosen based on the requirements. Though both are the priorities of this work, more importance is given to the reconstruction as it is quantitative. It is important to note that the weight coefficient $\lambda_{KLD}$ to balance the loss terms is separated for the $\beta$ term to have better control when experiment with different scheduling stategies for the $\beta$ term. Cyclic beta techique similar to \cite{cyclicbeta} is used to handle the vanishing \ac{kld} problem, where $\beta$ is increased from 0 to true value every $b$ epochs and observed to improve training.
 
 \begin{equation} \label{loss_kld}
     \begin{split}
@@ -131,17 +133,36 @@ The real and the fake 2D poses need not be related in anyway. Infact, in practic
     \end{split}
 \end{equation}
 
-$\tilde{\textbf{y}}$ here is the transformed output of the decoder. That means to minimize this loss the decoder model is to be updated along with the discriminator. However as discussed earlier we consider the encoder to be part of the generator. Hence all the models use this metric to update their weights. Again inconstrast to the reconstruction loss, the discriminator loss does not give direct signal to correct the 3D pose and thus updating the models to minimize this loss is an unconstrained optimization and is not stable. Hence the weight coefficent $\lambda_{disc.}$ is not as high as that of the reconstruction loss. As this is a min-max game where the generator tries to fool the discriminator while the discriminator tries to guess which same is from the generator, all the models cannot be updated at the same time. The training scheme to enable the models to learn and improve the generated 3D pose is discussed in the next section.
+$\tilde{\textbf{y}}$ here is the transformed output of the decoder. That means to minimize this loss the decoder model is to be updated along with the discriminator. However as discussed earlier we consider the encoder to be part of the generator. Hence all the models use this metric to update their weights. Again inconstrast to the reconstruction loss, the discriminator loss does not give direct signal to correct the 3D pose and thus updating the models to minimize this loss is an unconstrained optimization and is not stable. Hence the weight coefficent $\lambda_{disc.}$ is not as high as that of the reconstruction loss. As this is a min-max game where the generator tries to fool the discriminator while the discriminator tries to guess which same is from the generator, all the models cannot be updated at the same time. The training procedure to enable the models to learn and improve the generated 3D pose is discussed in the next section.
 
 %TODO more in practice here?
 
-\section{Training Scheme}
+\section{Training}
 
-The training scheme is similar to the standard \ac{vae} and \ac{vae}-\ac{gan} introduced in \ref{sec:Preliminary}. The discriminator is trained first for a few steps before training the \ac{vae}. First, the \ac{vae} takes the 2D pose as input and predicts the 3D pose. This predicted 3D pose is first reprojected to 2D to train the \ac{vae} and then randomly rotated and reprojected to a novel 2D view. This novel 2D is used as fake samples to train the discriminator. As \ac{vae} learns to improve the reprojected 2D pose, it will eventually be very close to the real samples. Using these as the fake examples will not be very useful as the decoder does the same job. Training the discriminator on a randomly rotated and reprojected 2D novel view would encourage the decoder to generate a pose that not only agrees with the input 2D pose but ensures that the other view of the 3D is also indistinguishable from the variations found in the data by fooling the discriminator. This two-view supervision leads to better 3D pose generations.
+\subsection{Procedure}
+The general training procedure is summarized before describing specific details. In this min-max game the generator produces samples and the discriminator verifies them, the generator uses this verfication and in our method it also uses self-supervision loss to improve itself in both aspects. The standard practice in trianing \acp{gan} is to start with generating the samples using the generator. As the discriminator's evalutation is required to teach the generator, the discriminator is first trained to distinguish reals from fakes given by the generator. The samples are again given to the trained discriminator to get the loss to train the generator. That is, the generator is kept constant while updating the discriminator and the discriminator is kept constant while updating the generator. This turn-wise play is important without which the models would be trying to hit a moving target as put by \cite{gan_training_google}.
+
+While the procedure seems straightforward, \ac{gan} training is finding a Nash equilibribrium to a two-plaer non-coorperative game. There exists no feasbile algorithm to find the equilibrium for a problem of such complexity\cite{improved_gan}. As the training initiates, the genertor produces samples close to noise and thus is very easy for the discriminator to learn to classify. This overpowers the discriminator as it predicts fakes with very high confidence and the loss tends to 0. The generator can not learn properly if the discriminator does not provide proper signal. This happens when the discriminator does not perform well or if it performs too well where the loss is close to 0 and not helpful \cite{gan_wgan_tutorial}. Other challenges and the basic challenges of \ac{gan} training is explained in \ref{subsec:gan}. The following are few of the widely practiced tricks to improve the training of \acp{gan}.
+
+%FIXME few details missing - more about problems of gans? how implemented? idk idc
+
+\subsection{Bag of Tricks}
+The techniques to improve the \ac{gan} training and the reasoning for their importance is discussed in detail in \cite{soumith2017wasserstein,goodfellow2014generative,openaigan2wgan,improved_gan}. The    
 
 
 %TODO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
+
+\subsection{Optimization}
+beta scheduling cycling and o to 1 annealing, weighting the loss components 
+
+\section{Evaluation Metrics} % FIXME
+3D \ac{hpe} and Human3.6M in particular is mainly evaluated by \ac{mpjpe} metric. \ac{mpjpe} as it abbreviates is the mean of the position estimate for all the joints of a pose. Where per-joint position estimate is nothing but the euclidian distance (usually measured in mm) between the predicted joint to its ground truth.
+
+
+%FIXME dropout
 % Following the best practices from \cite{soumith2017wasserstein}, the decoder (and the encoder) which acts as the generator for the \ac{gan} is made to output 3D poses with values from [-1,1]. 
 % %FIXME blunder in the implementation?
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -149,16 +170,6 @@ The training scheme is similar to the standard \ac{vae} and \ac{vae}-\ac{gan} in
 % at activation mention that the scaling of -1 again?
 %TODO
 % add parameters of the netowrks number of layers hidden dimension root at 0 16 joints prediciton 17 joints
-
-
-%FIXME dropout
-
-\subsection{Optimizers Functions}
-beta scheduling cycling and o to 1 annealing, weighting the loss components 
-
-\section{Evaluation Metrics} % FIXME
-3D \ac{hpe} and Human3.6M in particular is mainly evaluated by \ac{mpjpe} metric. MPJPE as it abbreviates is the mean of the position estimate for all the joints of a pose. Where per-joint position estimate is nothing but the euclidian distance (usually measured in mm) between the predicted joint to its ground truth.
-
 
 
 % \section{more details the model prints?} % FIXME

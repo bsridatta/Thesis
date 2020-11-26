@@ -86,6 +86,7 @@ A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As d
 \end{equation}
 
 \subsection{Generative Adversarial Networks}
+\label{subsec:gan}
 \ac{gan} is an \ac{ann} that is used for generative tasks, to make the prediction \textit{realistic}. A \ac{gan} is a combination of 2 networks namely, the generator $G$ and the discriminator $D$. The generator learns to map a random sample or say, noise $Z$ drawn from a latent distribution with density $p_{z}$ to a higher dimensional data distribution with density $p_{g}$. Where as the discriminator takes the output of the generator and tries to differentiate real data samples $x$ from the fakes which do not belong to the real distribution $p_{r}$  as illustrated in the Fig \ref{fig:gan_arch}.
 
 \begin{figure}[h]
