@@ -41,7 +41,7 @@ Since the predicted 3D pose is to be projected to back to 2D pose to form the re
 
 \subsection{Reprojection}
 \label{subsec:reproject}
-Refering to the camera modeling section \ref{sec:camera_projection}, the 3D that corresponds to the pre-processed 2D pose is located at a fixed distance $c$ from the camera. The 3D pose is considered to be predicted relative to the origin for simplicity and symetry and is to be translated $c$ units aways from the camera. Another required adjustment is the scale. The range of coordinates predicted is in the range [-1,1]. But the length of the lower half of the pose can be longer that the upper half and usually is the case. Hence the predicted 3D pose is scaled by a factor of 1.3, which is the ratio of the mean length of the upper and lower halves. This is to enforce that the length of the upper half is ~1 unit, while covering the true range of the lower half and get the best 2D re-projection.
+Referring to the camera modeling section \ref{sec:camera_projection}, the 3D that corresponds to the pre-processed 2D pose is located at a fixed distance $c$ from the camera. The 3D pose is considered to be predicted relative to the origin for simplicity and symetry and is to be translated $c$ units aways from the camera. Another required adjustment is the scale. The range of coordinates predicted is in the range [-1,1]. But the length of the lower half of the pose can be longer that the upper half and usually is the case. Hence the predicted 3D pose is scaled by a factor of 1.3, which is the ratio of the mean length of the upper and lower halves. This is to enforce that the length of the upper half is ~1 unit, while covering the true range of the lower half and get the best 2D re-projection.
 
 This scaled 3D pose prediction is directly projected from the same point of view to get a 2D projection that corresponds to the input 2D pose. This similarity is used as the reconstruction loss for a contrained optimization of the \ac{vae}.
 
@@ -90,7 +90,7 @@ The loss functions used in this \ac{vae}-\ac{gan} are similar to the ones explai
 \subsection{Reconstruction Loss}
 Since the goal of the proposed method is to learn 3D pose without requiring any of such training data, the approach uses 2D pose as its own supervisory data. This self-supervision is achieved by reprojecting the 3D pose in the same view to retireve the 2D pose that should ideally be the same as the input 2D pose as discussed in the Reprojection \ref{subsec:reproject} part of the previous section. The objective of the model here is to converge the distance (element-wise) between the predicted 2D pose $\textbf{y}$ and the input 2D pose $\textbf{x}$. L1 loss is used to measure the element-wise reconstruction error.
 
-\begin{equation} \label{loss_recon}
+\begin{equation} \label{eqn:loss_recon}
     \begin{split}
         \mathcal{L}_{\text {recon}}  & = L1\_loss(\textbf{x}, \textbf{y}) \\
         & = \sum_{i=1}^J |\textbf{x}_i - \textbf{y}_i|
@@ -103,7 +103,7 @@ The training the hybrid network with 3 different losses is not very stable. For 
 
 The proposed hybrid though named \ac{vae}-\ac{gan}, actually uses a \ac{bvae}, it is not highlighted as the only differnece is having a varible coeffcient rather than fixing it to 1. Refering to the explanation of the \ac{bvae} in \ref{subsec:bvae}, the higher the weight of the \ac{kld} term the better is the disentaglement or clustering of the mebeddings are in the latent space. There is no magic $\beta$ that gives the best recosntruction and representation. This is a trade-off and the value is chosen based on the requirements. Though both are the priorities of this work, more importance is given to the reconstruction as it is quantitative. It is important to note that the weight coefficient $\lambda_{KLD}$ to balance the loss terms is separated for the $\beta$ term to have better control when experiment with different scheduling stategies for the $\beta$ term. Cyclic beta techique similar to \cite{cyclicbeta} is used to handle the vanishing \ac{kld} problem, where $\beta$ is increased from 0 to true value every $b$ epochs and observed to improve training.
 
-\begin{equation} \label{loss_kld}
+\begin{equation} \label{eqn:loss_kld}
     \begin{split}
         \mathcal{L}_{\text {prior}} = \mathcal{L}_{\text {KLD}} &= -0.5 * \sum (1 + log(\sigma^2) - \mu^2 - \sigma^2) \\
         &= -0.5 * \sum (1 + logvar - \mu^2 - e^{logvar})
@@ -125,15 +125,15 @@ The discriminator takes both the samples from the real dataset \textbf{x} and pr
 
 The real and the fake 2D poses need not be related in anyway. Infact, in practice the loss terms of the real and fake data is computed and used to update the models separatly, as suggested in \cite{soumith2017wasserstein, goodfellow2014generative}. As the goal of the discriminator is to just predict the correct label of the 2D pose, the \ac{bce} loss function is used. 
 
-\begin{equation} \label{loss_bce}
+\begin{equation} \label{eqn:loss_bce}
     \begin{split}
         \mathcal{L}_{\text {Disc.}} & = BCE\_loss(y, \hat{y}) \\
         & = -1 * (\hat{y} \cdot \log y + (1 - \hat{y}) \cdot \log (1 - y)) \\
-        & Where, \:\: y \in (\tilde{\textbf{y}} \cup \textbf{x}) \;\; and \;\; \hat{y} \in (0s, 1s)
+        & Where, \:\: y \in D_{\theta_d}(\tilde{\textbf{y}} \cup \textbf{x}) \;\; and \;\; \hat{y} \in (0s, 1s)
     \end{split}
 \end{equation}
 
-$\tilde{\textbf{y}}$ here is the transformed output of the decoder. That means to minimize this loss the decoder model is to be updated along with the discriminator. However as discussed earlier we consider the encoder to be part of the generator. Hence all the models use this metric to update their weights. Again inconstrast to the reconstruction loss, the discriminator loss does not give direct signal to correct the 3D pose and thus updating the models to minimize this loss is an unconstrained optimization and is not stable. Hence the weight coefficent $\lambda_{disc.}$ is not as high as that of the reconstruction loss. As this is a min-max game where the generator tries to fool the discriminator while the discriminator tries to guess which same is from the generator, all the models cannot be updated at the same time. The training procedure to enable the models to learn and improve the generated 3D pose is discussed in the next section.
+The $\tilde{\textbf{y}}$ here is the transformed output of the decoder. That means, to minimize this loss the decoder model is to be updated along with the discriminator. However as discussed earlier we consider the encoder to be part of the generator. Hence all the models use this metric to update their weights. Again inconstrast to the reconstruction loss, the discriminator loss does not give direct signal to correct the 3D pose and thus updating the models to minimize this loss is an unconstrained optimization and is not stable. Hence the weight coefficent $\lambda_{disc.}$ is not as high as that of the reconstruction loss. As this is a min-max game where the generator tries to fool the discriminator while the discriminator tries to guess which same is from the generator, all the models cannot be updated at the same time. The training procedure to enable the models to learn and improve the generated 3D pose is discussed in the next section.
 
 %TODO more in practice here?
 
@@ -142,12 +142,9 @@ $\tilde{\textbf{y}}$ here is the transformed output of the decoder. That means t
 \subsection{Procedure}
 The general training procedure is summarized before describing specific details. In this min-max game the generator produces samples and the discriminator verifies them, the generator uses this verfication and in our method it also uses self-supervision loss to improve itself in both aspects. The standard practice in trianing \acp{gan} is to start with generating the samples using the generator. As the discriminator's evalutation is required to teach the generator, the discriminator is first trained to distinguish reals from fakes given by the generator. The samples are again given to the trained discriminator to get the loss to train the generator. That is, the generator is kept constant while updating the discriminator and the discriminator is kept constant while updating the generator. This turn-wise play is important without which the models would be trying to hit a moving target as put by \cite{gan_training_google}.
 
-While the procedure seems straightforward, \ac{gan} training is finding a Nash equilibribrium to a two-plaer non-coorperative game. There exists no feasbile algorithm to find the equilibrium for a problem of such complexity\cite{improved_gan}. As the training initiates, the genertor produces samples close to noise and thus is very easy for the discriminator to learn to classify. This overpowers the discriminator as it predicts fakes with very high confidence and the loss tends to 0. The generator can not learn properly if the discriminator does not provide proper signal. This happens when the discriminator does not perform well or if it performs too well where the loss is close to 0 and not helpful \cite{gan_wgan_tutorial}. Other challenges and the basic challenges of \ac{gan} training is explained in \ref{subsec:gan}. The following are few of the widely practiced tricks to improve the training of \acp{gan}.
+While the procedure seems straightforward, \ac{gan} training is finding a Nash equilibribrium to a two-plaer non-coorperative game. There exists no feasible algorithm to find the equilibrium for a problem of such complexity\cite{improved_gan}. As the training initiates, the genertor produces 3D poses close to noise and thus is very easy for the discriminator to learn to classify. This overpowers the discriminator as it predicts fakes with very high confidence and the loss tends to 0. The generator can not learn properly if the discriminator does not provide proper signal. This happens when the discriminator does not perform well or if it performs too well where the loss is close to 0 and not helpful \cite{gan_wgan_tutorial}. Other common challenges of \ac{gan} training and  is explained in \ref{subsec:gan}. The widely practiced tricks to improve the training of \acp{gan} are discussed later in \ref{chap:experiments}.
 
 %FIXME few details missing - more about problems of gans? how implemented? idk idc
-
-\subsection{Bag of Tricks}
-The techniques to improve the \ac{gan} training and the reasoning for their importance is discussed in detail in \cite{soumith2017wasserstein,goodfellow2014generative,openaigan2wgan,improved_gan}. The    
 
 
 %TODO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -155,7 +152,7 @@ The techniques to improve the \ac{gan} training and the reasoning for their impo
 
 
 
-\subsection{Optimization}
+\subsection{Activation and Optimization}
 beta scheduling cycling and o to 1 annealing, weighting the loss components 
 
 \section{Evaluation Metrics} % FIXME
@@ -174,3 +171,10 @@ beta scheduling cycling and o to 1 annealing, weighting the loss components
 
 % \section{more details the model prints?} % FIXME
 %TODO add all models in apendix
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=\textwidth]{figures/h36_viz/human_pose_x0001.png}
+%     \caption{Illustration of the differences in accurate or realistic 3D pose predicitions from inaccurate predicitions. Modified image from \cite{can3dpose}}
+%     \label{fig:x}
+% \end{figure}
