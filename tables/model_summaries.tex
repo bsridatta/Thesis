@@ -1,102 +1,92 @@
-
-
+\newpage
+\section{Encoder}
 \begin{center}
-    \begin{tabular}{ p{0.2\textwidth}| p{0.7\textwidth}| p{0.1\textwidth}}
-
-        \textbf{Layer Type)} & \textbf{Output Shape}                                   & \textbf{Parameters} \\
+    \begin{tabular}{ p{0.2\textwidth} p{0.65\textwidth}  p{0.15\textwidth}}
+                                                        & \textbf{Layers}                                         & \textbf{Parameters} \\
         \hline
-
-        (0):                 & Linear(in features=32, out features=1024, bias=True)    & 33792               \\
-        (1):                 & BatchNorm1d(1024, eps=1e-05, momentum=0.1)              & 2048                \\
-        (2):                 & Mish()                                                  & 0                   \\
-        (3):                 & Dropout(p=0.2, inplace=False)                           & 0                   \\
-
-        (LBAD 1):            & LBAD(                                                   &                     \\
-
-        (w1):                & Linear(in features=1024, out features=1024, bias=False) & 1048576             \\
-        (bn1):               & BatchNorm1d(1024, eps=1e-05, momentum=0.1)              & 2048                \\
-        (activ):             & Mish()                                                  & 0                   \\
-        (dropout):           & Dropout(p=0.2, inplace=False)                           & 0                   \\
-
-        (LBAD 2):            & LBAD(                                                   &                     \\
-
-        (w1):                & Linear(in features=1024, out features=1024, bias=False) & 1048576             \\
-        (bn1):               & BatchNorm1d(1024, eps=1e-05, momentum=0.1)              & 2048                \\
-        (activ):             & Mish()                                                  & 0                   \\
-        (dropout):           & Dropout(p=0.2, inplace=False)                           & 0                   \\
-
-        (downsample):        & LBAD(                                                   &                     \\
-
-        (fc mean):           & Linear(in features=1024, out features=51, bias=True)    & 52275               \\
-        (fc logvar):         & Linear(in features=1024, out features=51, bias=True)    & 52275               \\
+        \multicolumn{2}{l}{\textbf{Upsampling Block}}   &                                                                               \\
+                                                        & Linear(in features=32, out features=1024, bias=True)    & 33792               \\
+                                                        & BatchNorm1d(1024, eps=1e-05, momentum=0.1)              & 2048                \\
+                                                        & Mish()                                                  & 0                   \\
+                                                        & Dropout(p=0.2, inplace=False)                           & 0                   \\
+        \multicolumn{2}{l}{\textbf{Residual Block}}     &                                                                               \\
+                                                        & Linear(in features=1024, out features=1024, bias=False) & 1048576             \\
+                                                        & BatchNorm1d(1024, eps=1e-05, momentum=0.1)              & 2048                \\
+                                                        & Mish()                                                  & 0                   \\
+                                                        & Dropout(p=0.2, inplace=False)                           & 0                   \\
+                                                        & Linear(in features=1024, out features=1024, bias=False) & 1048576             \\
+                                                        & BatchNorm1d(1024, eps=1e-05, momentum=0.1)              & 2048                \\
+                                                        & Mish()                                                  & 0                   \\
+                                                        & Dropout(p=0.2, inplace=False)                           & 0                   \\
+        \multicolumn{2}{l}{\textbf{Downsampling Block}} &                                                                               \\
+                                                        & Linear(in features=1024, out features=51, bias=True)    & 52275               \\
+                                                        & Linear(in features=1024, out features=51, bias=True)    & 52275               \\
     \end{tabular}
 \end{center}
 
+\newpage
+
+
+\section{Decoder}
+
 \begin{center}
-    \begin{tabular}{ p{0.2\textwidth}| p{0.7\textwidth}| p{0.1\textwidth}}
-
-        \textbf{Layer Type)} & \textbf{Output Shape}                                                             & \textbf{Parameters} \\
+    \begin{tabular}{ p{0.2\textwidth} p{0.65\textwidth}  p{0.15\textwidth}}
+                                                        & \textbf{Layers}                                                                   & \textbf{Parameters} \\
         \hline
+        \multicolumn{2}{l}{\textbf{Upsampling Block}}   &                                                                                                         \\
 
-        (0):                 & Linear(in features=51, out features=1024, bias=True)                              & 53248               \\
-        (1):                 & BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track running stats=True) & 2048                \\
-        (2):                 & Mish()                                                                            & 0                   \\
-        (3):                 & Dropout(p=0.2, inplace=False)                                                     & 0                   \\
+                                                        & Linear(in features=51, out features=1024, bias=True)                              & 53248               \\
+                                                        & BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track running stats=True) & 2048                \\
+                                                        & Mish()                                                                            & 0                   \\
+                                                        & Dropout(p=0.2, inplace=False)                                                     & 0                   \\
 
-        (LBAD 1):            & LBAD(                                                                             &                     \\
-        (w1):                & Linear(in features=1024, out features=1024, bias=False)                           & 1048576             \\
-        (bn1):               & BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track running stats=True) & 2048                \\
-        (activ):             & Mish()                                                                            & 0                   \\
-        (dropout):           & Dropout(p=0.2, inplace=False)                                                     & 0                   \\
+        \multicolumn{2}{l}{\textbf{Residual Block}}     &                                                                                                         \\
+                                                        & Linear(in features=1024, out features=1024, bias=False)                           & 1048576             \\
+                                                        & BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track running stats=True) & 2048                \\
+                                                        & Mish()                                                                            & 0                   \\
+                                                        & Dropout(p=0.2, inplace=False)                                                     & 0                   \\
+                                                        & Linear(in features=1024, out features=1024, bias=False)                           & 1048576             \\
+                                                        & BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track running stats=True) & 2048                \\
+                                                        & Mish()                                                                            & 0                   \\
+                                                        & Dropout(p=0.2, inplace=False)                                                     & 0                   \\
+                                                        & Linear(in features=1024, out features=48, bias=True)                              & 49200               \\
+        \multicolumn{2}{l}{\textbf{Downsampling Block}} &                                                                                                         \\
 
-        (LBAD 2):            & LBAD(                                                                             & 0                   \\
-        (w1):                & Linear(in features=1024, out features=1024, bias=False)                           & 1048576             \\
-        (bn1):               & BatchNorm1d(1024, eps=1e-05, momentum=0.1, affine=True, track running stats=True) & 2048                \\
-        (activ):             & Mish()                                                                            & 0                   \\
-        (dropout):           & Dropout(p=0.2, inplace=False)                                                     & 0                   \\
-
-        (dec out block):     & Sequential(                                                                       & 0                   \\
-        (0):                 & Linear(in features=1024, out features=48, bias=True)                              & 49200               \\
-        (1):                 & Tanh()                                                                            & 0                   \\
+                                                        & Linear(in features=1024, out features=48, bias=True)                              & 49200               \\
+                                                        & Tanh()                                                                            & 0                   \\
     \end{tabular}
 \end{center}
 
 
+\newpage
 
-
-
+\section{Discriminator}
 \begin{center}
-    \begin{tabular}{ p{0.2\textwidth}| p{0.7\textwidth}| p{0.1\textwidth}}
+    \begin{tabular}{ p{0.2\textwidth} p{0.65\textwidth}  p{0.15\textwidth}}
 
-        \textbf{Layer Type)} & \textbf{Output Shape}                                  & \textbf{Parameters} \\
+                                                      & \textbf{Layers}                                        & \textbf{Parameters} \\
         \hline
+        \multicolumn{2}{l}{\textbf{Upsampling Block}} &                                                                              \\
 
+                                                      & Linear(in features=32, out features=1024, bias=True)   & 33792               \\
+                                                      & LeakyReLU(negative slope=0.01)                         & 0                   \\
+        \multicolumn{2}{l}{\textbf{Residual Block}}   &                                                                              \\
+                                                      & Linear(in features=1024, out features=1024, bias=True) & 1049600             \\
+                                                      & LeakyReLU(negative slope=0.01)                         & 0                   \\
+                                                      & Dropout(p=0.5, inplace=False)                          & 0                   \\
+                                                      & Linear(in features=1024, out features=1024, bias=True) & 1049600             \\
+                                                      & LeakyReLU(negative slope=0.01)                         & 0                   \\
+                                                      & Dropout(p=0.5, inplace=False)                          & 0                   \\
+        \multicolumn{2}{l}{\textbf{Residual Block}}   &                                                                              \\
+                                                      & Linear(in features=1024, out features=1024, bias=True) & 1049600             \\
+                                                      & LeakyReLU(negative slope=0.01)                         & 0                   \\
+                                                      & Dropout(p=0.5, inplace=False)                          & 0                   \\
+                                                      & Linear(in features=1024, out features=1024, bias=True) & 1049600             \\
+                                                      & LeakyReLU(negative slope=0.01)                         & 0                   \\
+                                                      & Dropout(p=0.5, inplace=False)                          & 0                   \\
 
-        (0):                 & Linear(in features=32, out features=1024, bias=True)   & 33792               \\
-        (1):                 & LeakyReLU(negative slope=0.01)                         & 0                   \\
-
-        (LBAD 1):            & LBAD(                                                  &                     \\
-        (w1):                & Linear(in features=1024, out features=1024, bias=True) & 1049600             \\
-        (activ):             & LeakyReLU(negative slope=0.01)                         & 0                   \\
-        (dropout):           & Dropout(p=0.5, inplace=False)                          & 0                   \\
-
-        (LBAD 2):            & LBAD(                                                  & 0                   \\
-        (w1):                & Linear(in features=1024, out features=1024, bias=True) & 1049600             \\
-        (activ):             & LeakyReLU(negative slope=0.01)                         & 0                   \\
-        (dropout):           & Dropout(p=0.5, inplace=False)                          & 0                   \\
-
-        (LBAD 3):            & LBAD(                                                  & 0                   \\
-        (w1):                & Linear(in features=1024, out features=1024, bias=True) & 1049600             \\
-        (activ):             & LeakyReLU(negative slope=0.01)                         & 0                   \\
-        (dropout):           & Dropout(p=0.5, inplace=False)                          & 0                   \\
-
-        (LBAD 4):            & LBAD(                                                  & 0                   \\
-        (w1):                & Linear(in features=1024, out features=1024, bias=True) & 1049600             \\
-        (activ):             & LeakyReLU(negative slope=0.01)                         & 0                   \\
-        (dropout):           & Dropout(p=0.5, inplace=False)                          & 0                   \\
-
-        (out block):         & Sequential(                                            & 0                   \\
-        (0):                 & Linear(in features=1024, out features=1, bias=True)    & 1025                \\
-        (1):                 & Sigmoid()                                              & 0                   \\
+        \multicolumn{2}{l}{\textbf{Upsampling Block}} &                                                                              \\
+                                                      & Linear(in features=1024, out features=1, bias=True)    & 1025                \\
+                                                      & Sigmoid()                                              & 0                   \\
     \end{tabular}
 \end{center}
