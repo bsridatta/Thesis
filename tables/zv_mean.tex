@@ -1,0 +1,127 @@
+\newcommand{\inp}[1]{figures/zv_mean/#1_inp.png}
+\newcommand{\pred}[1]{figures/zv_mean/#1_pred.png}
+\newcommand{\gt}[1]{figures/zv_mean/#1_gt.png}
+
+
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{3493}}
+        \includegraphics[width=0.3\textwidth]{\pred{3493}}
+        \includegraphics[width=0.3\textwidth]{\gt{3493}}
+        \caption*{Directions - 44.44mm}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{6422}}
+        \includegraphics[width=0.3\textwidth]{\pred{6422}}
+        \includegraphics[width=0.3\textwidth]{\gt{6422}}
+        \caption*{Discussion - 44.49mm}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{14027}}
+        \includegraphics[width=0.3\textwidth]{\pred{14027}}
+        \includegraphics[width=0.3\textwidth]{\gt{14027}}
+        \caption*{Eating - 56.63mm}
+    \end{subfigure}
+    \hfill
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{74176}}
+        \includegraphics[width=0.3\textwidth]{\pred{74176}}
+        \includegraphics[width=0.3\textwidth]{\gt{74176}}
+        \caption*{Greeting - 49.15mm}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{21621}}
+        \includegraphics[width=0.3\textwidth]{\pred{21621}}
+        \includegraphics[width=0.3\textwidth]{\gt{21621}}
+        \caption*{Phoning - 56.59mm}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{26692}}
+        \includegraphics[width=0.3\textwidth]{\pred{26692}}
+        \includegraphics[width=0.3\textwidth]{\gt{26692}}
+        \caption*{Photo - 44.22mm}
+    \end{subfigure}
+    \hfill
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{30089}}
+        \includegraphics[width=0.3\textwidth]{\pred{30089}}
+        \includegraphics[width=0.3\textwidth]{\gt{30089}}
+        \caption*{Posing - 46.50mm}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{33987}}
+        \includegraphics[width=0.3\textwidth]{\pred{33987}}
+        \includegraphics[width=0.3\textwidth]{\gt{33987}}
+        \caption*{Purchases - 71.16mm}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{39416}}
+        \includegraphics[width=0.3\textwidth]{\pred{39416}}
+        \includegraphics[width=0.3\textwidth]{\gt{39416}}
+        \caption*{Sitting - 72.55mm}
+    \end{subfigure}
+    \hfill
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{94650}}
+        \includegraphics[width=0.3\textwidth]{\pred{94650}}
+        \includegraphics[width=0.3\textwidth]{\gt{94650}}
+        \caption*{SittingDown - 55.01mm}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{96348}}
+        \includegraphics[width=0.3\textwidth]{\pred{96348}}
+        \includegraphics[width=0.3\textwidth]{\gt{96348}}
+        \caption*{Smoking - 51.98mm}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{54005}}
+        \includegraphics[width=0.3\textwidth]{\pred{54005}}
+        \includegraphics[width=0.3\textwidth]{\gt{54005}}
+        \caption*{Waiting - 47.79mm}
+    \end{subfigure}
+    \hfill
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{55495}}
+        \includegraphics[width=0.3\textwidth]{\pred{55495}}
+        \includegraphics[width=0.3\textwidth]{\gt{55495}}
+        \caption*{WalkDog - 46.86mm}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{106863}}
+        \includegraphics[width=0.3\textwidth]{\pred{106863}}
+        \includegraphics[width=0.3\textwidth]{\gt{106863}}
+        \caption*{Walking - 48.73mm}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.3\textwidth]{\inp{109473}}
+        \includegraphics[width=0.3\textwidth]{\pred{109473}}
+        \includegraphics[width=0.3\textwidth]{\gt{109473}}
+        \caption*{WalkTogether - 44.00mm}
+    \end{subfigure}
+
+    \caption{Left to right are the input 2D poses with RGB reference, the predicted 3D pose (in blue) and the ground truth 3D pose (in pink). The aligned predictions are the ones closest to the mean MPJPE error of every action.}
+    \label{fig:zv}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

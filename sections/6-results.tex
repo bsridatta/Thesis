@@ -8,32 +8,25 @@
 %     \label{fig:violin}
 % \end{figure}
 
+% \input{tables/zv_mean}
+
 \section{missing joints}
 \section{best hypothesis}
 
 \section{Quantitative Results}
 
-The results presented here are after training the networks for $\sim$400 epochs (~5.5 hours) on approximately 300,000 2D poses with a batch size of 2560 on an Nvidia Titan X. The input poses are flipped with a probability of 0.5. The model takes 16 joints as the output where the root is added at the origin for validation. The proposed architecture consists 1024 hidden units per linear layer and 51 latent dimensions. Both the \ac{vae} and the discriminator are trained using Adam optimizer with default hyperparameters and with a learning rate of 2e-4. The gradient norms of the discriminator is clipped to 1 when training the discriminator. While training the generator the gradient norms are clipped to 2 for all the models while the gradient values are clipped to 1000.
+The results presented here are after training the networks for $\sim$400 epochs (~5.5 hours) on approximately 300,000 2D poses with a batch size of 2560 on an Nvidia Titan X. The input poses are flipped with a probability of 0.5. The model takes 16 joints as the output where the root is added at the origin for validation. The proposed architecture consists 1024 hidden units per linear layer and 51 latent dimensions. Both the \ac{vae} and the discriminator are trained using Adam optimizer with default hyperparameters and with a learning rate of 2e-4. The gradient norms of the discriminator is clipped to 1 when training the discriminator. While training the generator the gradient norms are clipped to 2 for all the models while the gradient values are clipped to 1000.  
 
 One of the challenging parts is finding the optimal weights for each of the terms in the triplet loss. The loss coefficients $\lambda_{recon}$, $\lambda_{\acs{kld}}$, $\lambda_{disc.}$ are set to 1, 0.001, 0.001 respectively. The higher weight is motivated by 2 reasons. $\lambda_{recon}$ refers to the constrained optimization and irrespective of how realistic it is, projection loss is desired to be consistently low to get better \ac{mpjpe}. That leads to the other reason that the quantitative results are given higher importance. 
 
 The values of $\lambda{\acs{kld}}$ and $\lambda{disc.}$ can be tuned according to the task at hand based on how well the poses are to be clustered or how important it is to reject poses that are not realistic. The $\beta$ value for the \ac{vae} is cycled from 0 to $\lambda_{\acs{kld}}$ every 40 epochs. While keeping it constant at $\lambda_{\acs{kld}}$ for 10 epochs with a 10 epoch warmup at the beginning of the training. %TODO add loss standardization values to kld
 
+The results obtained by the networks with the above configuration in addition to the choices mentioned in \ref{chap:implementation} are summarized in Table \ref{table:result_zv}.
+
+\input{tables/result_zv.tex}
 
 
-
-
-The different poses during the training are presented in Fig. \ref{fig:sample_pred}. The poses in pink are the ground truth while the ones in blue are the predictions. The poses refer to ground truth 2D, reconstruction 2D, reconstruction novel view, reconstruction 3D, and combined reconstruction and ground truth 3D after alignment. The same order is followed for the other visualization. 
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.4]{figures/results/sample_pred.png}
-    \caption{Visualization of the inputs and outputs of the model}
-    \label{fig:sample_pred}
-\end{figure}
-
-
-The training is noise and the networks need to training for several hundreds of epochs before they tend to converge. The experiment which the results are from is trained over 1400 epochs but very slow improvements in the results are observed. At 1400 epochs the \ac{mpjpe} is $\sim$ 68 mm. This is far less than the current state of the art \cite{amazon1} with $\sim$ 40 mm. The results are believed to improve using \acp{wgan} as they offer better convergence. 
+The different transformations of the poses during the training are presented in the proposed architecture illustration Fig. \ref{fig:method_arch}.  
 
 \begin{figure}[h]
     \centering
