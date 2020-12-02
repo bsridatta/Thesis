@@ -2,20 +2,24 @@
     \centering
     \begin{tabularx}{\linewidth}{XXX}%{llcc}
         \toprule
-        Supervision  & Algorithm                               & Error (mm) \\
+        Supervision  & Algorithm                                  & Error (mm) \\
         \midrule \midrule
-        Full         & Martinez \etal \cite{MartinezHRL17}     & 37.1       \\
-                     & Chen \etal \cite{multiplehypo} (SH, MH) & 42.6       \\
+        Full         & Martinez \etal \cite{MartinezHRL17}        & 37.1       \\
+                     & Chen \etal \cite{multiplehypo} (SH, MH)    & 42.6       \\
         \midrule
-        Weak         & Wandt \etal \cite{repnet}               & 38.2       \\
-                     & Drover \etal \cite{can3dpose}           & 38.2       \\
-                     & Chen \etal \cite{weaklymultiple} (SH)   & 48.7       \\
-                     & Chen \etal \cite{weaklymultiple} (BH)   & 31.6       \\
+        Weak
+                     & 3D Interpreter \etal \cite{3D_interpreter} & 88.6       \\
+                     & AIGN \etal \cite{AIGN}                     & 79.0       \\
+
+                     & Wandt \etal \cite{repnet}                  & 38.2       \\
+                     & Drover \etal \cite{can3dpose}              & 38.2       \\
+                     & Chen \etal \cite{weaklymultiple} (SH)      & 48.7       \\
+                     & Chen \etal \cite{weaklymultiple} (BH)      & 31.6       \\
         \midrule
-        Unsupervised & Ching \etal \cite{amazon1}              & 58         \\
-                     & Ching \etal \cite{amazon1} (AD) (TD)    & 51         \\
-                     & \textbf{Ours}                           & 52.4       \\
-                     & \textbf{Ours} (BH)                        & 50         \\
+        Unsupervised & Ching \etal \cite{amazon1}                 & 58         \\
+                     & Ching \etal \cite{amazon1} (AD) (TD)       & 51         \\
+                     & \textbf{Ours}                              & 52.4       \\
+                     & \textbf{Ours} (BH)                         & 50         \\
         \bottomrule
     \end{tabularx}
     \caption{}

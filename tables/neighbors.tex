@@ -1,89 +1,77 @@
-umap neighbours 15 500 empochs 500 points in 51 dims
+%reference c3dpo
+\newcommand{\methtext}[1]{\centering\scriptsize\hspace{0.01cm}{\hspace{0.2cm}#1}\hspace{0.02cm}}
+\newcommand{\inp}[1]{figures/neighbours/#1_2d.png}
 
-kneeling
-7817
-0.781
-7742
-0.940
-7123
-0.975
-6102
-0.986
-7752
-1.025
-5484
-1.035
-
-
-
-half sitting
-3418
-0.387
-2850
-0.496
-6441
-0.644
-3279
-0.646
-7194
-0.905
-7126
-1.001
-
-sitting down
-7126
-0.848
-7264
-0.925
-7254
-0.940
-7386
-1.028
-7237
-1.038
-7108
-1.046
-
-all sitting down
-7043
-0.422
-3079
-0.434
-2895
-0.450
-3125
-0.641
-2888
-0.654
-2909
-0.823
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{p{0.15\textwidth}p{0.93\textwidth}}
+        \methtext{\textbf{\color[RGB]{66,154,201}2D Pose}} &
+        \methtext{\textbf{\color[RGB]{66,154,201}Nearest Neighbours in Latent Space}} \\
+    \end{tabular}
+    \begin{subfigure}[b]{\textwidth}
+        \fbox{\includegraphics[width=0.16\textwidth]{\inp{7817}}}
+        \includegraphics[width=0.16\textwidth]{\inp{7742}}
+        \includegraphics[width=0.16\textwidth]{\inp{7123}}
+        \includegraphics[width=0.16\textwidth]{\inp{6102}}
+        \includegraphics[width=0.16\textwidth]{\inp{7752}}
+        \includegraphics[width=0.16\textwidth]{\inp{5484}}
+    \end{subfigure}
+    \begin{subfigure}[b]{\textwidth}
+        \fbox{\includegraphics[width=0.16\textwidth]{\inp{3418}}}
+        \includegraphics[width=0.16\textwidth]{\inp{2850}}
+        \includegraphics[width=0.16\textwidth]{\inp{6441}}
+        \includegraphics[width=0.16\textwidth]{\inp{3279}}
+        \includegraphics[width=0.16\textwidth]{\inp{7194}}
+        \includegraphics[width=0.16\textwidth]{\inp{7126}}
+    \end{subfigure}
+    \begin{subfigure}[b]{\textwidth}
+        \fbox{\includegraphics[width=0.16\textwidth]{\inp{7126}}}
+        \includegraphics[width=0.16\textwidth]{\inp{7264}}
+        \includegraphics[width=0.16\textwidth]{\inp{7254}}
+        \includegraphics[width=0.16\textwidth]{\inp{7386}}
+        \includegraphics[width=0.16\textwidth]{\inp{7237}}
+        \includegraphics[width=0.16\textwidth]{\inp{7108}}
+    \end{subfigure}
+    \begin{subfigure}[b]{\textwidth}
+        \fbox{\includegraphics[width=0.16\textwidth]{\inp{7043}}}
+        \includegraphics[width=0.16\textwidth]{\inp{3079}}
+        \includegraphics[width=0.16\textwidth]{\inp{2895}}
+        \includegraphics[width=0.16\textwidth]{\inp{3125}}
+        \includegraphics[width=0.16\textwidth]{\inp{2888}}
+        \includegraphics[width=0.16\textwidth]{\inp{2909}}
+    \end{subfigure}
+    \begin{subfigure}[b]{\textwidth}
+        \fbox{\includegraphics[width=0.16\textwidth]{\inp{791}}}
+        \includegraphics[width=0.16\textwidth]{\inp{5617}}
+        \includegraphics[width=0.16\textwidth]{\inp{6755}}
+        \includegraphics[width=0.16\textwidth]{\inp{826}}
+        \includegraphics[width=0.16\textwidth]{\inp{629}}
+        \includegraphics[width=0.16\textwidth]{\inp{8435}}
+    \end{subfigure}
+    \caption{Left to right are the input 2D poses with RGB reference, the predicted 3D pose (in blue) and the ground truth 3D pose (in pink). The aligned predictions are the ones closest to the mean MPJPE error of every action.}
+    \label{table:zv_fail}
+\end{figure}
 
 
-bending
-791
-0.477
-5617
-0.591
-6755
-0.603
-826
-0.727
-629
-0.748
-8435
-0.855
 
+% umap neighbours 15 500 empochs 500 points in 51 dims
+% kneeling, 7817 7742 7123 6102 7752 5484 ,,,,
 
-hand motion
-5850
-0.700
-8051
-0.724
-7614
-0.802
-7924
-0.805
-516
-0.835
-8070
-0.836
+% half sitting,3418,2850,6441,3279,7194,7126,,,
+
+% sitting down,7126,7264,7254,7386,7237,7108
+
+% all sitting down,7043,3079,2895,3125,2888,2909
+
+% bending,791,5617,6755,826,629,8435
+
+% hand motion,5850,8051,7614,7924,516,8070,
+
+% 7817,7742,7123,6102,7752,5484,3418,2850,6441,3279,7194,7126,7126,7264,7254,7386,7237,7108, 7043,3079,2895,3125,2888,2909,791,5617,6755,826,629,8435,5850,8051,7614,7924,516,8070
+
+% 0.781,0.940,0.975,0.986,1.025,1.035
+% 0.387,0.496,0.644,0.646,0.905,1.001
+% 0.848,0.925,0.940,1.028,1.038,1.
+% 0.422,0.434,0.450,0.641,0.654,0.
+% 0.477,0.591,0.603,0.727,0.748,0.
+% 0.700,0.724,0.802,0.805,0.835,0.836
