@@ -1,7 +1,7 @@
 \chapter{Method}
 \label{chap:method}
 
-This chapter entails the details of the neural network such as the architecture, loss/objective function along with the training and evaluation procedures of the proposed method. Other choices such as activation functions, optimizers, initialization, etc that completes the architecture are presented later in chapter \ref{chap:implementation} Implementation, along with the reasoning behind the choices and the compilation of essential components required to reproduce the entire network.
+This chapter entails the details of the neural network such as the architecture, loss/objective function along with the training and evaluation procedures of the proposed method. Other choices such as activation functions, optimizers, initialization, etc that completes the architecture are presented later in chapter \ref{chap:experiments} Experiments, along with the reasoning behind the choices and the compilation of essential components required to reproduce the entire network.
 % FIXME experiments and reproduction
 
 \section{Architecture}
@@ -160,14 +160,15 @@ Other common challenges of \ac{gan} training and is explained in \ref{subsec:gan
 \subsection{Protocols}
 Human3.6M has 11 subjects out of which 7 are publically released while the rest are kept private. All the works main use of these 7 subjects for training and test. There are 2 widely used evaluation protocols. 
 
-\paragraph{Protocol-1} All the 4 camera views of subjects $S1$, $S5$, $S6$, $S7$, and $S8$ are used for training. Similarly, all camera views of subjects $S9$ and $S11$ are used for validation/testing. But the test subject data is complied by sampling every 64\textsuperscript{th} frame of the raw data while the train subjects data is made by sampling every 5\textsuperscript{th} frame. 
+\paragraph{Protocol $\#1$} All the 4 camera views of subjects $S1$, $S5$, $S6$, $S7$, and $S8$ are used for training. Similarly, all camera views of subjects $S9$ and $S11$ are used for validation/testing. But the test subject data is complied by sampling every 64\textsuperscript{th} frame of the raw data while the train subjects data is made by sampling every 5\textsuperscript{th} frame. 
 The evaluation metric \ac{mpjpe} calculation is done on the predicted 3D pose directly.
 
-\paragraph{Protocol-2} The train/test split is the same as of Protocol-1. But \ac{mpjpe} is calculated on the predicted 3D after rigid body/ Procrustes alignment.
+\paragraph{Protocol $\#2$} The train/test split is the same as of Protocol $\#1$. But \ac{mpjpe} is calculated on the predicted 3D after rigid body/ Procrustes alignment.
 
-The design choice of predicting the 3D pose in unit scale makes it impossible to evaluate using protocol-1. Hence, following \cite{amazon1}, results are reported using only protocol-2 i.e after aligning the predicted 3D pose with the ground truth.
+The design choice of predicting the 3D pose in unit scale makes it impossible to evaluate using protocol $\#1$. Hence, following \cite{amazon1}, results are reported using only protocol $\#2$ i.e after aligning the predicted 3D pose with the ground truth.
 
-
+\subsection{Best Hypothesis}
+During the evaluation phase, the discriminator network is discarded and the encoder and decoder pair alone are used. The usual practice during the evaluation phase of a \ac{vae} is to compute latent representation $z$ using mean and zeroing out the predicted standard deviation. The 3D pose prediction using the mean only is referred to $\textbf{ZV}$, Zero Variance. As the trained decoder can predict realistic 3D poses from any point in the latent space the variance can be scaled instead of zeroing to retrieve multiple 3D predictions for a 2D pose from which the mean is encoded. To evaluate the representation capability, 10 random hypotheses are produced following \cite{weaklymultiple}. This is done by randomly scaling the predicted variance vector. The best hypothesis, \textbf{BH} i.e the pose with the least \ac{mpjpe} for each 2D pose is selected to compute another variance of the mean \ac{mpjpe}. %add more
 
 
 % \section{more details the model prints?} % FIXME

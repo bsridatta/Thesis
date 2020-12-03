@@ -6,6 +6,7 @@
 
 \begin{figure}[h]
     \centering
+    \ifreal
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=0.3\textwidth]{\inp{3493}}
         \includegraphics[width=0.3\textwidth]{\pred{3493}}
@@ -110,8 +111,10 @@
         \includegraphics[width=0.3\textwidth]{\gt{109473}}
         % \caption*{WalkTogether - 44.00mm}
     \end{subfigure}
-
-    \caption{Left to right are the input 2D poses with RGB reference, the predicted 3D pose (in blue) and the ground truth 3D pose (in pink). The aligned predictions are the ones closest to the mean MPJPE error of every action.}
+    \else
+        \includegraphics[width=\textwidth]{example-grid-100x100pt}
+    \fi
+    \caption{Visualization of (left to right) the input 2D poses with RGB background for reference, the predicted 3D pose after Procrustes alignment (in blue) and the ground truth 3D pose (in pink). The aligned predictions are the ones closest to the mean MPJPE error of each action.}
     \label{fig:zv_mean}
 \end{figure}
 

@@ -1,0 +1,10 @@
+% \begin{table}[h]
+%     \begin{tabular}{cccccccccccccccccc}
+%         \centering
+%         \textbf{Joints}        & Pelvis & R Hip   & R Knee  & R Ankle & L Hip   & L Knee  & L Ankle & Torso   & Neck    & Nose    & Head    & L Shoulder & L Elbow & L Wrist & R Shoulder & R Elbow & R Wrist \\
+%         \midrule
+%         \textbf{Error} (in mm) & 0.0000 & 58.0181 & 61.4203 & 81.9790 & 52.4521 & 60.1333 & 92.8210 & 44.7873 & 25.4302 & 33.3983 & 46.2945 & 30.4844    & 55.7229 & 80.8480 & 33.5370    & 59.2338 & 80.0563 \\
+%     \end{tabular}
+% \end{table}
+
+

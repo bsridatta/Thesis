@@ -1,62 +1,82 @@
-\chapter{Results} 
+\chapter{Results}
 \label{chap:results}
+The results presented here are after training the networks for $\sim$400 epochs (~5.5 hours) on approximately 300,000 2D poses with a batch size of 2560 on an Nvidia Titan X. The input poses are flipped with a probability of 0.5. The model takes 16 joints as the output where the root is added at the origin for validation. The proposed architecture consists 1024 hidden units per linear layer and 51 latent dimensions. Both the \ac{vae} and the discriminator are trained using Adam optimizer with default hyperparameters and with a learning rate of 2e-4. The gradient norms of the discriminator is clipped to 1 when training the discriminator. While training the generator the gradient norms are clipped to 2 for all the models while the gradient values are clipped to 1000.
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=\textwidth]{figures/results/violin_pjpe.pdf}
-%     \caption{Visualization of the inputs and outputs of the model}
-%     \label{fig:violin}
-% \end{figure}
+One of the challenging parts is finding the optimal weights for each of the terms in the triplet loss. The loss coefficients $\lambda_{recon}$, $\lambda_{\acs{kld}}$, $\lambda_{disc.}$ are set to 1, 0.001, 0.001 respectively. The higher weight is motivated by 2 reasons. $\lambda_{recon}$ refers to the constrained optimization and irrespective of how realistic it is, projection loss is desired to be consistently low to get better \ac{mpjpe}. That leads to the other reason that the quantitative results are given higher importance.
+%TODO add loss standardization values to kld
 
-% \input{tables/zv_mean}
-% \input{tables/zv_fail}
-% \input{tables/neighbors}
-
-% \section{missing joints}
-% \section{best hypothesis}
-
-% \section{Qualitative Results}
+The values of $\lambda{\acs{kld}}$ and $\lambda{disc.}$ can be tuned according to the task at hand based on how well the poses are to be clustered or how important it is to reject poses that are not realistic. The $\beta$ value for the \ac{vae} is cycled from 0 to $\lambda_{\acs{kld}}$ every 40 epochs. While keeping it constant at $\lambda_{\acs{kld}}$ for 10 epochs with a 10 epoch warmup at the beginning of the training.
 
 \section{Quantitative Results}
 
-The results presented here are after training the networks for $\sim$400 epochs (~5.5 hours) on approximately 300,000 2D poses with a batch size of 2560 on an Nvidia Titan X. The input poses are flipped with a probability of 0.5. The model takes 16 joints as the output where the root is added at the origin for validation. The proposed architecture consists 1024 hidden units per linear layer and 51 latent dimensions. Both the \ac{vae} and the discriminator are trained using Adam optimizer with default hyperparameters and with a learning rate of 2e-4. The gradient norms of the discriminator is clipped to 1 when training the discriminator. While training the generator the gradient norms are clipped to 2 for all the models while the gradient values are clipped to 1000.  
-
-One of the challenging parts is finding the optimal weights for each of the terms in the triplet loss. The loss coefficients $\lambda_{recon}$, $\lambda_{\acs{kld}}$, $\lambda_{disc.}$ are set to 1, 0.001, 0.001 respectively. The higher weight is motivated by 2 reasons. $\lambda_{recon}$ refers to the constrained optimization and irrespective of how realistic it is, projection loss is desired to be consistently low to get better \ac{mpjpe}. That leads to the other reason that the quantitative results are given higher importance. 
-
-The values of $\lambda{\acs{kld}}$ and $\lambda{disc.}$ can be tuned according to the task at hand based on how well the poses are to be clustered or how important it is to reject poses that are not realistic. The $\beta$ value for the \ac{vae} is cycled from 0 to $\lambda_{\acs{kld}}$ every 40 epochs. While keeping it constant at $\lambda_{\acs{kld}}$ for 10 epochs with a 10 epoch warmup at the beginning of the training. %TODO add loss standardization values to kld
-
-The results obtained by the networks with the above configuration in addition to the choices mentioned in \ref{chap:implementation} are summarized in Table \ref{table:result_zv}.
+The results obtained by the networks with the above configuration in addition to the choices mentioned in \ref{chap:experiments} are summarized in Table \ref{table:result_zv}. The summaries of the models are provided in appendix \ref{chap:summaries} to help reproduction.
 
 \input{tables/result_zv.tex}
 
+\textbf{SH} refers to the results using 2D Stacked Hourglass detections as input. These detections are noisy and directly affects the predictions of the model. And \textbf{DA} refers to using Domain Adaptation network to include additional datasets and \textbf{TD} denotes the use of temporal data. It is important to note that the proposed unsupervised method and the one presented in \cite{amazon1} are the only methods that do not predict the scale of the 3D pose due to the processing technique.
 
-The different transformations of the poses during the training are presented in the proposed architecture illustration Fig. \ref{fig:method_arch}.  
+\begin{table}[h]
+    \centering
+    \begin{tabularx}{\textwidth}{llllllll}
+        R\_Hip & R\_Knee & R\_Ankle    & L\_Hip   & L\_Knee  & L\_Ankle    & Torso    & Neck \\
+        \hline
+        58.01  & 61.42   & 81.97       & 52.45    & 60.13    & 92.82       & 44.78    & 25.43 \\
+        &&&&&&&\\
+        Nose   & Head    & L\_Shoulder & L\_Elbow & L\_Wrist & R\_Shoulder & R\_Elbow & R\_Wrist\\
+        \hline
+        33.39  & 46.29   & 30.48       & 55.72    & 80.84    & 33.53       & 59.23    & 80.05\\
+    \end{tabularx}
+    \caption{Average per joint position error (in mm) for each joint under Protocol $\#2$ using 2D ground truth.}
+    \label{table:pjpe}
+\end{table}
+
+The best hypothesis, \textbf{BH} has improved the results by ~2.7 mm which is considerable in comparison to the equivalent gain in \cite{amazon1} using domain adaptation network with more data and temporal information. Since there is no technique to pick the best hypothesis without having access to the ground truth, the results referred to, are the ones obtained using \textbf{ZV} unless specified otherwise. The average \ac{mpjpe} using ZV, 52.74mm, is equivalent to the settings of \cite{amazon1} without additional data or temporal information, 58 mm. This is a significant improvement considering that the network from \cite{amazon1} only predicts the depth, cannot handle missing points, gives a single hypothesis, and uses a self-symmetry technique that takes twice as many training iterations for equivalent network complexity. Fig \ref{fig:mpjpe_trends} illustrates the distribution of the \ac{mpjpe} errors for each action.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.2]{figures/results/bad_samples.png}
+    \includegraphics[width=\textwidth]{figures/results/violin_pjpe.pdf}
+    \caption{Visualization of the MPJPE error distribution under Protocol $\#2$ for each action.}
+    \label{fig:mpjpe_trends}
+\end{figure}
+
+The \ac{mpjpe} error per joint increases as we move from inner to outer joints. This can be observed in Table \ref{table:pjpe} which shows the average per joint position error. The error in the limb joints is due to the larger variation in their location through out the data compared to joints like the neck or the nose. Moreover, these joints are often occluded by the person's body especially when doing actions such as sitting. The 2D projections a pose from sitting posture is clustered to a smaller region from certain \acp{pov}. This makes it challenging to estimate the scale and depth of each joint and leads to outliers as visualized in the violin plots.
+
+Since the data consists an equal mix of data from different \acp{pov}, the predictions from the \ac{pov}, where the limbs are in the \ac{fov} are more informative than the other \acp{pov}. When the limbs are not in the \ac{fov}, the model learns to guess their location based on other features such as articulation or posture of the body. The effect of \ac{pov} is the possible cause of the bimodal error distribution in actions such as purchases, eating, phoning. Since the actions are hands specific, they are restricted to a particular region making the pose more predictable from one \ac{pov} and less from another. These challenges are inherent to the task of pose lifting and in many cases is challenging even for a human eye.
+
+\section{Qualitative Results}
+
+\input{tables/zv_mean}
+
+
+% \input{tables/zv_fail}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{example-grid-100x100pt}
     \caption{(a) Prediction on hard poses with hih ambiguity. (b) Poses that can be improved with changes to data processing.}
     \label{fig:bad_samples}
 \end{figure}
 
-Despite the \ac{mpjpe} being $\sim$ 68, the decoder generates many accurate 3D poses that are almost indistinguishable for the human eye. The high number of outliers and lower performance on hard poses worsens the overall performance of the model. The graph on the left depicted in fig \ref{fig:mpjpe_trends} shows the slow and gradual decrease in \ac{mpjpe}. And the graph on the right shows the histogram of the \ac{pjpe} of each sample over time. This shows the model is unable to certain poses while it improves gradually on the rest. 
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[scale=0.2]{figures/results/mpjpe_trend.png}
-    \caption{MPJPE and PJPE trends during the training respectively}
-    \label{fig:mpjpe_trends}
-\end{figure}
 
 Some of such outliers are presented in fig \ref{fig:bad_samples}, the predictions in (a) are the ones the model is unable to learn. While (b) is the evidence of the shortcoming of the current processing technique. Rectifying that would improve the evaluation metric of the model quite significantly.
 
 
 
-The visualization of 2D pose embedding in latent space after dimensionality reduction using \ac{umap} is shown in fig. \ref{fig:latentspace}. Each action is given a unique color. Though we small clusters of blues, browns, pinks the overall space looks very mixed up. This is expected as many of the instances in different actions overlap. For example, the action standing up and sitting down have instances while both or standing or sitting, etc.  
+\section{Latent Space}
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\textwidth]{figures/results/umap.pdf}
-    \caption{UMAP Visualization of samples in latent space. The actions do not always directly related to the pose due to overlaps from one action to another. Better viewed in color and 200\% zoom}
-    \label{fig:latentspace}
-\end{figure}
+% begin{figure}[h]
+% \centering
+%     \includegraphics[width=\textwidth]{figures/results/umap.pdf}
+%     \caption{ UMAP Visualization of samples in latent space. The actions do not always directly related to the pose due to overlaps from one action to another. Better viewed in color and zoomed}
+% \label{fig:latentspace}
+% \end{figure}
+
+% \input{tables/neighbors}
+
+
+The visualization of 2D pose embedding in latent space after dimensionality reduction using \ac{umap} is shown in fig. \ref{fig:latentspace}. Each action is given a unique color. Though we small clusters of blues, browns, pinks the overall space looks very mixed up. This is expected as many of the instances in different actions overlap. For example, the action standing up and sitting down have instances while both or standing or sitting, etc.
+
+
+
+% \section{missing joints}
