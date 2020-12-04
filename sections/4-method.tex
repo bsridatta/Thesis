@@ -25,7 +25,7 @@ Both \ac{fc} layers of the residual block are followed by batch normalization, a
 \begin{figure}[h] 
     \centering
     \includegraphics[width=\textwidth]{figures/arch/res_block.png}
-    \caption{Illustration of the residual block made of 2 Linear layers of the same input and output dimensionality. The intermediate BatchNorm, activation and dropout layers maintain the same dimensionality. These blocks are repeated $n$ times based on the configuration of the model.
+    \caption{Illustration of the residual block made of 2 Linear layers of the same input and output dimensionality. The intermediate BatchNorm, activation, and dropout layers maintain the same dimensionality. These blocks are repeated $n$ times based on the configuration of the model.
     }
     \label{fig:residual_block}
 \end{figure}
@@ -42,7 +42,7 @@ The decoder $P$ takes the 2D pose embedding $z$ derived from the mean and log-va
 
 Where $\theta_p$ represents the learned parameters of the decoding network. Similar to the encoder, the decoder consists of an upsampling layer that scales the sample $z$ of dimensionality $d$ to match the number of hidden neurons $d$ in the decoding module. The decoding module is identical to the encoding module and consists of $n$ residual blocks similar to that of the encoder. This decoding module is followed by a \ac{fc} layer to downsample the neurons to predict the 3D pose of dimensions $3\!\cdot\!J$. As the goal is to predict root-relative pose with the root at the origin, the output joints are considered to be relative to the origin (0, 0, 0).
 
-Since the predicted 3D pose is to be projected to back to the 2D pose to form the reconstruction loss, the distance between the head and the pelvis joint should approximately be of unit length as explained in \ref{sec:processing}. To achieve this, a Tanh activation function is used at the downsampling/output layer to obtain the predicted 3D pose (all joints) in the range [-1, 1]. %TODO
+Since the predicted 3D pose is to be projected to back to the 2D pose to form the reconstruction loss, the distance between the head and the pelvis joint should approximately be of unit length as explained in \ref{sec:processing}. To achieve this, a Tanh activation function is used at the downsampling/output layer to obtain the predicted 3D pose (all joints) in the range [-1, 1].
 
 \subsection{Reprojection}
 \label{subsec:reproject}
@@ -78,7 +78,7 @@ The discriminator takes the novel view 2D pose of the predicted 3D pose $\tilde{
     \end{gathered}
 \end{equation}
 
-Where $\theta_d$ refers to the learned parameters of the discriminator and $p_{class}$ here denotes the probability of the pose's class, with 1 being real and 0 being fake. The discriminator mimicking the encoder and the decoder upsamples the $2\!\cdot\!J$ dimensional novel 2D pose to $h$ dimensions of the main module. The main module just as other models are composed of $n$ residual blocks. However, the batch normalization layer is removed in the discriminator's residual blocks following standard practices. It is important to note that $n$ need not be the same for all the 3 models. The learned features are downsampled to predict the probability of the pose being real or fake. The sigmoid activation function is used at this last layer as the required values are in the range [0, 1]. %TODO
+Where $\theta_d$ refers to the learned parameters of the discriminator and $p_{class}$ here denotes the probability of the pose's class, with 1 being real and 0 being fake. The discriminator mimicking the encoder and the decoder upsamples the $2\!\cdot\!J$ dimensional novel 2D pose to $h$ dimensions of the main module. The main module just as other models are composed of $n$ residual blocks. However, the batch normalization layer is removed in the discriminator's residual blocks following standard practices. It is important to note that $n$ need not be the same for all the 3 models. The learned features are downsampled to predict the probability of the pose being real or fake. The sigmoid activation function is used at this last layer as the required values are in the range [0, 1].
 
 \begin{figure}[h] 
     \centering
@@ -152,7 +152,7 @@ Other common challenges of \ac{gan} training and is explained in \ref{subsec:gan
 %TODO few details missing - more about problems of gans? how implemented? IDK IDC
 
 
-\section{Evaluation} % TODO add more
+\section{Evaluation} 
 
 \subsection{Metric}
 3D \ac{hpe} and Human3.6M in particular is evaluated by \ac{mpjpe} metric. \ac{mpjpe} as it abbreviates is the mean of the position estimate for all the joints of a pose. Where per-joint position estimate is nothing but the euclidian distance (measured in mm) between the predicted joint to its ground truth. The reported results refer to the average of the \ac{mpjpe} of all the samples in the evaluation set. 
@@ -168,10 +168,5 @@ The evaluation metric \ac{mpjpe} calculation is done on the predicted 3D pose di
 The design choice of predicting the 3D pose in unit scale makes it impossible to evaluate using protocol $\#1$. Hence, following \cite{amazon1}, results are reported using only protocol $\#2$ i.e after aligning the predicted 3D pose with the ground truth.
 
 \subsection{Best Hypothesis}
-During the evaluation phase, the discriminator network is discarded and the encoder and decoder pair alone are used. The usual practice during the evaluation phase of a \ac{vae} is to compute latent representation $z$ using mean and zeroing out the predicted standard deviation. The 3D pose prediction using the mean only is referred to $\textbf{ZV}$, Zero Variance. As the trained decoder can predict realistic 3D poses from any point in the latent space the variance can be scaled instead of zeroing to retrieve multiple 3D predictions for a 2D pose from which the mean is encoded. To evaluate the representation capability, 10 random hypotheses are produced following \cite{weaklymultiple}. This is done by randomly scaling the predicted variance vector. The best hypothesis, \textbf{BH} i.e the pose with the least \ac{mpjpe} for each 2D pose is selected to compute another variance of the mean \ac{mpjpe}. %add more
-
-
-% \section{more details the model prints?} % FIXME
-%TODO add all models in appendix
-
-% beta scheduling cycling and o to 1 annealing, weighting the loss components 
+During the evaluation phase, the discriminator network is discarded and the encoder and decoder pair alone is used. The usual practice during the evaluation phase of a \ac{vae} is to compute latent representation $z$ using mean and zeroing out the predicted standard deviation. The 3D pose prediction using the mean only is referred to $\textbf{ZV}$, Zero Variance. As the trained decoder can predict realistic 3D poses from any point in the latent space the variance can be scaled instead of zeroing to retrieve multiple 3D predictions for a 2D pose from which the mean is encoded. To evaluate the representation capability, 10 random hypotheses are produced following \cite{weaklymultiple}. This is done by randomly scaling the predicted variance vector. The best hypothesis, \textbf{BH} i.e the pose with the least \ac{mpjpe} for each 2D pose is selected to compute another variance of the mean \ac{mpjpe}. 
+%TODOadd more

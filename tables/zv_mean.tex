@@ -2,9 +2,10 @@
 \newcommand{\pred}[1]{figures/zv_mean/#1_pred.png}
 \newcommand{\gt}[1]{figures/zv_mean/#1_gt.png}
 
+\newif\ifreal 
+% \realtrue
 
-
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
     \ifreal
     \begin{subfigure}[b]{0.45\textwidth}
@@ -104,7 +105,6 @@
         % \caption*{Walking - 48.73mm}
     \end{subfigure}
     
-    
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=0.3\textwidth]{\inp{109473}}
         \includegraphics[width=0.3\textwidth]{\pred{109473}}
@@ -114,7 +114,7 @@
     \else
         \includegraphics[width=\textwidth]{example-grid-100x100pt}
     \fi
-    \caption{Visualization of (left to right) the input 2D poses with RGB background for reference, the predicted 3D pose after Procrustes alignment (in blue) and the ground truth 3D pose (in pink). The aligned predictions are the ones closest to the mean MPJPE error of each action.}
+    \caption{Visualization of (left to right) the input 2D poses with RGB background for reference, the predicted 3D pose after Procrustes alignment (in blue) and the ground truth 3D pose (in pink). The aligned predictions are the ones closest to the \textbf{mean} MPJPE error of each action.}
     \label{fig:zv_mean}
 \end{figure}
 

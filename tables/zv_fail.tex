@@ -1,120 +1,117 @@
-\newcommand{\inp}[1]{figures/zv_fail/fails_#1_inp.png}
-\newcommand{\pred}[1]{figures/zv_fail/fails_#1_pred.png}
-\newcommand{\gt}[1]{figures/zv_fail/fails_#1_gt.png}
+\newcommand{\inpB}[1]{figures/zv_fail/fails_#1_inp.png}
+\newcommand{\predB}[1]{figures/zv_fail/fails_#1_pred.png}
+\newcommand{\gtB}[1]{figures/zv_fail/fails_#1_gt.png}
 
+\newif\ifreal 
+% \realtrue
 
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
+    \ifreal
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{2878}}
-        \includegraphics[width=0.3\textwidth]{\pred{2878}}
-        \includegraphics[width=0.3\textwidth]{\gt{2878}}
+        \includegraphics[width=0.3\textwidth]{\inpB{2878}}
+        \includegraphics[width=0.3\textwidth]{\predB{2878}}
+        \includegraphics[width=0.3\textwidth]{\gtB{2878}}
         % \caption*{Directions - 44.44mm}
     \end{subfigure}
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{6130}}
-        \includegraphics[width=0.3\textwidth]{\pred{6130}}
-        \includegraphics[width=0.3\textwidth]{\gt{6130}}
+        \includegraphics[width=0.3\textwidth]{\inpB{6130}}
+        \includegraphics[width=0.3\textwidth]{\predB{6130}}
+        \includegraphics[width=0.3\textwidth]{\gtB{6130}}
         % \caption*{Discussion - 44.49mm}
     \end{subfigure}
 
-
-
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{73047}}
-        \includegraphics[width=0.3\textwidth]{\pred{73047}}
-        \includegraphics[width=0.3\textwidth]{\gt{73047}}
+        \includegraphics[width=0.3\textwidth]{\inpB{73047}}
+        \includegraphics[width=0.3\textwidth]{\predB{73047}}
+        \includegraphics[width=0.3\textwidth]{\gtB{73047}}
         % \caption*{Eating - 56.63mm}
     \end{subfigure}
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{18120}}
-        \includegraphics[width=0.3\textwidth]{\pred{18120}}
-        \includegraphics[width=0.3\textwidth]{\gt{18120}}
+        \includegraphics[width=0.3\textwidth]{\inpB{18120}}
+        \includegraphics[width=0.3\textwidth]{\predB{18120}}
+        \includegraphics[width=0.3\textwidth]{\gtB{18120}}
         % \caption*{Greeting - 49.15mm}
     \end{subfigure}
 
-
-
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{24801}}
-        \includegraphics[width=0.3\textwidth]{\pred{24801}}
-        \includegraphics[width=0.3\textwidth]{\gt{24801}}
+        \includegraphics[width=0.3\textwidth]{\inpB{24801}}
+        \includegraphics[width=0.3\textwidth]{\predB{24801}}
+        \includegraphics[width=0.3\textwidth]{\gtB{24801}}
         % \caption*{Phoning - 56.59mm}
     \end{subfigure}
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{26722}}
-        \includegraphics[width=0.3\textwidth]{\pred{26722}}
-        \includegraphics[width=0.3\textwidth]{\gt{26722}}
+        \includegraphics[width=0.3\textwidth]{\inpB{26722}}
+        \includegraphics[width=0.3\textwidth]{\predB{26722}}
+        \includegraphics[width=0.3\textwidth]{\gtB{26722}}
         % \caption*{Photo - 44.22mm}
     \end{subfigure}
 
 
 
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{31669}}
-        \includegraphics[width=0.3\textwidth]{\pred{31669}}
-        \includegraphics[width=0.3\textwidth]{\gt{31669}}
+        \includegraphics[width=0.3\textwidth]{\inpB{31669}}
+        \includegraphics[width=0.3\textwidth]{\predB{31669}}
+        \includegraphics[width=0.3\textwidth]{\gtB{31669}}
         % \caption*{Posing - 46.50mm}
     \end{subfigure}
     % \begin{subfigure}[b]{0.45\textwidth}
-    %     \includegraphics[width=0.3\textwidth]{\inp{34930}}
-    %     \includegraphics[width=0.3\textwidth]{\pred{34930}}
-    %     \includegraphics[width=0.3\textwidth]{\gt{34930}}
+    %     \includegraphics[width=0.3\textwidth]{\inpB{34930}}
+    %     \includegraphics[width=0.3\textwidth]{\predB{34930}}
+    %     \includegraphics[width=0.3\textwidth]{\gtB{34930}}
     % \caption*{Purchases - 71.16mm}
     % \end{subfigure}
     % \begin{subfigure}[b]{0.45\textwidth}
-    %     \includegraphics[width=0.3\textwidth]{\inp{90950}}
-    %     \includegraphics[width=0.3\textwidth]{\pred{90950}}
-    %     \includegraphics[width=0.3\textwidth]{\gt{90950}}
+    %     \includegraphics[width=0.3\textwidth]{\inpB{90950}}
+    %     \includegraphics[width=0.3\textwidth]{\predB{90950}}
+    %     \includegraphics[width=0.3\textwidth]{\gtB{90950}}
     %     % \caption*{Sitting - 72.55mm}
     % \end{subfigure}
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{43450}}
-        \includegraphics[width=0.3\textwidth]{\pred{43450}}
-        \includegraphics[width=0.3\textwidth]{\gt{43450}}
+        \includegraphics[width=0.3\textwidth]{\inpB{43450}}
+        \includegraphics[width=0.3\textwidth]{\predB{43450}}
+        \includegraphics[width=0.3\textwidth]{\gtB{43450}}
         % \caption*{SittingDown - 55.01mm}
     \end{subfigure}
 
-
-
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{98756}}
-        \includegraphics[width=0.3\textwidth]{\pred{98756}}
-        \includegraphics[width=0.3\textwidth]{\gt{98756}}
+        \includegraphics[width=0.3\textwidth]{\inpB{98756}}
+        \includegraphics[width=0.3\textwidth]{\predB{98756}}
+        \includegraphics[width=0.3\textwidth]{\gtB{98756}}
         % \caption*{Smoking - 51.98mm}
     \end{subfigure}
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{101351}}
-        \includegraphics[width=0.3\textwidth]{\pred{101351}}
-        \includegraphics[width=0.3\textwidth]{\gt{101351}}
+        \includegraphics[width=0.3\textwidth]{\inpB{101351}}
+        \includegraphics[width=0.3\textwidth]{\predB{101351}}
+        \includegraphics[width=0.3\textwidth]{\gtB{101351}}
         % \caption*{Waiting - 47.79mm}
     \end{subfigure}
 
-
-
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{105002}}
-        \includegraphics[width=0.3\textwidth]{\pred{105002}}
-        \includegraphics[width=0.3\textwidth]{\gt{105002}}
+        \includegraphics[width=0.3\textwidth]{\inpB{105002}}
+        \includegraphics[width=0.3\textwidth]{\predB{105002}}
+        \includegraphics[width=0.3\textwidth]{\gtB{105002}}
         % \caption*{WalkDog - 46.86mm}
     \end{subfigure}
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{106047}}
-        \includegraphics[width=0.3\textwidth]{\pred{106047}}
-        \includegraphics[width=0.3\textwidth]{\gt{106047}}
+        \includegraphics[width=0.3\textwidth]{\inpB{106047}}
+        \includegraphics[width=0.3\textwidth]{\predB{106047}}
+        \includegraphics[width=0.3\textwidth]{\gtB{106047}}
         % \caption*{Walking - 48.73mm}
     \end{subfigure}
 
-
     \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=0.3\textwidth]{\inp{61221}}
-        \includegraphics[width=0.3\textwidth]{\pred{61221}}
-        \includegraphics[width=0.3\textwidth]{\gt{61221}}
+        \includegraphics[width=0.3\textwidth]{\inpB{61221}}
+        \includegraphics[width=0.3\textwidth]{\predB{61221}}
+        \includegraphics[width=0.3\textwidth]{\gtB{61221}}
         % \caption*{WalkTogether - 44.00mm}
     \end{subfigure}
+    \else
+    \includegraphics[width=\textwidth]{example-grid-100x100pt}
+    \fi
 
-    \caption{Left to right are the input 2D poses with RGB reference, the predicted 3D pose (in blue) and the ground truth 3D pose (in pink). The aligned predictions are the ones closest to the mean MPJPE error of every action.}
-    \label{table:zv_fail}
+    \caption{Visualization of (left to right) the input 2D poses with RGB background for reference, the predicted 3D pose after Procrustes alignment (in blue) and the ground truth 3D pose (in pink). The aligned predictions are the ones closest to the \textbf{maximum} MPJPE error of each action.}
+    \label{fig:zv_fail}
 \end{figure}
 
 

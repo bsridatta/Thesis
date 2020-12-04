@@ -1,0 +1,40 @@
+
+\begin{table}[h]
+    \centering
+    \footnotesize
+    % \hspace{-3mm}
+    % \tabcolsep=0.1mm
+    \begin{tabularx}{\textwidth}{XXXXXXXX}
+        \toprule
+        R\_Hip & R\_Knee & R\_Ankle    & L\_Hip   & L\_Knee  & L\_Ankle    & Torso    & Neck \\
+        \hline
+        58.01  & 61.42   & 81.97       & 52.45    & 60.13    & 92.82       & 44.78    & 25.43 \\
+        &&&&&&&\\
+        Nose   & Head    & L\_Shoulder & L\_Elbow & L\_Wrist & R\_Shoulder & R\_Elbow & R\_Wrist\\
+        \hline
+        33.39  & 46.29   & 30.48       & 55.72    & 80.84    & 33.53       & 59.23    & 80.05\\
+        \bottomrule
+    \end{tabularx}
+    \caption{Average per joint position error (in mm) for each \textbf{joint} under Protocol $\#2$ using 2D ground truth.}
+    \label{table:pjpe}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \footnotesize
+    % \hspace{-3mm}
+    % \tabcolsep=0.1mm
+    \begin{tabularx}{\textwidth}{XXXXXXXX}
+        \toprule
+        Directions & Discussion& Eating& Greeting& Phoning& Photo& Posing& Purchases \\
+        \hline
+        44.37  & 45.14   & 56.64       & 48.15    & 56.47    & 45.06       & 47.33    & 71.30  \\
+        &&&&&&&\\
+        Sitting& SittingDown& Smoking& Waiting& WalkDog& Walking& WalkTogether& \\
+        \hline
+        72.08  & 55.01   & 52.47       & 47.37    & 47.51    & 49.53       & 44.61    &  \\
+        \bottomrule
+    \end{tabularx}
+    \caption{Average MPJPE (in mm) for each \textbf{action} under Protocol $\#2$ using 2D ground truth.}
+    \label{table:pjpe_a}
+\end{table}

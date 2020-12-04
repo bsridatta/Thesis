@@ -1,26 +1,27 @@
 \chapter{Conclusions}
 \label{chap:conclusions}
 
-**YET TO BE WRITTEN**
-
-Describe the conclusions (reflect on the whole introduction given in Chapter 1). 
-
-Discuss the positive effects and the drawbacks. 
-
-Describe the evaluation of the results of the degree project.
-
-Describe valid future work.  
-
-The sections below are optional but could be added here.
-
 \section{Discussion}
+%FIXME c3dpo is weakly supervised
+%FIXME include new amazon paper somewhere
+Previous unsupervised learning approaches for pose lifting such as \cite{amazon1} uses deep neural networks and geometric consistency to achieve results comparable to major weakly supervised approaches such as \cite{can3dpose}. They address critical problems such as making use of datasets from different distribution using additional domain adaptation networks and exploiting temporal information. These techniques made it possible to use large amounts of 2D data to learn 3D poses. However, as the authors acknowledge the \ac{sota} 2D pose networks often get few joints very wrong or miss them due to occlusions that are quite frequent in the real-world. Hence methods that are independent of the correctness of the input 2D are essential. \cite{c3dpo,weaklymultiple} are such weakly supervised methods that can handle missing joints while \cite{weaklymultiple} can also give multiple hypotheses for a given 2D pose. The proposed method tackles these problems with a unified approach by using \acp{vae} and \ac{gan} and is completely unsupervised.
+
+The average \ac{mpjpe} using ZV, 52.74mm, is equivalent to the settings of \cite{amazon1} without additional data or temporal information, 58 mm. This is a significant improvement considering that the network is independent of the input and can handle errors including missing joints, can produce multiple hypotheses. While \cite{amazon1} uses a self-symmetry technique that requires propagating through the models twice per iteration and requires 2 more additional networks of complexity similar to the lifting network to slightly exceed the performance of the proposed network.
+
+Though the proposed network address all the 3 major challenges of lifting networks, i.e 3D annotations, missing joints, and variational inference, the network only predicts a unit 3D pose. This restriction limits the usability of the 3D pose in some cases or requires additional algorithms to obtain the true scale in the real-world. For example, the scale of the 3D pose is not important if the task is to use the method as a vision-based \ac{mocap} solution for gaming where only the articulation of the pose is of interest to capture complex human motion. While tasks in the domain of self-driving cars, robot-human interaction, or AR/VR applications where the pose is used for interaction among the agents, 3D pose alone would not be sufficient.
+
 
 \subsection{Future Work}
 
+The source of the major drawback of not predicting to scale is in the processing technique to make the self-supervision simple. This problem could be addressed by extending the method to disentangle the root-relative pose prediction and global pose prediction similar to \cite{CameraDistanceAware}. 
+
+\acp{vae} have more to offer than just predict 3D while handling erroneous inputs. Taking the inspiration from \cite{crossmodal}, the method can be upgraded from a lifting network to end to end network to predict 3D pose from Images just by swapping the encoder model. Techniques like Synergy and Cross-Generation from cross-modal training \cite{MMVAE} could be leveraged to train an unsupervised Image to 3D model faster and efficiently with the help of large 2D pose datasets.
+
+In addition to this guaranteed improvised techniques such as using external datasets and temporal information to learn predicting temporally consistent 3D pose as presented in \cite{amazon1} would make the network more practical to use in the real world.
+
 \subsection{Final Words}
 
-
-
+Scaling the task of 3D Human Pose Estimation to the real-world is limited by the need for 3D data. This thesis presented an unsupervised learning method that learns to predict 3D pose without a need for 3D annotations in any shape or form. The method learns to lift 2D poses to 3D strictly using 2D pose data that are obtained from 2D pose estimation models. The thesis introduced standards \acp{vae} to the task of pose lifting for the first time. This generative model is trained using \ac{gan} and self-supervision techniques. The ability of the proposed method to handle incomplete and erroneous data without explicit training is shown. The thesis also shows the capacity of the model to learn a strong representation of the pose that could be used for other applications such as human-centric multi-view video synchronization. This thesis has considerably improved the \ac{sota} in unsupervised 3D Human Pose Estimation and lays the foundation for new ways to tackle the problem.
 
 
 
