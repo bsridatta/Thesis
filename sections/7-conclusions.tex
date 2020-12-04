@@ -11,7 +11,7 @@ The average \ac{mpjpe} using ZV, 52.74mm, is equivalent to the settings of \cite
 Though the proposed network address all the 3 major challenges of lifting networks, i.e 3D annotations, missing joints, and variational inference, the network only predicts a unit 3D pose. This restriction limits the usability of the 3D pose in some cases or requires additional algorithms to obtain the true scale in the real-world. For example, the scale of the 3D pose is not important if the task is to use the method as a vision-based \ac{mocap} solution for gaming where only the articulation of the pose is of interest to capture complex human motion. While tasks in the domain of self-driving cars, robot-human interaction, or AR/VR applications where the pose is used for interaction among the agents, 3D pose alone would not be sufficient.
 
 
-\subsection{Future Work}
+\section{Future Work}
 
 The source of the major drawback of not predicting to scale is in the processing technique to make the self-supervision simple. This problem could be addressed by extending the method to disentangle the root-relative pose prediction and global pose prediction similar to \cite{CameraDistanceAware}. 
 
@@ -19,7 +19,7 @@ The source of the major drawback of not predicting to scale is in the processing
 
 In addition to this guaranteed improvised techniques such as using external datasets and temporal information to learn predicting temporally consistent 3D pose as presented in \cite{amazon1} would make the network more practical to use in the real world.
 
-\subsection{Final Words}
+\section{Final Words}
 
 Scaling the task of 3D Human Pose Estimation to the real-world is limited by the need for 3D data. This thesis presented an unsupervised learning method that learns to predict 3D pose without a need for 3D annotations in any shape or form. The method learns to lift 2D poses to 3D strictly using 2D pose data that are obtained from 2D pose estimation models. The thesis introduced standards \acp{vae} to the task of pose lifting for the first time. This generative model is trained using \ac{gan} and self-supervision techniques. The ability of the proposed method to handle incomplete and erroneous data without explicit training is shown. The thesis also shows the capacity of the model to learn a strong representation of the pose that could be used for other applications such as human-centric multi-view video synchronization. This thesis has considerably improved the \ac{sota} in unsupervised 3D Human Pose Estimation and lays the foundation for new ways to tackle the problem.
 

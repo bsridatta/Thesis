@@ -11,7 +11,7 @@ Autoencoders are a variant of \acp{ann}, which are designed to learn an identity
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.2]{figures/arch/ae_arch.png}
+    \includegraphics[width=0.8\textwidth]{figures/arch/ae_arch.png}
     \caption{Illustration of autoencoder architecture. Image source \cite{deepimageprior}}
     \label{fig:ae_arch}
 \end{figure}
@@ -26,7 +26,7 @@ The idea of an autoencoder dates back to the '80s proposed as a method for pre-t
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.2]{figures/arch/vae_arch.png}
+    \includegraphics[width=\textwidth]{figures/arch/vae_arch.png}
     \caption{Illustration of Variational Autoencoder architecture.}
     \label{fig:vae_arch}
 \end{figure}
@@ -60,8 +60,8 @@ However, the reconstruction error in the loss requires sampling $z$, which is a 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.5]{figures/background/reparametrization_trick.png}
-    \includegraphics[scale=0.5]{figures/background/reparametrization_trick_backprop.png}
+    \includegraphics[width=\textwidth]{figures/background/reparametrization_trick.png}
+    \includegraphics[width=\textwidth]{figures/background/reparametrization_trick_backprop.png}
     \caption{Comparing the data flow with and without reparametrization trick followed by the backprop calculation. Image source \cite{jeremy_jordan_2018}}
     \label{fig:reparametrization_trick}
 \end{figure}
@@ -70,7 +70,7 @@ Hence the learned latent space of a \ac{vae} is continuous, while that of a stan
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.4]{figures/background/vae_latent_attribute.png}
+    \includegraphics[width=\textwidth]{figures/background/vae_latent_attribute.png}
     \caption{Probabilistic distribution of latent attributes. Image source \cite{jeremy_jordan_2018}}
     \label{fig:vae_latent_attribute}
 \end{figure}
@@ -91,7 +91,7 @@ A \ac{vae} without the \ac{kld} term is effectively a standard autoencoder. As d
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.2]{figures/arch/gan_arch.png}
+    \includegraphics[width=0.7\textwidth]{figures/arch/gan_arch.png}
     \caption{Illustration of GAN architecture. G is the generator network and D is the discriminator network.}
     \label{fig:gan_arch}
 \end{figure}
@@ -128,7 +128,7 @@ At global optimality $p_{g}=p_{r}$, and for a given generator $G$, the discrimin
 
 The \ac{jsd} between two distributions is always non-negative and will be equal to zero only when both the distributions are equal \cite{js_divergence}. As we derived in Eqn. \ref{eqn:c_of_g} above, the best value of $C$ i.e $-\log 4$ is possible only when $p_{g}=p_{r}$. It is hard to stabilize the \ac{gan}'s minimax game \cite{martin2017principled}. It requires carefully tuned hyperparameters to maintain an equilibrium between the two players. Failing to find the proper balance between the networks leads to the problem of \textit{Non-Convergence}, where the training oscillates and never converge. When the generator is not strong enough and learns to produce samples that fool the discriminator, it eventually would restrict itself to only learn to produce such samples. This problem is referred to as \textit{Mode Collapse} \cite{commonganprobs}. There are many hacks as well as principled approaches that are formulated to handle these problems with considerable success \cite{openaigan2wgan}.
 
-\subsection{WGAN}
+\subsection{Wasserstein GAN}
 \acp{wgan} is a variant of \acp{gan}, where the second network is a critic that scores the samples on how real they look rather than a discriminator that only predicts binary labels of 1 and 0 for real or fake. \ac{wgan} use 1-Wasserstein distance \cite{wasserstein_metric_2020} or \ac{emd} instead of the \ac{jsd} used in the standard discriminator based \ac{gan}. Since the Wasserstein distance is non-evaluative, a modified version Eqn. \ref{eqn:wasserstein_loss} of it is proposed as the loss function in \cite{soumith2017wasserstein}. Where $f$ being the critic network parameterized by $w$ while clipping the weights to satisfy the Lipschitz constraint.
 
 \begin{equation} \label{eqn:wasserstein_loss}
@@ -151,13 +151,13 @@ The \ac{jsd} between two distributions is always non-negative and will be equal 
 
 The fundamental goal of \acp{gan} is to minimize the distribution between the real and the generated distribution. This could be measured used either of \ac{kld}, \ac{jsd}, \ac{emd}, or Wasserstein distance, the main difference being their impact on the convergence of these distributions. The interesting feature of the Wasserstein distance is that it is continuous and differentiable. Using this distance, the critic can train till optimality while having a reliable gradient throughout the training procedure. Hence the critic in \ac{wgan} does not have the saturation and vanishing gradient problems that exist in standard \acp{gan}. Due to continuous and clean gradients, the training is significantly stable and less sensitive to hyperparameters and model architecture. With \ac{wgan} the mode collapse problem is also significantly reduced. When it comes to practice, the most important problem that hinders training \acp{gan} is that there is no correlation between the quality of the generated data say, images, and the loss function. However, \ac{wgan} tries to converge the distributions while lowering the generation loss. And considerable relation between the loss and the quality of generations can be observed. \ac{wgangp} \cite{wgangp} is an improved \ac{wgan} that uses gradient penalty to enforce Lipschitz constraint.
 
-\subsection{Hybrids - VAEGAN}
+\subsection{Hybrids - VAE-GAN}
 \label{subsec:vaeganhybrid}
 While the \acp{vae} learn the latent space of the data very efficiently, the generative capabilities are limited in comparison to \acp{gan}. In the case of image generations, \acp{vae} usually generate blurry images. While well trained \ac{gan} learn to generate photorealistic images. Though the task of the discriminator in \acp{gan} is to only learn what is real and what is fake, it implicitly learns rich a similarity metric in order do so \cite{autoencoding_beyond_pixels}. The idea of a \ac{vae}-\ac{gan}, illustrated in fig. \ref{fig:vae_gan_arch}, is to exploit this ability of \acp{gan} as a learning metric for \acp{vae} and the ability of \acp{vae} to learn dense latent representation of the data.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.15]{figures/arch/vae_gan_arch.png}
+    \includegraphics[width=\textwidth]{figures/arch/vae_gan_arch.png}
     \caption{Illustration of the \ac{vae}-\ac{gan} architecture}
     \label{fig:vae_gan_arch}
 \end{figure}
@@ -191,7 +191,7 @@ Training \ac{vae} is hard but training \ac{gan} is harder. It is very important 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.25]{figures/arch/vae_gan_loss_graph.png}
+    \includegraphics[width=0.8\textwidth]{figures/arch/vae_gan_loss_graph.png}
     \caption{Illustration of the data flow and the loss of \ac{vae}-\ac{gan}, where $\mathcal{L}_{\text {recon}}^{D_{l}}$ = $\mathcal{L}_{\text {llike}}^{Dis_{l}}$ \\
     Image source \cite{autoencoding_beyond_pixels}}. 
     \label{fig:vaegan_loss_graph}

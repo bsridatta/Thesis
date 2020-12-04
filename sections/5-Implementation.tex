@@ -2,7 +2,7 @@
 \label{chap:experiments}
 This chapter includes the various techniques and hacks explored to enhance the \ac{gan} training and reasoning behind the choices that are crucial for the functioning of the method.% FIXME development details?
 
-
+%TODO add wgan experiments
 \section{Supervised Baseline}
 To the best of the author's knowledge, the closest work using a \ac{vae} is a cross-modal training approach in 3D hand pose estimation \cite{crossmodal}. As there is no similar approach in \ac{hpe} using a \ac{vae}, a supervised model using just a \ac{vae} and 3D ground truth pose data is implemented. This is to verify the feasibility of a \ac{vae} and find a set of hyperparameters that worked well for the H3.6M dataset under the supervised setting. This served as a baseline over which an unsupervised \ac{gan} was built upon. Hyperparameters such as the number of neurons in the layers, the number of residual blocks $n$, dimensions of the latent space, etc are taking as reference.
 
@@ -10,6 +10,7 @@ To the best of the author's knowledge, the closest work using a \ac{vae} is a cr
 Building upon the supervised \ac{vae}, the proposed architecture is built. The following choice is kept standard for most of the experiments and could be used to reproduce the results. All the layers are made of 1024 neurons. The encoder and the decoder are made of 1 residual block each ($n = 1$) while the discriminator is made of 2. This is to keep the capacity of the generator and the discriminator similar. Various forms of scaling the 2D poses are experimented with to make the cycle of lifting and projection smooth. The scaling mentioned in the preprocessing section where the distance between the root joint and head worked the best. %TODO is this need? is it enough? 
 
 \section{Bag of Tricks}
+\label{sec:bag_of_tricks}
 The following techniques to improve the \ac{gan} training and the reasoning behind their importance are elaborated in papers such as \cite{soumith2017wasserstein,goodfellow2014generative,openaigan2wgan,improved_gan}. The important hacks or tricks from these papers and other sources are compiled in \cite{gan_hacks} and are wildly adopted in the field. Since the majority of the work in the field is on images, some of these tricks do not help and sometimes even hurt the training. These ticks along with the pre-processing steps mentioned in \ref{sec:preprocessing} are critical for proper training of the network. The tricks are as follows. %TODO correct when changed to experiments
  
 \paragraph{Normalizing Inputs} 
