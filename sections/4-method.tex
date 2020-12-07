@@ -19,7 +19,7 @@ Adding to the explanation of \ac{vae} in \ref{subsec:vae}, the role of the encod
 
 Where $\theta_q$ denotes the learned parameters of the encoder during training. This encoder is composed of an upsampling layer that scales the $2\!\cdot\!J$ dimensional input to match the number of hidden neurons $h$ of the encoding module. The encoding module $q$ is made of $n$ residual block composed of 2 \ac{fc} layers following the related works, to allow comparison. This residual block structure is repeated for the decoder and the discriminator. The encoding block is followed by 2 \ac{fc} (linear) layers that downsample the hidden representation of dimension $h$ to match the latent space dimension $d$. The output of the two downsampling layers represents the mean and standard deviation respectively. However, in practice, the encoder is designed to predict log-variance instead of the standard deviation to have a better distribution of values and gradient. The layers of the encoder, decoder, and the discriminator models are kept similar for simplicity and as done by the related works. The residual blocks used in all the 3 models are identical and is illustrated in Fig \ref{fig:residual_block}.
 
-Both \ac{fc} layers of the residual block are followed by batch normalization, activation, and dropout layers of the same dimensionality. While other \ac{FC} layers are only followed by an activation function. The linear layers in the residual blocks of the \ac{vae} contain weights but do not have the bias component.
+Both \ac{fc} layers of the residual block are followed by batch normalization, activation, and dropout layers of the same dimensionality. While other \ac{fc} layers are only followed by an activation function. The linear layers in the residual blocks of the \ac{vae} contain weights but do not have the bias component.
 
 
 \begin{figure}[h] 
@@ -71,7 +71,7 @@ Where \textbf{R} refers to the rotation matrix formed using the randomly sampled
 \subsection{Discriminator}
 The discriminator takes the novel view 2D pose of the predicted 3D pose $\tilde{\textbf{y}}$ along with the real 2D poses \textbf{x} from the dataset as the input and classifies which 2D pose belongs to which category, real or fake (generated novel view). The real and novel views need not correspond to the same pose, the goal of the discriminator is to learn the general ability to distinguish the 2D poses from the dataset (real) from the predicted poses (fake).
 
-\begin{equation} \label{eqn:proj_rotated}
+\begin{equation} \label{eqn:discriminator_output}
     \begin{gathered}[b]
         D_{\theta_d}(\tilde{\textbf{y}} \cup \textbf{x}) = \left\lbrace p_{class}^i | i \in {1, .. n(\tilde{\textbf{y}} \cup \textbf{x})}\right\rbrace \\
         where, 0\leq p_{class} \leq 1
