@@ -1,7 +1,7 @@
 \chapter{Method}
 \label{chap:method}
 
-This chapter entails the details of the neural network such as the architecture, loss/objective function along with the training and evaluation procedures of the proposed method. Other choices such as activation functions, optimizers, initialization, etc that completes the architecture are presented later in Chapter \ref{chap:experiments} Experiments, along with the reasoning behind the choices and the compilation of essential components required to reproduce the entire network.
+This chapter entails the details of the neural network such as the architecture, loss/objective function along with the training and evaluation procedures of the proposed method. Additional choices such as activation functions, optimizers, initialization, etc that completes the architecture, along with other techniques important to make the method stable are also presented here.
 % FIXME experiments and reproduction
 
 \section{Architecture}
@@ -138,21 +138,77 @@ The real and the fake 2D poses need not be related in any way. In practice, the 
     \end{split}
 \end{equation}
 
-The $\tilde{\textbf{y}}$ here is the transformed output of the decoder. That means, to minimize this loss the decoder model is to be updated along with the discriminator. However, as discussed earlier we consider the encoder to be part of the generator. Hence all the models use this metric to update their weights. Again in contrast to the reconstruction loss, the discriminator loss does not give a direct signal to correct the 3D pose, and thus updating the models to minimize this loss is an unconstrained optimization and is not stable. Hence the weight coefficient $\lambda_{disc.}$ is not as high as that of the reconstruction loss. As this is a min-max game where the generator tries to fool the discriminator while the discriminator tries to guess which same is from the generator, all the models cannot be updated at the same time. The training procedure to enable the models to learn and improve the generated 3D pose is discussed in the next section.
+The $\tilde{\textbf{y}}$ here is the transformed output of the decoder. That means, to minimize this loss the decoder model is to be updated along with the discriminator. However, as discussed earlier we consider the encoder to be part of the generator. Hence all the models use this metric to update their weights. Again in contrast to the reconstruction loss, the discriminator loss does not give a direct signal to correct the 3D pose, and thus updating the models to minimize this loss is an unconstrained optimization and is not stable. Hence the weight coefficient $\lambda_{disc.}$ is not as high as that of the reconstruction loss. As this is a min-max game where the generator tries to fool the discriminator while the discriminator tries to guess which same is from the generator, all the models cannot be updated at the same time. The training details to enable the models to learn and improve the generated 3D pose is discussed in the next section.
 
 \section{Training Procedure}
-
-% \subsection{Procedure}
 In this min-max game, the generator produces samples and the discriminator verifies them, the generator uses this verification and in our method, it also uses self-supervision loss to improve itself in both aspects. The standard practice in training \acp{gan} is to start with generating the samples using the generator. As the discriminator's evaluation is required to teach the generator, the discriminator is first trained to distinguish reals from fakes given by the generator. The samples are again given to the trained discriminator to get the loss to train the generator. That is, the generator is kept constant while updating the discriminator and the discriminator is kept constant while updating the generator. "This turn-wise play is important without which the models would be trying to hit a moving target" \footnote{GAN training \url{https://developers.google.com/machine-learning/gan/training}}.
 
-While the procedure seems straightforward, \ac{gan} training is finding a Nash equilibrium to a two-player non-cooperative game. There exists no feasible algorithm to find the equilibrium for a problem of such complexity\cite{improved_gan}. As the training initiates, the \ac{vae} produces 3D poses close to the noise and thus is very easy for the discriminator to learn to classify. This overpowers the discriminator as it predicts fakes with very high confidence and the loss tends to 0. The \ac{vae} can not learn properly if the discriminator does not provide proper feedback. This happens when the discriminator does not perform well or if it performs too well where the loss is close to 0 and not helpful \footnote{From GAN to WGAN \url{https://lilianweng.github.io/lil-log/2017/08/20/from-GAN-to-WGAN.html}}. 
+While the procedure seems straightforward, \ac{gan} training is finding a Nash equilibrium to a two-player non-cooperative game. There exists no feasible algorithm to find the equilibrium for a problem of such complexity\cite{improved_gan}. As the training initiates, the \ac{vae} produces 3D poses close to the noise and thus is very easy for the discriminator to learn to classify. This overpowers the discriminator as it predicts fakes with very high confidence and the loss tends to 0. The \ac{vae} can not learn properly if the discriminator does not provide proper feedback. This happens when the discriminator does not perform well or if it performs too well where the loss is close to 0 and not helpful \cite{openaigan2wgan}. 
 
-Other common challenges of \ac{gan} training and is explained in \refsec{subsec:gan}. The widely practiced tricks to improve the training of \acp{gan} are discussed later in Bag of Tricks \refsec{sec:bag_of_tricks}. The most challenging part of training any \acp{gan} is the lack of a proper metric to evaluate the quality of generations. Since it is difficult to monitor intermediate states in 3D, and since 3D poses have fewer features compared to RGB images, it is even more challenging to evaluate the quality of the generations. Hence more importance is given to the quantitative aspect in this report.
+Other common challenges of \ac{gan} training and is explained in \refsec{subsec:gan}. The widely practiced tricks to improve the training of \acp{gan} are discussed next in Bag of Tricks \refsec{sec:bag_of_tricks}. 
 
 %TODO few details missing - more about problems of gans? how implemented? IDK IDC
 
 
+\section{Bag of Tricks}
+\label{sec:bag_of_tricks}
+The following techniques to improve the \ac{gan} training and the reasoning behind their importance are elaborated in papers such as \cite{soumith2017wasserstein,goodfellow2014generative,openaigan2wgan,improved_gan}. The important hacks or tricks from these papers and other sources are compiled in \cite{gan_hacks} and are wildly adopted in the field. Since the majority of the work in the field is on images, some of these tricks do not help and sometimes even hurt the training. These ticks along with the pre-processing steps mentioned in \refsec{sec:processing} are critical for proper training of the network. The tricks are as follows. %TODO correct when changed to experiments
+ 
+\paragraph{Normalizing Inputs} 
+It is common practice to normalize the inputs before training a neural network. When it comes to \acp{gan}, the output of the generator is the input of the discriminator. Hence it is suggested to normalize the images between [-1,1] by using a Tanh activation function at the output layer of the generator. This is another motivation behind predicting the poses in the range [-1,1] and then scaling the make the upper half of the pose to unit length.
+
+\paragraph{Modified Loss function}
+The theory the generator component of the \ac{gan} loss \ref{eqn:gan_loss}, $log(1-D(G(z)))$ is minimized. As explained in \refsec{subsec:gan}, it is replaced with maximizing $log(D(G(z)))$ as the former leads to vanishing gradients early on during the training. This is referred to as the $-logD$ trick. In practice, the labels for fakes are flipped as reals while training the generator, since the goal is to make the generator's output real according to the discriminator. And as the \ac{bce} loss \ref{eqn:loss_bce} which has a negative magnitude in its formulation is used, maximization is achieved while minimizing the loss during training. Note that the generator variable $G(z)$ in our training procedure is actually $P(Q(\textbf{x}))$. 
+
+\paragraph{Spherical Latent Space}
+Sample $z$ from a spherical distribution instead of uniform distribution. Doing interpolation along the great circle \ref{fig:great_circle} rather than a straight line from sample A to sample B. This spherical linear interpolation prevents the divergence of samples from the model's prior distribution and produces output with better features.
+
+\begin{figure}[h] 
+    \centering
+    \includegraphics[width=\textwidth]{figures/background/sphericalZ.png}
+    \caption{Illustration of the sampling from the great circle. Image source \cite{spherical_sampling}}
+    \label{fig:great_circle}
+\end{figure}
+
+\paragraph{BatchNorm}
+Training the \ac{gan} using separate batches of real and fake data without mixing them. And perform instance normalization when batch normalization is not possible.
+
+\paragraph{Avoid Sparse Gradients}
+Sparse gradients affect the training stability of the \ac{gan}. Hard functions like hard- \ac{relu}, Max Pooling that have sparse gradients should be avoided. Instead, Leaky-\ac{relu} work well for both the generator and the discriminator. And average pooling or convolution layers with stride are better for downsampling or upsampling.
+
+As mentioned previously Tanh and Sigmoid activations are used for the output layers of the generator and the discriminator respectively. For all the remaining layers Leaky-\ac{relu} was tried and good results were observed. Experimenting with other combinations of activation functions, using Mish activation function \cite{mish} for the \ac{vae} and Leaky-\ac{relu} for the discriminator is found to give small but noticeable improvement to the performance.
+
+Based on the choice of activation, Kaiming He initialization with Leaky-\ac{relu} non-linearity is used for all the layers.
+
+\paragraph{Label Smooting}
+The label smoothing technique mentioned in \cite{gan_hacks} is by replacing the binary labels for real and fake i.e 1, 0 with random numbers, between 0.7 and 1.2 and 0.0 to 0.3 respectively. However, there are different ways of doing smoothing. These include random/non-random, one-sided/two-sided, only for discriminator/both networks. Only the real labels are smoothed for both the discriminator and the generator in the experiments. 
+% FIXME REDO mistake in implementation label smoothing only for D, not for G
+
+\paragraph{Label Flipping}
+The other way of making the labels noisy for the discriminator to prevent it from being too strong is by flipping labels during the discriminator training. Real labels are changed to fake and vice-versa occasionally to confuse the discriminator. 
+
+This had some effect during the initial phase of the training but is not observed to directly affect the quantitative results and hence and kept inactive for simplicity.
+% FIXME REDO experiment
+
+\paragraph{GAN Model Choice} 
+As training \acp{gan} is notoriously difficult, the most explored and studied variant DCGAN (Deep Convolutional \ac{gan}) is suggested to be used. The next best approach is to use hybrid models that use \ac{kld} or a combination of \ac{vae} and \ac{gan}. Since it is not desired to use convolutional layers in lifting networks, the proposed method is already following the best alternative.
+
+
+\paragraph{Optimizer choice}
+The best configuration of optimizers is Adam for the generator and SGD for the discriminator. However, this combination made the models diverge and has severely affected the training of the proposed method. Hence Adam is chosen for both the networks.
+
+\paragraph{Noisy Inputs}
+Adding noise to inputs and decaying over time helps the training. The 2D poses were added random noise in different scales but improvements were not noticeable in the basic experiments. 
+
+\paragraph{Training Discriminator More}
+To consistently get good feedback from the discriminator, it is ideal to keep always keep the discriminator at good performance. To achieve this, the discriminator is iterated $n$ times before every iteration of the \ac{vae}. However, $n$ is set to 1 as the benefit could not be seen in the initial observations.
+
+\paragraph{Dropout}
+Adding additional noise to the generator using dropout with $p=0.5$ during training and test time \cite{gan_dropout}. The discriminator uses dropout with $p=0.5$. But it is observed that adding dropout layers hurt \acp{vae} and $p=0.2$ was found to have a good trade-off. 
+
+
 \section{Evaluation} 
+The most challenging part of training any \acp{gan} is the lack of a proper metric to evaluate the quality of generations. Since it is difficult to monitor intermediate states in 3D, and since 3D poses have fewer features compared to RGB images, it is even more challenging to evaluate the quality of the generations. Hence more importance is given to the quantitative aspect in this report.
 
 \subsection{Metric}
 3D \ac{hpe} and Human3.6M in particular is evaluated by \ac{mpjpe} metric. \ac{mpjpe} as it abbreviates is the mean of the position estimate for all the joints of a pose. Where per-joint position estimate is nothing but the euclidian distance (measured in mm) between the predicted joint to its ground truth. The reported results refer to the average of the \ac{mpjpe} of all the samples in the evaluation set. 
