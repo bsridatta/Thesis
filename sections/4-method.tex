@@ -78,7 +78,7 @@ The discriminator takes the novel view 2D pose of the predicted 3D pose $\tilde{
     \end{gathered}
 \end{equation}
 
-Where $\theta_d$ refers to the learned parameters of the discriminator and $p_{class}$ here denotes the probability of the pose's class, with 1 being real and 0 being fake. The discriminator mimicking the encoder and the decoder upsamples the $2\!\cdot\!J$ dimensional novel 2D pose to $h$ dimensions of the main module. The main module just as other models are composed of $n$ residual blocks. However, the batch normalization layer is removed in the discriminator's residual blocks following standard practices. It is important to note that $n$ need not be the same for all the 3 models. The learned features are downsampled to predict the probability of the pose being real or fake. The sigmoid activation function is used at this last layer as the required values are in the range [0, 1].
+Where $\theta_d$ refers to the learned parameters of the discriminator and $p_{class}$ here denotes the probability of the pose's class, with 1 being real and 0 being fake. The discriminator mimicking the encoder and the decoder upsamples the $2\!\cdot\!J$ dimensional novel 2D pose to $h$ dimensions of the main module. The main module, just as other models is composed of $n$ residual blocks. However, the batch normalization layer is removed in the discriminator's residual blocks following standard practices. It is important to note that $n$ need not be the same for all the 3 models. The learned features are downsampled to predict the probability of the pose being real or fake. The sigmoid activation function is used at this last layer as the required values are in the range [0, 1].
 
 \begin{figure}[h] 
     \centering

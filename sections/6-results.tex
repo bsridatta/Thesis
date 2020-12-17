@@ -69,10 +69,7 @@ The reduced $z$ are colored with respect to their action. This is not an ideal w
 %TODO add a downstream task for embedding video sync multi-view
 
 
-\section{Missing Joints}
-The other important problem the proposed method addresses is the ability to handle missing points. The intuition is from the ability of the encoder to represent similar poses together in the latent space as seen in \ref{fig:neighbors}. A 2D pose missing a joint or two should still be able to tell about the posture and the view of the subject. The encoding of such incomplete poses should be closer to the means of similar pose distributions. Given the decoder can produce plausible 3D poses, lifting the incomplete 3D pose should be at least plausible if not similar to the ground truth 3D pose. Hence the network should be able to 'hallucinate' the missing joints. To evaluate this, the model is given incomplete 2D poses obtained by randomly zeroing 1 and 2 joints. The models are not trained explicitly on any incomplete poses in order to verify the above hypothesis. The \ac{mpjpe} using \ac{zv} and \ac{bh} are reported in table \ref{table:missing_joints}. As expected, there is a significant difference between \ac{zv} and \ac{bh} as there would be many possible locations for the missing joints among which the ground truth pose would be one.
-
-\begin{table}[htb!]
+\begin{table}[h]
     \centering
     \begin{tabularx}{\linewidth}{XXX}%{llcc}
         \toprule
@@ -87,3 +84,6 @@ The other important problem the proposed method addresses is the ability to hand
     \label{table:missing_joints}
     \vspace{-3ex}
 \end{table}
+
+\section{Missing Joints}
+The other important problem the proposed method addresses is the ability to handle missing points. The intuition is from the ability of the encoder to represent similar poses together in the latent space as seen in \ref{fig:neighbors}. A 2D pose missing a joint or two should still be able to tell about the posture and the view of the subject. The encoding of such incomplete poses should be closer to the means of similar pose distributions. Given the decoder can produce plausible 3D poses, lifting the incomplete 3D pose should be at least plausible if not similar to the ground truth 3D pose. Hence the network should be able to 'hallucinate' the missing joints. To evaluate this, the model is given incomplete 2D poses obtained by randomly zeroing 1 and 2 joints. The models are not trained explicitly on any incomplete poses in order to verify the above hypothesis. The \ac{mpjpe} using \ac{zv} and \ac{bh} are reported in table \ref{table:missing_joints}. As expected, there is a significant difference between \ac{zv} and \ac{bh} as there would be many possible locations for the missing joints among which the ground truth pose would be one.
