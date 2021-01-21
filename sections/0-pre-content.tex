@@ -1,33 +1,34 @@
 \newpage
-\thispagestyle{plain}
-~\\
-\vfill
-{ \setstretch{1.1}
-    \subsection*{Authors}
-    Sri Datta Budaraju <budaraju@kth.se>\\
-    School of Electrical Engineering and Computer Science\\
-    KTH Royal Institute of Technology
-    
-    \subsection*{Place for Project}
-    Stockholm, Sweden\\
-    Stuttgart, Germany
 
-    \subsection*{Examiner}
-    Danica Kragic Jensfelt\\
-    Stockholm, Sweden\\
-    KTH Royal Institute of Technology
+
+% ~\\
+% \vfill
+% { \setstretch{1.1}
+%     \subsection*{Authors}
+%     Sri Datta Budaraju <budaraju@kth.se>\\
+%     School of Electrical Engineering and Computer Science\\
+%     KTH Royal Institute of Technology
     
-    \subsection*{Supervisor }
-    Hedvig Kjellström\\
-    Stockholm, Sweden\\
-    KTH Royal Institute of Technology
+%     \subsection*{Place for Project}
+%     Stockholm, Sweden\\
+%     Stuttgart, Germany
+
+%     \subsection*{Examiner}
+%     Danica Kragic Jensfelt\\
+%     Stockholm, Sweden\\
+%     KTH Royal Institute of Technology
     
-    \subsection*{Supervisor - Host}
-    Arij Bouazizi\\
-    Stuttgart, Germany\\
-    Mercedes-Benz AG,  Research and Development
-    ~
-}
+%     \subsection*{Supervisor }
+%     Hedvig Kjellström\\
+%     Stockholm, Sweden\\
+%     KTH Royal Institute of Technology
+    
+%     \subsection*{Supervisor - Host}
+%     Arij Bouazizi\\
+%     Stuttgart, Germany\\
+%     Mercedes-Benz AG,  Research and Development
+%     ~
+% }
 
 % TODO -- uncomment
 \newpage
@@ -38,7 +39,7 @@
 \chapter*{Abstract}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The thesis proposes an unsupervised representation learning method to predict 3D human pose from a 2D skeleton via a VAE-GAN hybrid network. The method learns to lift poses from 2D to 3D using self-supervision and adversarial learning techniques. The method does not use images, heatmaps, 3D pose annotations, paired/unpaired 2D-to-3D skeletons, 3D priors, synthetic 2D skeletons, multi-view or temporal information in any shape or form. The 2D skeleton input is taken by a VAE that encodes it in a latent space and then decodes that latent representation to a 3D pose. The 3D pose is then reprojected to 2D for a constrained, self-supervised optimization using the input 2D pose. Parallelly, the 3D pose is also randomly rotated and reprojected to 2D to generate a 'novel' 2D view for unconstrained adversarial optimization using a discriminator network. The combination of the optimizations of the original and the novel 2D views of the predicted 3D pose results in a 'realistic' 3D pose generation. The thesis shows that the encoding and decoding process of the VAE addresses the major challenge of erroneous and incomplete skeletons from 2D detection networks as inputs and that the variance of the VAE can be altered to get various plausible 3D poses for a given 2D input. Additionally, the latent representation could be used for cross-modal training and many downstream applications. The results on Human3.6M datasets outperform previous unsupervised approaches with less model complexity while addressing more hurdles in scaling the task to the real world.
+The thesis proposes an unsupervised representation learning method to predict 3D human pose from a 2D skeleton via a VAE-GAN (Variational Autoencoder - Generative Adversarial Network) hybrid network. The method learns to lift poses from 2D to 3D using self-supervision and adversarial learning techniques. The method does not use images, heatmaps, 3D pose annotations, paired/unpaired 2D-to-3D skeletons, 3D priors, synthetic 2D skeletons, multi-view or temporal information in any shape or form. The 2D skeleton input is taken by a VAE that encodes it in a latent space and then decodes that latent representation to a 3D pose. The 3D pose is then reprojected to 2D for a constrained, self-supervised optimization using the input 2D pose. Parallelly, the 3D pose is also randomly rotated and reprojected to 2D to generate a 'novel' 2D view for unconstrained adversarial optimization using a discriminator network. The combination of the optimizations of the original and the novel 2D views of the predicted 3D pose results in a 'realistic' 3D pose generation. The thesis shows that the encoding and decoding process of the VAE addresses the major challenge of erroneous and incomplete skeletons from 2D detection networks as inputs and that the variance of the VAE can be altered to get various plausible 3D poses for a given 2D input. Additionally, the latent representation could be used for cross-modal training and many downstream applications. The results on Human3.6M datasets outperform previous unsupervised approaches with less model complexity while addressing more hurdles in scaling the task to the real world.
 
 
 \subsection*{Keywords}
@@ -54,10 +55,10 @@ Computer Vision, Projective Geometry, Deep Learning, Unsupervised Learning, 3D H
 \chapter*{Sammanfattning} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Denna avhandling föreslår en "unsupervised representational learning" metod för att förutspå en 3D-pose från ett 2D-skelett via ett VAE-GAN hybrid neural nätverk. Metoden lär sig att utveckla poser från 2D till 3D genom att använda "supervision" och "adversarial" inlärningstekniker. Metoden använder sig inte av bilder, värmekartor, 3D-pose annotationer, parade/oparade 2D-till-3D skelett, "3D priors", syntetiska 2D-skelett, "multi-view", eller tidsinformation överhuvudtaget. 2D-skelett indatat är taget från ett "VAE" som kodar den i ett "latent space" och sedan avkodar det "latent" representationen till ett 3D-pose. 3D-posen är sedan åter projicerad till 2D för att genomgå ett begränsad, "self-supervised" optimering med hjälp av det tvådimensionella posen. Parallellt roteras dessutom 3D-posen slumpmässigt och åter projiceras till 2D för att generera ett nytt 2D-vy för obegränsat "adversarial" optimering med hjälp av ett "discriminator" nätverk. Kombinationen av optimeringarna av det originala och det nya 2D vyna av det förutsedda 3D-posen resulterar i en realistisk 3D-pose generering. Denna avhandling visar att kodnings- och avkodningsprocessen av VAE adresserar den stora utmaningen av felaktiga och ofullständiga skelett från 2D-detekteringsnätverk som indata och att variansen av VAE kan bli modifierat för att få flera troliga 3D-poser för ett givet 2D-indata. Dessutom, kan det latenta representationen användas för "cross-modal" träning och flera nedströmsapplikationer. Resultaten av Human3.6M datamängder presterar bättre än tidigare "unsupervised" metoder med mindre modellkomplexitet samtidigt som det adresserar flera hinder att skala uppgiften till det riktiga världen.
+Denna avhandling föreslår en "unsupervised representational learning" metod för att förutspå en 3D-pose från ett 2D-skelett via ett VAE-GAN (Variational Autoencoder - Generative Adversarial Network) hybrid neural nätverk. Metoden lär sig att utveckla poser från 2D till 3D genom att använda "supervision" och "adversarial" inlärningstekniker. Metoden använder sig inte av bilder, värmekartor, 3D-pose annotationer, parade/oparade 2D-till-3D skelett, "3D priors", syntetiska 2D-skelett, "multi-view", eller tidsinformation överhuvudtaget. 2D-skelett indatat är taget från ett "VAE" som kodar den i ett "latent space" och sedan avkodar det "latent" representationen till ett 3D-pose. 3D-posen är sedan åter projicerad till 2D för att genomgå ett begränsad, "self-supervised" optimering med hjälp av det tvådimensionella posen. Parallellt roteras dessutom 3D-posen slumpmässigt och åter projiceras till 2D för att generera ett nytt 2D-vy för obegränsat "adversarial" optimering med hjälp av ett "discriminator" nätverk. Kombinationen av optimeringarna av det originala och det nya 2D vyna av det förutsedda 3D-posen resulterar i en realistisk 3D-pose generering. Denna avhandling visar att kodnings- och avkodningsprocessen av VAE adresserar den stora utmaningen av felaktiga och ofullständiga skelett från 2D-detekteringsnätverk som indata och att variansen av VAE kan bli modifierat för att få flera troliga 3D-poser för ett givet 2D-indata. Dessutom, kan det latenta representationen användas för "cross-modal" träning och flera nedströmsapplikationer. Resultaten av Human3.6M datamängder presterar bättre än tidigare "unsupervised" metoder med mindre modellkomplexitet samtidigt som det adresserar flera hinder att skala uppgiften till det riktiga världen.
 
 % \subsection*{Nyckelord}
-
+% Computer Vision, Projective Geometry, Deep Learning, Unsupervised Learning, 3D Human Pose Estimation, GAN, AutoEncoder, Hybrid Generative Model, Self-Supervision
 
 \newpage
 \thispagestyle{plain}
