@@ -25,7 +25,7 @@ The results obtained by the networks with the above configuration in addition to
 
 \input{tables/zv_mean_a_j}
 
-The best hypothesis, \textbf{BH} has improved the results by ~2.7 mm which is considerable in comparison to the equivalent gain in \cite{amazon1} using domain adaptation network with more data and temporal information. Since there is no technique to pick the best hypothesis without having access to the ground truth, the results referred to, are the ones obtained using \textbf{ZV} unless specified otherwise. 
+The best hypothesis, \textbf{BH} has improved the results by ~2.7 mm which is considerable in comparison to the equivalent gain in \cite{amazon1} using a domain adaptation network with more data and temporal information. Since there is no technique to pick the best hypothesis without having access to the ground truth, the results referred to, are the ones obtained using \textbf{ZV} unless specified otherwise. 
 
 \begin{figure}[h]
     \centering
@@ -63,7 +63,7 @@ A good representation of the 2D poses in the latent space not only helps the dec
     \label{fig:latentspace}
 \end{figure}
 
-The reduced $z$ are colored with respect to their action. This is not an ideal way to examine the clustering as there is significant overlap in the actions during their 'transition phase'. For example, as the data is collected as the subject performs that action, the subject would be 'standing' before 'sitting down'. Since it is not practical to label each frame, the action labels are used. Despite the overlap, patterns and clusters can be seen indicating a good representation capability of the encoder. To further evaluate the extent of clustering, 5 nearest latent neighbors of the embeddings of a few interesting poses are queried to verify if they represent common distribution. The corresponding 2D poses of these embeddings are visualized in Fig \ref{fig:neighbors}. Strong similarity can be observed among the nearest neighbors. Similarities include a set of joints having the same articulation, natural transition from one posture to another, or a different \ac{pov} of the similar pose. 
+The reduced $z$ are colored with respect to their action. This is not an ideal way to examine the clustering as there is significant overlap in the actions during their 'transition phase'. For example, as the data is collected as the subject performs that action, the subject would be 'standing' before 'sitting down'. Since it is not practical to label each frame, action labels are used. Despite the overlap, patterns and clusters can be seen indicating a good representation capability of the encoder. To further evaluate the extent of clustering, 5 nearest latent neighbors of the embeddings of a few interesting poses are queried to verify if they represent common distribution. The corresponding 2D poses of these embeddings are visualized in Fig \ref{fig:neighbors}. Strong similarity can be observed among the nearest neighbors. Similarities include a set of joints having the same articulation, natural transition from one posture to another, or a different \ac{pov} of the similar pose. 
 
 \input{tables/neighbors.tex}
 %TODO add a downstream task for embedding video sync multi-view
