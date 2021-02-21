@@ -7,7 +7,7 @@
 %     Sri Datta Budaraju <budaraju@kth.se>\\
 %     School of Electrical Engineering and Computer Science\\
 %     KTH Royal Institute of Technology
-    
+
 %     \subsection*{Place for Project}
 %     Stockholm, Sweden\\
 %     Stuttgart, Germany
@@ -16,12 +16,12 @@
 %     Danica Kragic Jensfelt\\
 %     Stockholm, Sweden\\
 %     KTH Royal Institute of Technology
-    
+
 %     \subsection*{Supervisor }
 %     Hedvig Kjellström\\
 %     Stockholm, Sweden\\
 %     KTH Royal Institute of Technology
-    
+
 %     \subsection*{Supervisor - Host}
 %     Arij Bouazizi\\
 %     Stuttgart, Germany\\
@@ -51,11 +51,9 @@ Computer Vision, Projective Geometry, Deep Learning, Unsupervised Learning, 3D H
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%   The Swedish abstract         %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter*{Sammanfattning} 
+\chapter*{Sammanfattning}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-Denna avhandling föreslår en oövervakad representation lärande metod för att förutspå en 3D-pose från ett 2D-skelett via ett VAE-GAN (Variationella Autokodare-Generativt Kontroversiellt Nätverk) hybrid neural nätverk. Metoden lär sig att utveckla poser från 2D till 3D genom att använda övervakning och Kontroversiellt inlärningstekniker. Metoden använder sig inte av bilder, värmekartor, 3D-pose annotationer, parade/oparade 2D-till-3D skelett, 3D föregående, syntetiska 2D-skelett, flera vyer, eller tidsinformation överhuvudtaget. 2D-skelett indatat är taget från ett VAE som kodar den i ett latent utrymme och sedan avkodar det latent representationen till ett 3D-pose. 3D-posen är sedan åter projicerad till 2D för att genomgå ett begränsad, självövervakad optimering med hjälp av det tvådimensionella posen. Parallellt roteras dessutom 3D-posen slumpmässigt och åter projiceras till 2D för att generera ett nytt 2D-vy för obegränsat kontroversiellt optimering med hjälp av ett diskriminatorn nätverk. Kombinationen av optimeringarna av det originala och det nya 2D vyna av det förutsedda 3D-posen resulterar i en realistisk 3D-pose generering. Denna avhandling visar att kodnings- och avkodningsprocessen av VAE adresserar den stora utmaningen av felaktiga och ofullständiga skelett från 2D-detekteringsnätverk som indata och att variansen av VAE kan bli modifierat för att få flera troliga 3D-poser för ett givet 2D-indata. Dessutom, kan det latenta representationen användas för crossmodal träning och flera nedströmsapplikationer. Resultaten av Human3.6M datamängder presterar bättre än tidigare oövervakad metoder med mindre modellkomplexitet samtidigt som det adresserar flera hinder att skala uppgiften till det riktiga världen.
-
+Uppsatsen föreslår en oövervakad metod för representationslärande för att förutsäga en 3D-­pose från ett 2D­-skelett med hjälp av ett VAE­GAN (Variationellt Autoenkodande Generativt Adversariellt Nätverk) hybrid neuralt nätverk. Metoden lär sig att utvidga poser från 2D till 3D genom att använda självövervakning och adversariella inlärningstekniker. Metoden använder sig vare sig av bilder, värmekartor, 3D­-poseannotationer, parade/oparade 2D­-till­-3D skelett, a priori information i 3D, syntetiska 2D-skelett, flera vyer, eller tidsinformation. 2D-skelettindata tas från ett VAE som kodar det i en latent rymd och sedan avkodar den latenta representationen till en 3D-­pose. 3D­-posen är sedan återprojicerad till 2D för att genomgå begränsad, självövervakad optimering med hjälp av den tvådimensionella posen. Parallellt roteras dessutom 3D-­posen slumpmässigt och återprojiceras till 2D för att generera en ny 2D­-vy för obegränsad adversariell optimering med hjälp av ett diskriminatornätverk. Kombinationen av optimeringarna av den ursprungliga och den nya 2D-vyn av den förutsagda 3D-­posen resulterar i en realistisk 3D-posegenerering. Resultaten i uppsatsen visar att kodnings-­ och avkodningsprocessen av VAE adresserar utmaningen med felaktiga och ofullständiga skelett från 2D­-detekteringsnätverk som indata och att variansen av VAE kan modifieras för att få flera troliga 3D­-poser för givna 2D­-indata. Dessutom kan den latenta representationen användas för crossmodal träning och flera nedströmsapplikationer. Resultaten på datamängder från Human3.6M är bättre än tidigare oövervakade metoder med mindre modellkomplexitet samtidigt som de adresserar flera hinder för att skala upp uppgiften till verkliga tillämpningar.
 % \subsection*{Nyckelord}
 % Computer Vision, Projective Geometry, Deep Learning, Unsupervised Learning, 3D Human Pose Estimation, GAN, AutoEncoder, Hybrid Generative Model, Self-Supervision
 
@@ -63,7 +61,7 @@ Denna avhandling föreslår en oövervakad representation lärande metod för at
 \thispagestyle{plain}
 \chapter*{Acknowledgements}
 
-I would like to express my sincere gratitude to my supervisor at KTH, Hedvig Kjellström, and my industrial supervisor, Arij Bouazizi for their patient guidance, encouragement, and constructive critique of this research work. I am thankful to my examiner, Danica Kragic Jensfelt for her feedback and evaluation of this thesis. I would like to thank Mercedes Benz for hosting my thesis and providing me with the required infrastructure. I would like to express my appreciation to Ulrich Kressel and Julian Wiederer for welcoming me to their research group. I would like to acknowledge the helpful feedback, support, and company from my thesis group at KTH and would like to thank Ruibo Tu, Jade Cock, and Oscar Örnberg for their immense help. I am thankful to my friends Nik Vaessen and Vivek Chalumuri for their helpful discussions, comments, and advice throughout the whole process. Finally, I am grateful to my family for their lifelong support. This thesis was carried out during a period of unprecedented uncertainty and was only possible as a result of the incredible patience and empathy shown by everyone involved in the process.   
+I would like to express my sincere gratitude to my supervisor at KTH, Hedvig Kjellström, and my industrial supervisor, Arij Bouazizi, for their patient guidance, encouragement, and constructive critique of this research work. I am thankful to my examiner, Danica Kragic Jensfelt, for her feedback and evaluation of this thesis. I am thankful to Mercedes Benz for hosting my thesis and providing me with the required infrastructure. I would also like to express my appreciation to Ulrich Kressel and Julian Wiederer for welcoming me to their research group. I am pleased to acknowledge the helpful feedback, support, and company from my thesis group at KTH and would like to thank Ruibo Tu, Jade Cock, and Oscar Örnberg for their immense help. I am thankful to my friends Nik Vaessen and Vivek Chalumuri for their helpful discussions, comments, and advice throughout the whole process. Finally, I am grateful to my family for their lifelong support. This thesis was carried out during a period of unprecedented uncertainty and was only possible as a result of the incredible patience and empathy shown by everyone involved in the process.
 
 \newpage
 
